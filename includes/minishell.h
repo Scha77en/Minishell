@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/07/28 16:32:10 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/15 18:36:26 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,59 @@
 #  define BUFFER_SIZE 1337
 # endif
 
-#include <paths.h>
+# include <paths.h>
+
 // libraries
 
-# include <stdio.h>
 # include <unistd.h>
+# include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
 # include <string.h>
-# include <errno.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <fcntl.h>
+
+typedef struct s_tokens
+{
+	char			*tokens;
+	int				type;
+	struct s_tokens	*next;
+}	t_tokens;
+
+typedef struct s_red
+{
+	int				type;
+	char			*file;
+	struct s_red	*next;
+}	t_red;
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	struct s_cmd	*next;
+}	t_cmd;
+
+typedef struct s_final_list
+{
+	t_cmd				*cmds;
+	t_red				*rederections;
+	struct s_final_list	*next;
+}	t_final_list;
+
+typedef enum e_token
+{
+	WHITESPACE, // " "
+	HEREDOC,  // <<
+	SQUAT,      // '
+	DQOUT,       // "
+	OUT,      // >
+	APPEND,   // >>
+	IN,       // <
+	WORD,      // string
+	PIPE,     // |
+	NLINE,     // |
+}	t_token;
 
 // get_next_line() structure;
 
@@ -63,7 +107,7 @@ typedef struct s_data_nodes
 typedef struct s_num
 {
 	int		collection;
-} t_n;
+}	t_n;
 
 // Minishell functions;
 
