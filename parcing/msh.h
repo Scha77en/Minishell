@@ -48,8 +48,6 @@ char			*fill_token(char *b, int *i, char c);
 void			add_list(t_cmd **list, t_cmd *new);
 t_cmd			*create_list();
 char			*ft_strjoin(char const *s1, char const *s2);
-t_cmd 			*ft_lstnew(char *content);
-void 			ft_lstadd_back(t_cmd **lst, t_cmd *new);
 int				is_word(int type);
 int				is_token(int type);
 void			fill(t_tokens **list, t_cmd *tmp, int *i);

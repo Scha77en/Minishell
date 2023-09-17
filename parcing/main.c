@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/17 21:00:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/17 21:51:14 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int main()
 {
     t_cmd *tmp;
     int n_cmd;
+    int flg;
     t_cmd *f_list;
     t_tokens *list;
     char *b;
@@ -114,11 +115,16 @@ int main()
         {
             add_list(&tmp, create_list());
             int i = -1;
+            flg = -1;
             while(list && list->type != NLINE && list->type != PIPE)
             {
-                n_cmd = n_of_cmd(list);
-                tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
-                tmp->cmd[n_cmd] = NULL;
+                if(!++flg)
+                {
+                    n_cmd = n_of_cmd(list);
+                    printf("n_cmd : %d\n", n_cmd);
+                    tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
+                    tmp->cmd[n_cmd] = NULL;
+                }
                 fill(&list, tmp, &i);
             }
             tmp = tmp->next;

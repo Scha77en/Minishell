@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/17 20:57:27 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/17 21:48:02 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int n_of_cmd(t_tokens *list)
     r = 0;
     while(list->type != PIPE && list->type != NLINE)
     {
-        if(is_word(list->type) && list->next->type == WHITESPACE)
+        if(is_word(list->type) && !is_word(list->next->type))
             r++;
         else if (is_word(list->type) && is_word(list->next->type))
         {
@@ -86,15 +86,22 @@ int n_of_cmd(t_tokens *list)
                 list = list->next;
             r++;
         }
+        else if (list->type == IN || list->type == OUT || list->type == HEREDOC || list->type == APPEND)
+        {
+           list = list->next;
+           if (list->type == WHITESPACE)
+            list = list->next;
+        }
         list = list->next;
     }
+    printf("r : %d\n", r);
     return (r);
 }
 
 void fill(t_tokens **list, t_cmd *tmp, int *i)
 {
     char *word;
-
+    printf("in\n");
     if (is_word((*list)->type) && is_word((*list)->next->type))
     {
         word = (*list)->tokens;
@@ -104,15 +111,19 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
             (*list) = (*list)->next;
         }
         tmp->cmd[++(*i)] = ft_strdup(word);
+        printf("tmp->cmd : %s\n", tmp->cmd[*i]);
     }
     else if(is_word((*list)->type) && !is_word((*list)->next->type))
     {
         word = (*list)->tokens;
         tmp->cmd[++(*i)] = ft_strdup(word);
+        printf("tmp->cmd : %s\n", tmp->cmd[*i]);
     }
-    // else if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
-    // {
-    //     tmp->fd_in = open((*list)->tokens, O_RDONLY);
-    // }
+    else if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
+    {
+       (*list) = (*list)->next;
+       if ((*list)->type == WHITESPACE)
+        (*list) = (*list)->next;
+    }
     (*list) = (*list)->next;
 }
