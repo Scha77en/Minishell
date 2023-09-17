@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	execute_cmds(t_final_list *final, char **env)
+void	execute_cmds(t_cmd *tavern, char **env)
 {
 	int		pipfd[2];
 	int		j;
@@ -21,33 +21,22 @@ void	execute_cmds(t_final_list *final, char **env)
 
 	if (pipe(pipfd) == -1)
 		error_out("pipe", 0);
-	if (final->rederections->type == 1)
-		here_doc_management(final, pipfd, env);
-	if (final->cmds->next == NULL)
+	// if (final->rederections->type == 1)
+	// 	here_doc_management(final, pipfd, env);
+	pid1 = fork();
+	if (pid1 == 0 && final->rederections == NULL)
+		manage_first_child(final->cmds, pipfd, env);
+	else if (pid1 == 0 && final->rederections != NULL)
+		manage_redirection(final, pipfd, env);
+	command_handler(final, pipfd, env);
+	pid2 = fork();
+	if (pid2 == 0 && final->rederections == NULL)
+		manage_last_child(final->cmds, pipfd, env);
+	else if (pid2 == 0 && final->rederections != NULL)
+		manage_redirection(final, pipfd, env);
+	else
 	{
-		if (final->rederections == NULL)
-			single_cmd_exec(final->cmds->cmd, env);
-		else
-			single_redirection_exec(final, env);
-		return ;
-	}
-	if (final->cmds != NULL)
-	{
-		pid1 = fork();
-		if (pid1 == 0 && final->rederections == NULL)
-			manage_first_child(&final->cmds, pipfd, env);
-		else if (pid1 == 0 && final->rederections != NULL)
-			manage_redirection(&final, pipfd, env);
-		command_handler(final, pipfd, env);
-		pid2 = fork();
-		if (pid2 == 0 && final->rederections == NULL)
-			manage_last_child(final->cmds, pipfd, env);
-		else if (pid2 == 0 && final->rederections != NULL)
-			manage_redirection(final, pipfd, env);
-		else
-		{
-			waiting_und_closing(pid1, pid2, pipfd);
-		}
+		waiting_und_closing(pid1, pid2, pipfd);
 	}
 }
 
@@ -75,7 +64,7 @@ void	manage_first_child(t_cmd *cmds, int *pipfd, char **env)
 		error_out("execve", 0);
 }
 
-void	command_handler(t_final_list *final, int *pipfd, char **env)
+void	command_handler(t_cmd *final, int *pipfd, char **env)
 {
 	pid_t	pid_b;
 
@@ -87,7 +76,7 @@ void	command_handler(t_final_list *final, int *pipfd, char **env)
 		if (pid_b == 0 && final->rederections == NULL)
 			manage_children(final->cmds, pipfd, env);
 		if (pid_b == 0 && final->rederections != NULL)
-			manage_redirection(final->cmds->cmd, pipfd, env);
+			manage_redirection(final, pipfd, env);
 		else
 			wait(0);
 		final->cmds = final->cmds->next;
