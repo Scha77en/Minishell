@@ -3,5 +3,6 @@
 		"*.excalidraw": "json",
 		"*.excalidrawlib": "json",
 		"stdio.h": "c"
-	}
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }
