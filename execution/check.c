@@ -14,11 +14,11 @@
 
 int	main(int argc, char **env)
 {
-	t_final_list	*current;
-	t_final_list	*final;
-	t_final_list	*node1;
-	t_final_list	*node2;
-	t_final_list	*node3;
+	t_cmd	*current;
+	t_cmd	*final;
+	t_cmd	*node1;
+	t_cmd	*node2;
+	t_cmd	*node3;
 
 	char	*s1 = strdup("ls -la");
 	char	*s2 = strdup("cat");

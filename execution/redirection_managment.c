@@ -17,9 +17,9 @@ void	manage_redirection(t_final_list *final, int *pipfd, char **env)
 	if (final->rederections->type == 6)
 		handle_input(final, pipfd, env);
 	else if (final->rederections->type == 4)
-		handle_output(&final, pipfd, env);
+		handle_output(final, pipfd, env);
 	else if (final->rederections->type == 5)
-		handle_append(&final, pipfd, env);
+		handle_append(final, pipfd, env);
 }
 
 void	handle_input(t_final_list *final, int *pipfd, char **env)
@@ -54,7 +54,7 @@ void	handle_input(t_final_list *final, int *pipfd, char **env)
 		error_out("execve", 0);
 }
 
-void	manage_output(t_final_list *final, int *pipfd, char **env)
+void	handle_output(t_final_list *final, int *pipfd, char **env)
 {
 	char	**cmd;
 	char	**path;
@@ -83,7 +83,7 @@ void	manage_output(t_final_list *final, int *pipfd, char **env)
 		error_out("execve", 0);
 }
 
-void	manage_append(t_final_list *final, int *pipfd, char **env)
+void	handle_append(t_final_list *final, int *pipfd, char **env)
 {
 	char	**cmd;
 	char	**path;
