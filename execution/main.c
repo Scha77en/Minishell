@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/16 13:50:48 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/17 03:08:53 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	execute_cmds(t_final_list *final, char **env)
 	if (pipe(pipfd) == -1)
 		error_out("pipe", 0);
 	if (final->rederections->type == 1)
-		here_doc_management(&final, pipfd, env);
+		here_doc_management(final, pipfd, env);
 	if (final->cmds->next == NULL)
 	{
 		if (final->rederections == NULL)
@@ -31,19 +31,19 @@ void	execute_cmds(t_final_list *final, char **env)
 			single_redirection_exec(final, env);
 		return ;
 	}
-	if (final->cmd != NULL)
+	if (final->cmds != NULL)
 	{
 		pid1 = fork();
 		if (pid1 == 0 && final->rederections == NULL)
 			manage_first_child(&final->cmds, pipfd, env);
 		else if (pid1 == 0 && final->rederections != NULL)
 			manage_redirection(&final, pipfd, env);
-		command_handler(&final, pipfd, env);
+		command_handler(final, pipfd, env);
 		pid2 = fork();
 		if (pid2 == 0 && final->rederections == NULL)
-			manage_last_child(&final->cmds, pipfd, env);
+			manage_last_child(final->cmds, pipfd, env);
 		else if (pid2 == 0 && final->rederections != NULL)
-			manage_redirection(&final, pipfd, env);
+			manage_redirection(final, pipfd, env);
 		else
 		{
 			waiting_und_closing(pid1, pid2, pipfd);
@@ -85,9 +85,9 @@ void	command_handler(t_final_list *final, int *pipfd, char **env)
 	{
 		pid_b = fork();
 		if (pid_b == 0 && final->rederections == NULL)
-			manage_children(final->cmds->cmd, pipfd, env);
+			manage_children(final->cmds, pipfd, env);
 		if (pid_b == 0 && final->rederections != NULL)
-			manage_rederection(final->cmds->cmd, pipfd, env);
+			manage_redirection(final->cmds->cmd, pipfd, env);
 		else
 			wait(0);
 		final->cmds = final->cmds->next;
@@ -159,4 +159,12 @@ void	single_cmd_exec(char *command, char **env)
 	ret = execve(path[i], cmd, env);
 	if (ret == -1)
 		error_out("execve", 0);
+}
+
+void	waiting_und_closing(pid_t pid1, pid_t pid2, int *pipfd)
+{
+	close(pipfd[1]);
+	close(pipfd[0]);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
 }

@@ -1,5 +1,5 @@
-SRC = main.c get_next_line.c get_next_line_utils.c spliting.c joining.c path_search.c\
-		command_search.c linked_tools.c
+SRC = check.c main.c get_next_line.c get_next_line_utils.c spliting.c joining.c path_search.c\
+		command_search.c linked_tools.c here_doc.c redirection_managment.c error_handling.c
 
 INCL = ../includes/minishell.h
 

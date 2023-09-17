@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/15 18:36:26 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/17 03:14:07 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,46 @@ typedef struct s_num
 {
 	int		collection;
 }	t_n;
+
+// Minishell execution testing functions
+
+t_final_list	*ft_lstnew_t(char *content);
+t_final_list	*ft_lstlast_t(t_final_list *lst);
+void	ft_lstadd_back_t(t_final_list **lst, t_final_list *new);
+void	execute_cmds(t_final_list *final, char **env);
+void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
+void	command_handler(t_final_list *final, int *pipfd, char **env);
+void	manage_children(t_cmd *cmds, int *pipfd, char **env);
+void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
+void	single_cmd_exec(char *command, char **env);
+
+// here_document
+
+void	here_doc_management(t_final_list *final, int *pipfd, char **env);
+char	*get_data_r(t_final_list *final);
+int		ft_strcmp_herdoc(char *s1, char *s2);
+void	here_doc_cmd(t_final_list *final, int *pipfd, char **env, char *data);
+int		writing_data(char *data);
+char	*generate_file(void);
+void	waiting_und_closing(pid_t pid1, pid_t pid2, int *pipfd);
+
+// other redirections
+
+void	manage_redirection(t_final_list *final, int *pipfd, char **env);
+void	handle_input(t_final_list *final, int *pipfd, char **env);
+void	handle_output(t_final_list *final, int *pipfd, char **env);
+void	handle_append(t_final_list *final, int *pipfd, char **env);
+
+// joining
+
+char	*ft_strjoin_b(char *s1, char *s2, int v);
+char	*ft_strjoin(char *s1, char *s2);
+size_t	ft_strlen(char *s);
+
+// spliting
+
+void	*free_mem(char **ptr, int j);
+char	**ft_split(char *s, char c);
 
 // Minishell functions;
 

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:18:29 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/16 13:49:21 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/17 03:11:39 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	manage_redirection(t_final_list *final, int *pipfd, char **env)
 {
 	if (final->rederections->type == 6)
-		handle_input(&final, pipfd, env);
+		handle_input(final, pipfd, env);
 	else if (final->rederections->type == 4)
 		handle_output(&final, pipfd, env);
 	else if (final->rederections->type == 5)
