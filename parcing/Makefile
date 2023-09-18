@@ -1,5 +1,5 @@
 NAME = minishell
-SRC = main.c tools.c tokenizer.c list.c
+SRC = main.c tools.c tokenizer.c list.c rederections.c
 CC = cc -g -fsanitize=address
 FLGS = -Wall -Wextra -Werror 
 RM = rm -rf

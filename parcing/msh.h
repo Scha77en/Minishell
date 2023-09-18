@@ -52,5 +52,6 @@ int				is_word(int type);
 int				is_token(int type);
 void			fill(t_tokens **list, t_cmd *tmp, int *i);
 int				n_of_cmd(t_tokens *list);
+void			rederections(t_tokens **list, t_cmd *tmp);
 
 #endif

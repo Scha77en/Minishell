@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/17 21:51:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:17:19 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,25 +121,26 @@ int main()
                 if(!++flg)
                 {
                     n_cmd = n_of_cmd(list);
-                    printf("n_cmd : %d\n", n_cmd);
                     tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
                     tmp->cmd[n_cmd] = NULL;
                 }
                 fill(&list, tmp, &i);
             }
+            // printf("tmp in null is : =%s=\n", tmp->cmd[1]);
             tmp = tmp->next;
             list = list->next;
         }
         tmp = f_list;
-        // while (tmp)
-        // {
-        //     int i = -1;
-        //     while(tmp->cmd[++i])
-        //     {
-        //         printf("f _ list - :%s\n", tmp->cmd[i]);   
-        //     }
-        //     tmp = tmp->next;
-        // }
+        while (tmp->cmd)
+        {
+            int i = -1;
+            while(tmp->cmd[++i])
+            {
+                printf("f _ list - :%s\n", tmp->cmd[i]);
+            }
+            printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
+            tmp = tmp->next;
+        }
         
     }
 
