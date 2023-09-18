@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/18 11:17:19 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/18 18:40:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int syntax_error(t_tokens *list)
 {
     while(list->next)
     {
-        if((is_token(list->type) && is_word(list->next->type)))
+        if((is_token(list->type) && !is_word(list->next->type) && list->next->type != WHITESPACE))
             return (printf("syntax error : %s\n", list->tokens), list->type = 0 ,  -1);
         else
             list = list->next;

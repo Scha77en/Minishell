@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/10 19:55:26 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/18 18:37:56 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int is_word(int type)
 {
     if(type == WORD || type == SQUAT || type == DQOUT)
         return (1);
+    if(type == WHITESPACE)
+        return (-1);
     return (0);
 }
 
