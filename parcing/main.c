@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/18 18:40:23 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:16:13 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,19 @@ t_tokens *tokenizer(char *b, t_tokens *list)
         else if ((node->type = token(b[i], b[i + 1])) == PIPE)
             node->tokens = "|";
         else if ((node->type = token(b[i], b[i + 1])) == HEREDOC)
+        {
             node->tokens = "<<";
+            i++;
+        }
+        else if ((node->type = token(b[i], b[i + 1])) == APPEND)
+        {
+            node->tokens = ">>";
+            i++;
+        }
         else if ((node->type = token(b[i], b[i + 1])) == SQUAT)
             node->tokens = fill_token(b, &i, 34);
         else if ((node->type = token(b[i], b[i + 1])) == DQOUT)
             node->tokens = fill_token(b, &i, 39);
-        else if ((node->type = token(b[i], b[i + 1])) == APPEND)
-            node->tokens = ">>";
         else if ((node->type = token(b[i], b[i + 1])) == OUT)
             node->tokens = ">";
         else if ((node->type = token(b[i], b[i + 1])) == IN)
@@ -99,10 +105,10 @@ int main()
     t_tokens *list;
     char *b;
     
-    f_list = create_list();
-    tmp = f_list;
     while(1)
     {
+        f_list = create_list();
+        tmp = f_list;
         list = NULL;
         b = readline("minishell$ ");
         if(b == NULL)
@@ -126,7 +132,6 @@ int main()
                 }
                 fill(&list, tmp, &i);
             }
-            // printf("tmp in null is : =%s=\n", tmp->cmd[1]);
             tmp = tmp->next;
             list = list->next;
         }
@@ -141,9 +146,8 @@ int main()
             printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
             tmp = tmp->next;
         }
-        
+    free(tmp->cmd);
+    free(tmp);
     }
-
-    
     return(0);
 }

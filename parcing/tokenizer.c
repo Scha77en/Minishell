@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/18 18:37:56 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:33:37 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@ int token(char fc, char sc)
 {
     if(fc == '|')
        return (PIPE); 
-    else if (fc == '<' && sc != '<')
-        return (IN);
-    else if (fc == '>' && sc != '>')
-        return (OUT);
     else if (fc == 39)
         return (DQOUT);
     else if (fc == 34)
@@ -28,6 +24,10 @@ int token(char fc, char sc)
         return (APPEND);
     else if (fc == '<' && sc == '<')
         return (HEREDOC);
+    else if (fc == '<' && sc != '<')
+        return (IN);
+    else if (fc == '>' && sc != '>')
+        return (OUT);
     else if (fc == ' ')
         return(WHITESPACE);
     else
@@ -62,8 +62,6 @@ int is_word(int type)
 {
     if(type == WORD || type == SQUAT || type == DQOUT)
         return (1);
-    if(type == WHITESPACE)
-        return (-1);
     return (0);
 }
 

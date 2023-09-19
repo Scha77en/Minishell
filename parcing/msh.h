@@ -41,6 +41,13 @@ typedef enum e_token
 	NLINE,     // |
 }t_token;
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+//get_next_line
+char	*get_next_line(int fd);
+
 int				white_space(char c);
 char			*fill_word(char *b, int *i);
 int				token(char fc, char sc);
