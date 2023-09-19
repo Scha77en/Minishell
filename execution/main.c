@@ -24,8 +24,10 @@ void	execute_cmds(t_cmd *tavern, char **env)
 	// if (final->rederections->type == 1)
 	// 	here_doc_management(final, pipfd, env);
 	pid1 = fork();
-	if (pid1 == 0 && final->rederections == NULL)
-		manage_first_child(final->cmds, pipfd, env);
+	if (pid1 == 0 && tavern->cmd != NULL && tavern->fd_in == 0 && tavern->fd_out == 1)
+		execute_commands(tavern, pipfd, env);
+	if (tavern->cmd != NULL && tavern->fd_in != 0 && tavern->out == 1)
+		red_in_execute(tavern, pipfd, env);
 	else if (pid1 == 0 && final->rederections != NULL)
 		manage_redirection(final, pipfd, env);
 	command_handler(final, pipfd, env);
@@ -38,6 +40,14 @@ void	execute_cmds(t_cmd *tavern, char **env)
 	{
 		waiting_und_closing(pid1, pid2, pipfd);
 	}
+}
+
+void	execute_commands(t_cmd *tavern, int *pipfd, char **env)
+{
+	if (tavern->next == NULL)
+		single_cmd_exec(tavern->cmd, env);
+	else
+		multiple_cmd_exec(tavern, env);
 }
 
 void	manage_first_child(t_cmd *cmds, int *pipfd, char **env)
@@ -131,7 +141,7 @@ void	manage_last_child(t_cmd *cmds, int *pipfd, char **env)
 		error_out("execve", 0);
 }
 
-void	single_cmd_exec(char *command, char **env)
+void	single_cmd_exec(char **cmd, char **env)
 {
 	char	**cmd;
 	char	**path;
@@ -139,7 +149,6 @@ void	single_cmd_exec(char *command, char **env)
 	int		i;
 	int		fd2;
 
-	cmd = ft_split(command, ' ');
 	path = find_path(env);
 	i = -1;
 	while (path[++i])

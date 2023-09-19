@@ -26,8 +26,9 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <sys/wait.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <fcntl.h>
 
 typedef struct s_tokens
@@ -37,25 +38,13 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
-typedef struct s_red
-{
-	int				type;
-	char			*file;
-	struct s_red	*next;
-}	t_red;
-
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			**cmd;
+	int				fd_in;
+	int				fd_out;
 	struct s_cmd	*next;
 }	t_cmd;
-
-typedef struct s_final_list
-{
-	t_cmd				*cmds;
-	t_red				*rederections;
-	struct s_final_list	*next;
-}	t_final_list;
 
 typedef enum e_token
 {
