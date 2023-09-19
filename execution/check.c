@@ -6,61 +6,79 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 00:46:55 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/17 03:00:47 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/19 03:08:07 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int argc, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_cmd	*current;
-	t_cmd	*final;
+	t_cmd	*tavern;
 	t_cmd	*node1;
 	t_cmd	*node2;
 	t_cmd	*node3;
+	// int		i;
 
-	char	*s1 = strdup("ls -la");
-	char	*s2 = strdup("cat");
-	char	*s3 = strdup("wc -l");
+	// i = 0;
+	// while (env[i])
+	// {
+	// 	printf("%s\n", env[i]);
+	// 	i++;
+	// }
+	char **s1 = malloc(2 * sizeof(char *)); // Allocate memory for the array of pointers
+	s1[0] = ft_strdup("ls");                   // Allocate memory for the string and copy it
+	s1[1] = NULL;        	               // Terminate the array with NULL
 
-	final = NULL;
-	ft_lstadd_back_t(&final, ft_lstnew_t(s1));
-	ft_lstadd_back_t(&final, ft_lstnew_t(s2));
-	ft_lstadd_back_t(&final, ft_lstnew_t(s3));
-	printf("[%s]\n", final->cmds->cmd);
-	current = final;
-	while (current)
-	{
-		printf("cmd = [%s]\n", current->cmds->cmd);
-		current = current->next;
-	}
-	execute_cmds(final, env);
+	char **s2 = malloc(2 * sizeof(char *));
+	s2[0] = ft_strdup("cat");
+	s2[1] = NULL;
+
+	char **s3 = malloc(2 * sizeof(char *));
+	s3[0] = ft_strdup("wc");
+	s3[1] = NULL;
+
+	tavern = NULL;
+	ft_lstadd_back_t(&tavern, ft_lstnew_t(s1, 0, 1));
+	// ft_lstadd_back_t(&tavern, ft_lstnew_t(s2, fd, 1));
+	// ft_lstadd_back_t(&tavern, ft_lstnew_t(s3, 0, 1));
+	// printf("[%s]\n", tavern->cmd[0]);
+	// current = tavern;
+	// while (current)
+	// {
+	// 	printf("cmd = [%s]\n", current->cmd[0]);
+	// 	current = current->next;
+	// }
+	int fd = open("new_file", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	tavern->fd_out = fd;
+	execute_cmds(tavern, env);
+	free(s1[0]);
+	free(s1);
+	free(s2[0]);
+	free(s2);
+	free(s3[0]);
+	free(s3);
 }
 
-t_final_list	*ft_lstnew_t(char *content)
+t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out)
 {
-	t_final_list	*node1;
+	t_cmd	*node1;
 
-	node1 = (t_final_list *)malloc(sizeof(t_final_list));
+	node1 = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!node1)
 		return (0);
-	node1->cmds = (t_cmd *)malloc(sizeof(t_cmd)); // Allocate memory for cmds structure
-	if (!node1->cmds)
-	{
-		free(node1); // Clean up and return on allocation failure
-		return (0);
-	}
 	// printf("%s\n", content);
-	node1->cmds->cmd = content;
-	node1->rederections = NULL;
+	node1->cmd = content;
+	node1->fd_in = fd_in;
+	node1->fd_out = fd_out;
 	node1->next = NULL;
 	return (node1);
 }
 
-void	ft_lstadd_back_t(t_final_list **lst, t_final_list *new)
+void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new)
 {
-	t_final_list	*lnode;
+	t_cmd	*lnode;
 
 	if (!new)
 		return ;
@@ -73,11 +91,43 @@ void	ft_lstadd_back_t(t_final_list **lst, t_final_list *new)
 	lnode -> next = new;
 }
 
-t_final_list	*ft_lstlast_t(t_final_list *lst)
+t_cmd	*ft_lstlast_t(t_cmd *lst)
 {
 	if (!lst)
 		return (0);
 	while (lst->next)
 		lst = lst->next;
 	return (lst);
+}
+
+char	*ft_strdup(char *s1)
+{
+	char	*ptr;
+	size_t	slen;
+
+	slen = ft_strlen(s1) + 1;
+	ptr = (char *)malloc(slen);
+	if (!ptr || !s1)
+		return (0);
+	ft_memcpy(ptr, s1, (size_t)slen);
+	return (ptr);
+}
+
+void	*ft_memcpy(void *dst, void *src, size_t n)
+{
+	size_t	i;
+	char	*s;
+	char	*d;
+
+	i = 0;
+	s = (char *)src;
+	d = (char *)dst;
+	if (src == 0 && dst == 0)
+		return (0);
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dst);
 }
