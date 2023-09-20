@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/19 15:16:13 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 00:13:45 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,24 @@ int syntax_error(t_tokens *list)
     return (0);
 }
 
-int main()
+int main(int ac, char **av, char **env)
 {
+    (void)ac;
+    (void)av;
     t_cmd *tmp;
     int n_cmd;
     int flg;
     t_cmd *f_list;
     t_tokens *list;
+    t_env *envr;
     char *b;
-    
+
+    envr = envirement(env);
+    // while(envr)
+    // {
+    //     printf("%s=%s\n", envr->var, envr->value);
+    //     envr = envr->next;
+    // } //TODO check if the enverement is correct.
     while(1)
     {
         f_list = create_list();
@@ -148,6 +157,6 @@ int main()
         }
     free(tmp->cmd);
     free(tmp);
-    }
+    // }
     return(0);
 }

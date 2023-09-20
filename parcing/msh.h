@@ -26,6 +26,13 @@ typedef struct s_cmd
 	struct s_cmd *next;
 }t_cmd;
 
+typedef struct s_env
+{
+	char *var;
+	char *value;
+	struct s_env *next;
+}t_env;
+
 
 typedef enum e_token
 {
@@ -47,7 +54,10 @@ typedef enum e_token
 
 //get_next_line
 char	*get_next_line(int fd);
-
+// linkedlist of env
+void			ft_lstaddback(t_env **hed, t_env *new);
+t_env			*lstnew();
+///
 int				white_space(char c);
 char			*fill_word(char *b, int *i);
 int				token(char fc, char sc);
@@ -60,5 +70,6 @@ int				is_token(int type);
 void			fill(t_tokens **list, t_cmd *tmp, int *i);
 int				n_of_cmd(t_tokens *list);
 void			rederections(t_tokens **list, t_cmd *tmp);
+t_env 			*envirement(char **env);
 
 #endif
