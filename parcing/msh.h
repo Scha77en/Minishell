@@ -71,5 +71,7 @@ void			fill(t_tokens **list, t_cmd *tmp, int *i);
 int				n_of_cmd(t_tokens *list);
 void			rederections(t_tokens **list, t_cmd *tmp);
 t_env 			*envirement(char **env);
+int				find_exp(char *s, int i, char c);
+int 			check_if_valid(char *str, int i);
 
 #endif

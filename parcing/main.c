@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 00:13:45 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 00:39:45 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,6 @@ int main(int ac, char **av, char **env)
         }
     free(tmp->cmd);
     free(tmp);
-    // }
+    }
     return(0);
 }
