@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 15:48:23 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:12:37 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void add_node(t_tokens **list, t_tokens *new)
     }
 }
 
-t_tokens *tokenizer(char *b, t_tokens *list)
+t_tokens *tokenizer(char *b, t_tokens *list ,t_env *env)
 {
     int i;
     t_tokens *node;
@@ -76,7 +76,7 @@ t_tokens *tokenizer(char *b, t_tokens *list)
         else if ((node->type = token(b[i], b[i + 1])) == IN)
             node->tokens = "<";
         else
-            node->tokens = fill_word(b, &i);
+            node->tokens = fill_word(b, &i, env);
         add_node(&list, node);
     }
     node = create_node();
@@ -124,7 +124,7 @@ int main(int ac, char **av, char **env)
             break;
         if (ft_strlen(b))
             add_history(b);
-        list = tokenizer(b, list);
+        list = tokenizer(b, list, envr);
         syntax_error(list);
         while(list)
         {
