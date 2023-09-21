@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:26:20 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 00:10:49 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:48:36 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ t_env *envirement(char **env)
     nv = NULL;
     while(env[n])
     {
+        if(!ft_strncmp(env[n], "OLDPWD", 6))
+            n++;
         ft_lstaddback(&nv, lstnew());
         if(!check++)
             head = nv;

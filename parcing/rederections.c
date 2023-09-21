@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/19 15:47:30 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 13:12:03 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ void rederections(t_tokens **list, t_cmd *tmp)
     t_tokens *t_lst;
     char *data;
     t_lst = *list;
+    t_tokens *current = t_lst;
     if(t_lst->type == IN || t_lst->type == HEREDOC)
     {
         t_lst = t_lst->next;
         if (t_lst->type == WHITESPACE)
             t_lst = t_lst->next;
-        if (t_lst->type == IN)
+        if (current->type == IN)
             tmp->fd_in = open(t_lst->tokens, O_RDONLY);
         else
         {
@@ -79,7 +80,7 @@ void rederections(t_tokens **list, t_cmd *tmp)
         t_lst = t_lst->next;
         if (t_lst->type == WHITESPACE)
             t_lst = t_lst->next;
-        if (t_lst->type == OUT)
+        if (current->type == OUT)
             tmp->fd_out = open(t_lst->tokens,O_CREAT | O_WRONLY | O_TRUNC, 0777);
         else
             tmp->fd_out = open(t_lst->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);

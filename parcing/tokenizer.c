@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 01:32:00 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:18:24 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ char *fill_token(char *b, int *i, char c)
         s++;
     if (b[++s] == c)
     {
-        if(c ==  34 && find_exp(b, *i+1, 34) >= 0)
-            check_if_valid(b, find_exp(b, *i+1, 34));
+        // if(c ==  34 && find_exp(b, (*i)+1, 34) >= 0)
+        //     check_if_valid(b, find_exp(b, (*i)+1, 34));
         s = (s - *i);
         fill = malloc(sizeof(char) * s);
         fill[s -1] = '\0';

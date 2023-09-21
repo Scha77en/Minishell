@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/06 09:33:39 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 15:19:35 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int white_space(char c)
 char *fill_word(char *b, int *i)
 {
     char *f;
+    char *env;
     int l;
     int s;
     int k;
@@ -31,6 +32,12 @@ char *fill_word(char *b, int *i)
     s = (*i);
     while (b[(*i)] && b[(*i)] != '>' && b[(*i)] != '<' && b[(*i)] != 39 && b[(*i)] != '|' && b[(*i)] != 34 && !white_space(b[(*i)]))
     {
+        if (b[(*i)] == '$')
+        {
+            env = check_if_valid(b, i+1);
+            if (env != NULL)
+                l += ft_strlen(env);
+        }
         (*i)++;
         l++;
     }
@@ -39,6 +46,11 @@ char *fill_word(char *b, int *i)
     k = 0;
     while(l)
     {
+        if (b[s] == '$' && env != NULL)
+        {
+            fill_expand(&f, &k, env);
+            s++;
+        }
         f[k++] = b[s++];
         l--;
     }
