@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/06 09:33:39 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/21 20:38:29 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ int white_space(char c)
     return(0);
 }
 
-char *fill_word(char *b, int *i)
+char *fill_word(char *b, int *i, t_env *env)
 {
     char *f;
+    char *var;
     int l;
     int s;
     int k;
@@ -31,14 +32,27 @@ char *fill_word(char *b, int *i)
     s = (*i);
     while (b[(*i)] && b[(*i)] != '>' && b[(*i)] != '<' && b[(*i)] != 39 && b[(*i)] != '|' && b[(*i)] != 34 && !white_space(b[(*i)]))
     {
+        if (b[(*i)] == '$')
+        {
+            var = check_if_valid(b, i, env);
+            if (var != NULL)
+                l += ft_strlen(var);
+        }
         (*i)++;
         l++;
     }
     f = malloc(sizeof(char) * l +1);
+    printf("l is :%d", l);
     f[l] = '\0';
     k = 0;
     while(l)
     {
+        if (b[s] == '$' && var != NULL)
+        {
+            fill_expand(&f, &k, var);
+            printf("f[%c]\n", f[0]);
+            s++;
+        }
         f[k++] = b[s++];
         l--;
     }

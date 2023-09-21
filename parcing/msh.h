@@ -26,6 +26,13 @@ typedef struct s_cmd
 	struct s_cmd *next;
 }t_cmd;
 
+typedef struct s_env
+{
+	char *var;
+	char *value;
+	struct s_env *next;
+}t_env;
+
 
 typedef enum e_token
 {
@@ -41,8 +48,18 @@ typedef enum e_token
 	NLINE,     // |
 }t_token;
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+//get_next_line
+char	*get_next_line(int fd);
+// linkedlist of env
+void			ft_lstaddback(t_env **hed, t_env *new);
+t_env			*lstnew();
+///
 int				white_space(char c);
-char			*fill_word(char *b, int *i);
+char *fill_word(char *b, int *i, t_env *env);
 int				token(char fc, char sc);
 char			*fill_token(char *b, int *i, char c);
 void			add_list(t_cmd **list, t_cmd *new);
@@ -53,5 +70,9 @@ int				is_token(int type);
 void			fill(t_tokens **list, t_cmd *tmp, int *i);
 int				n_of_cmd(t_tokens *list);
 void			rederections(t_tokens **list, t_cmd *tmp);
+t_env 			*envirement(char **env);
+int				find_exp(char *s, int *i, char c);
+char *check_if_valid(char *str, int *i ,t_env *env);
+void 			fill_expand(char **f, int *k, char *env);
 
 #endif
