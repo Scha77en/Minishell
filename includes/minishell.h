@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/15 18:36:26 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/19 03:06:17 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 # include <stdlib.h>
 # include <string.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <sys/wait.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <fcntl.h>
 
 typedef struct s_tokens
@@ -37,25 +38,13 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
-typedef struct s_red
-{
-	int				type;
-	char			*file;
-	struct s_red	*next;
-}	t_red;
-
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			**cmd;
+	int				fd_in;
+	int				fd_out;
 	struct s_cmd	*next;
 }	t_cmd;
-
-typedef struct s_final_list
-{
-	t_cmd				*cmds;
-	t_red				*rederections;
-	struct s_final_list	*next;
-}	t_final_list;
 
 typedef enum e_token
 {
@@ -108,6 +97,49 @@ typedef struct s_num
 {
 	int		collection;
 }	t_n;
+
+// Minishell execution testing functions
+
+t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
+t_cmd	*ft_lstlast_t(t_cmd *lst);
+void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
+void	execute_cmds(t_cmd *tavern, char **env);
+void	execute_command(t_cmd *tavern, int *pipfd, char **env);
+void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
+void	command_handler(t_cmd *tavern, int *pipfd, char **env);
+void	manage_children(t_cmd *cmds, int *pipfd, char **env);
+void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
+void	single_cmd_exec(t_cmd *tavern, char **env);
+char	*ft_strdup(char *s1);
+void	*ft_memcpy(void *dst, void *src, size_t n);
+
+// here_document
+
+void	here_doc_management(t_cmd *tavern, int *pipfd, char **env);
+char	*get_data_r(t_cmd *tavern);
+int		ft_strcmp_herdoc(char *s1, char *s2);
+void	here_doc_cmd(t_cmd *tavern, int *pipfd, char **env, char *data);
+int		writing_data(char *data);
+char	*generate_file(void);
+void	waiting_und_closing(pid_t pid1, pid_t pid2, int *pipfd);
+
+// other redirections
+
+void	manage_redirection(t_cmd *tavern, int *pipfd, char **env);
+void	handle_input(t_cmd *tavern, int *pipfd, char **env);
+void	handle_output(t_cmd *tavern, int *pipfd, char **env);
+void	handle_append(t_cmd *tavern, int *pipfd, char **env);
+
+// joining
+
+char	*ft_strjoin_b(char *s1, char *s2, int v);
+char	*ft_strjoin(char *s1, char *s2);
+size_t	ft_strlen(char *s);
+
+// spliting
+
+void	*free_mem(char **ptr, int j);
+char	**ft_split(char *s, char c);
 
 // Minishell functions;
 
