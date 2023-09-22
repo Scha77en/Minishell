@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:03:07 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/22 10:23:28 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void rederections(t_tokens **list, t_cmd *tmp)
         if (t_lst->type == WHITESPACE)
             t_lst = t_lst->next;
         if (current->type == OUT)
-            tmp->fd_out = open(t_lst->tokens,O_CREAT | O_WRONLY | O_TRUNC, 0777);
+            tmp->fd_out = open(t_lst->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
         else
             tmp->fd_out = open(t_lst->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
         if (tmp->fd_out == -1)

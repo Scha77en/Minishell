@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 09:35:23 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/22 10:25:04 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,23 +148,23 @@ int main(int ac, char **av, char **env)
         tmp = f_list;
         while (tmp->cmd)
         {
-            int i = -1;
-            while(tmp->cmd[++i])
-            {
-                printf("f _ list - :%s\n", tmp->cmd[i]);
-            }
-            printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
+            // int i = -1;
+            // while(tmp->cmd[++i])
+            // {
+            //     printf("f _ list - :%s\n", tmp->cmd[i]);
+            // }
+            // printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
             tmp = tmp->next;
         }
     free(tmp->cmd);
     free(tmp);
-    f_list->next->next = NULL;
-    current = f_list;
-    while(current)
-    {
-        printf("--%s--\n", current->cmd[0]);
-        current = current->next;
-    }
+    f_list->next = NULL;
+    // current = f_list;
+    // while(current)
+    // {
+    //     printf("--%s--\n", current->cmd[0]);
+    //     current = current->next;
+    // }
     execute_cmds(f_list, env);
     }
     return(0);
