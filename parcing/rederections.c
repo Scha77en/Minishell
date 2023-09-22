@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   rederections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 13:12:03 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/22 07:03:07 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "msh.h"
+#include "../includes/minishell.h"
 
 int	writing_data(char *data)
 {

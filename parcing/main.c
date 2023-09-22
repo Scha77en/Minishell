@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 20:12:37 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/22 09:35:23 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "msh.h"
+#include "../includes/minishell.h"
 
 t_tokens *create_node()
 {
@@ -101,6 +101,7 @@ int main(int ac, char **av, char **env)
     (void)ac;
     (void)av;
     t_cmd *tmp;
+    t_cmd *current;
     int n_cmd;
     int flg;
     t_cmd *f_list;
@@ -119,7 +120,7 @@ int main(int ac, char **av, char **env)
         f_list = create_list();
         tmp = f_list;
         list = NULL;
-        b = readline("minishell$ ");
+        b = readline("Minishell$ ");
         if(b == NULL)
             break;
         if (ft_strlen(b))
@@ -157,6 +158,14 @@ int main(int ac, char **av, char **env)
         }
     free(tmp->cmd);
     free(tmp);
+    f_list->next->next = NULL;
+    current = f_list;
+    while(current)
+    {
+        printf("--%s--\n", current->cmd[0]);
+        current = current->next;
+    }
+    execute_cmds(f_list, env);
     }
     return(0);
 }
