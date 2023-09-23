@@ -6,19 +6,21 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 01:57:50 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/23 18:53:28 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int find_exp(char *s, int *i, char c)
+int find_exp(char *s, int i, char c)
 {
-    while(s[(*i)] != c)
+    printf("i :\n");
+    while(s[i] != c)
     {
-        if(s[(*i)] == '$')
-            return((*i)+1);
-        (*i)++;
+        printf("in\n");
+        if(s[i] == '$')
+            return(i);
+        i++;
     }
     return(-1);
 }

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 03:44:07 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/23 22:16:20 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ int token(char fc, char sc)
 
 char *fill_token(char *b, int *i, char c, t_env *env)
 {
-    int f;
+    int f = 0;
     int s;
     char *fill;
+    char *val;
     int k;
 
     s = *i;
@@ -48,16 +49,30 @@ char *fill_token(char *b, int *i, char c, t_env *env)
         s++;
     if (b[++s] == c)
     {
-        if(c ==  34 && (f = find_exp(b, i+1, 34)>= 0))
+        f = find_exp(b, (*i) +1, 34);
+        if(c ==  34 && f > 0)
         {
-            fill_expand()
-            check_if_valid(b, &f, env);
+            val = check_if_valid(b, &f, env);
+            if (val != NULL)
+                s += ft_strlen(val);
         }
         s = (s - *i);
+            printf("f is %d:\n", s);
         fill = malloc(sizeof(char) * s);
         fill[s -1] = '\0';
         while(fill[k] && b[++(*i)] != c)
+        {
+            if (b[(*i)] == '$' && val != NULL)
+            {
+                int v = 0;
+                while(val[v])
+                {
+                    fill[k++] = val[v++];
+                    (*i)++;   
+                }
+            }
             fill[k++] = b[(*i)];
+        }
         ++(*i);
     }
     else if (b[s] != c)
