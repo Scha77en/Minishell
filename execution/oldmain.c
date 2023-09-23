@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   oldmain.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/15 15:53:31 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/21 23:16:39 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
 // int	main(int argc, char **argv, char **env)
 // {
@@ -151,7 +152,7 @@ void	manage_first_cmd(t_data *current, int *pipfd, char **env)
 	if (dup2(pipfd[1], STDOUT_FILENO) < 0)
 		error_out("dup2", 0);
 	close(pipfd[1]);
-	cmd = ft_split(current->cmd, ' ');
+	cmd = ft_split_m(current->cmd, ' ');
 	path = find_path(env);
 	i = -1;
 	while (path[++i])
@@ -177,7 +178,7 @@ void	manage_inbetween_cmd(t_data *current, int *pipfd, char **env)
 	if (dup2(pipfd[1], STDOUT_FILENO) < 0)
 		error_out("dup2", 0);
 	close(pipfd[1]);
-	cmd = ft_split(current->cmd, ' ');
+	cmd = ft_split_m(current->cmd, ' ');
 	path = find_path(env);
 	i = -1;
 	while (path[++i])
@@ -206,7 +207,7 @@ void	manage_last_cmd(t_data *current, int *pipfd, char **env)
 	if (dup2(fd2, STDOUT_FILENO) < 0)
 		error_out("dup2", 0);
 	close(fd2);
-	cmd = ft_split(argv[j], ' ');
+	cmd = ft_split_m(argv[j], ' ');
 	path = find_path(env);
 	i = -1;
 	while (path[++i])

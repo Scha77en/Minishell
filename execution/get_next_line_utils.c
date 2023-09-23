@@ -6,11 +6,12 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 01:31:52 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/07/28 16:29:57 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/21 22:45:13 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {

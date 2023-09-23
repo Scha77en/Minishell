@@ -1,16 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   linked_tools.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/21 22:45:33 by aouhbi            #+#    #+#             */
+/*   Updated: 2023/09/22 23:16:22 by aouhbi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
-t_data	*ft_lstnew_m(char *content, int v)
+t_cmd	*ft_lstnew_m(char *content)
 {
-	t_data	*node1;
+	t_cmd	*node1;
 
-	node1 = (t_data *)malloc(sizeof(t_data));
+	node1 = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!node1)
 		return (0);
-	node1 -> cmd = content;
-    node1 -> type = v;
+	node1 -> cmd = &content;
+    node1 -> fd_in = 0;
+    node1 -> fd_out = 1;
 	node1 -> next = NULL;
-	node1 -> previous = NULL;
+	// node1 -> previous = NULL;
 	return (node1);
 }
 

@@ -3,7 +3,10 @@
 		"*.excalidraw": "json",
 		"*.excalidrawlib": "json",
 		"stdio.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"__mutex_base": "c",
+		"msh.h": "c",
+		"__node_handle": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

@@ -6,11 +6,12 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:16:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/19 02:23:16 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/21 23:16:52 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
 char	**find_path(char **env)
 {
@@ -18,7 +19,7 @@ char	**find_path(char **env)
 	char	**path;
 
 	k = get_env_path(env);
-	path = ft_split(env[k], ':');
+	path = ft_split_m(env[k], ':');
 	return (path);
 }
 
@@ -29,7 +30,7 @@ int	get_env_path(char **env)
 
 	path = "PATH=";
 	i = 0;
-	while (ft_strncmp(path, env[i], 5) != 0)
+	while (ft_strncmp_m(path, env[i], 5) != 0)
 	{
 		if (!env[i])
 			perror("The Command Path Does Not Exist!");
@@ -38,7 +39,7 @@ int	get_env_path(char **env)
 	return (i);
 }
 
-int	ft_strncmp(char *s1, char *s2, int n)
+int	ft_strncmp_m(char *s1, char *s2, int n)
 {
 	int	i;
 

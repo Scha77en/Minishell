@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   joining.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/21 22:45:25 by aouhbi            #+#    #+#             */
+/*   Updated: 2023/09/21 23:00:05 by aouhbi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
 char	*ft_strjoin_b(char *s1, char *s2, int v)
 {
@@ -10,7 +23,7 @@ char	*ft_strjoin_b(char *s1, char *s2, int v)
 		return (NULL);
 	i = 0;
 	j = 0;
-	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 2);
+	ptr = (char *)malloc(ft_strlen_m(s1) + ft_strlen_m(s2) + 2);
 	if (!ptr)
 		return (0);
 	while (s1[i])
@@ -32,7 +45,7 @@ char	*ft_strjoin_b(char *s1, char *s2, int v)
 	return (ptr);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_m(char *s1, char *s2)
 {
 	char	*ptr;
 	size_t	i;
@@ -42,7 +55,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	ptr = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	ptr = (char *)malloc(ft_strlen_m(s1) + ft_strlen_m(s2) + 1);
 	if (!ptr)
 		return (0);
 	while (s1[i])
@@ -60,7 +73,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (ptr);
 }
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen_m(char *s)
 {
 	int	i;
 

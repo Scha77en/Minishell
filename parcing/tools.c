@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:03:18 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/22 23:43:06 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char *fill_word(char *b, int *i, t_env *env)
         l++;
     }
     f = malloc(sizeof(char) * l +1);
-    printf("l is :%d", l);
+    // printf("l is :%d", l);
     f[l] = '\0';
     k = 0;
     while(l)

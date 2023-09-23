@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 10:25:04 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 00:46:59 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void add_node(t_tokens **list, t_tokens *new)
         while (tmp->next)
             tmp = tmp->next;
         tmp->next = new;
+        tmp->next->next = NULL;
     }
 }
 
@@ -101,7 +102,7 @@ int main(int ac, char **av, char **env)
     (void)ac;
     (void)av;
     t_cmd *tmp;
-    t_cmd *current;
+    // t_cmd *current;
     int n_cmd;
     int flg;
     t_cmd *f_list;
@@ -129,7 +130,7 @@ int main(int ac, char **av, char **env)
         syntax_error(list);
         while(list)
         {
-            add_list(&tmp, create_list());
+            add_list(&f_list, create_list());
             int i = -1;
             flg = -1;
             while(list && list->type != NLINE && list->type != PIPE)
@@ -137,27 +138,27 @@ int main(int ac, char **av, char **env)
                 if(!++flg)
                 {
                     n_cmd = n_of_cmd(list);
+                    // printf("nbr cmd = %d ", n_cmd);
                     tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
                     tmp->cmd[n_cmd] = NULL;
                 }
                 fill(&list, tmp, &i);
             }
-            tmp = tmp->next;
+            // if (tmp != NULL)
+                tmp = tmp->next;
             list = list->next;
         }
-        tmp = f_list;
-        while (tmp->cmd)
-        {
-            // int i = -1;
-            // while(tmp->cmd[++i])
-            // {
-            //     printf("f _ list - :%s\n", tmp->cmd[i]);
-            // }
-            // printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
-            tmp = tmp->next;
-        }
-    free(tmp->cmd);
-    free(tmp);
+        // tmp = f_list;
+        // while (tmp->cmd)
+        // {
+        //     // int i = -1;
+        //     // while(tmp->cmd[++i])
+        //     // {
+        //     //     printf("f _ list - :%s\n", tmp->cmd[i]);
+        //     // }
+        //     // printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
+        //     tmp = tmp->next;
+        // }
     f_list->next = NULL;
     // current = f_list;
     // while(current)
@@ -165,7 +166,10 @@ int main(int ac, char **av, char **env)
     //     printf("--%s--\n", current->cmd[0]);
     //     current = current->next;
     // }
+    // while(1);
     execute_cmds(f_list, env);
+    free(tmp->cmd);
+    free(tmp);
     }
     return(0);
 }

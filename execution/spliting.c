@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   spliting.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/21 22:46:18 by aouhbi            #+#    #+#             */
+/*   Updated: 2023/09/21 23:17:03 by aouhbi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
 static int	rows_num(const char *str, char c)
 {
@@ -47,7 +60,7 @@ void	*free_mem(char **ptr, int j)
 	return (0);
 }
 
-char	**ft_split(char *s, char c)
+char	**ft_split_m(char *s, char c)
 {
 	size_t	g_end;
 	size_t	j;
@@ -60,11 +73,11 @@ char	**ft_split(char *s, char c)
 	g_end = -1;
 	j = 0;
 	g_start = -1;
-	while (++g_end <= ft_strlen(s))
+	while (++g_end <= ft_strlen_m(s))
 	{
 		if (s[g_end] != c && g_start < 0)
 			g_start = g_end;
-		else if ((s[g_end] == c || g_end == ft_strlen(s)) && g_start >= 0)
+		else if ((s[g_end] == c || g_end == ft_strlen_m(s)) && g_start >= 0)
 		{
 			ptr[j++] = get_word(s, g_start, g_end);
 			if (!ptr[j - 1])

@@ -6,11 +6,12 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:51:28 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/18 21:08:03 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/21 22:45:21 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
 // void	here_doc_management(t_cmd *final, int *pipfd, char **env)
 // {

@@ -6,60 +6,61 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 00:46:55 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/19 03:08:07 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/22 23:12:32 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
-int	main(int argc, char **argv, char **env)
-{
-	t_cmd	*current;
-	t_cmd	*tavern;
-	t_cmd	*node1;
-	t_cmd	*node2;
-	t_cmd	*node3;
-	// int		i;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	t_cmd	*current;
+// 	t_cmd	*tavern;
+// 	t_cmd	*node1;
+// 	t_cmd	*node2;
+// 	t_cmd	*node3;
+// 	// int		i;
 
-	// i = 0;
-	// while (env[i])
-	// {
-	// 	printf("%s\n", env[i]);
-	// 	i++;
-	// }
-	char **s1 = malloc(2 * sizeof(char *)); // Allocate memory for the array of pointers
-	s1[0] = ft_strdup("ls");                   // Allocate memory for the string and copy it
-	s1[1] = NULL;        	               // Terminate the array with NULL
+// 	// i = 0;
+// 	// while (env[i])
+// 	// {
+// 	// 	printf("%s\n", env[i]);
+// 	// 	i++;
+// 	// }
+// 	char **s1 = malloc(2 * sizeof(char *)); // Allocate memory for the array of pointers
+// 	s1[0] = ft_strdup("ls");                   // Allocate memory for the string and copy it
+// 	s1[1] = NULL;        	               // Terminate the array with NULL
 
-	char **s2 = malloc(2 * sizeof(char *));
-	s2[0] = ft_strdup("cat");
-	s2[1] = NULL;
+// 	char **s2 = malloc(2 * sizeof(char *));
+// 	s2[0] = ft_strdup("cat");
+// 	s2[1] = NULL;
 
-	char **s3 = malloc(2 * sizeof(char *));
-	s3[0] = ft_strdup("wc");
-	s3[1] = NULL;
+// 	char **s3 = malloc(2 * sizeof(char *));
+// 	s3[0] = ft_strdup("wc");
+// 	s3[1] = NULL;
 
-	tavern = NULL;
-	ft_lstadd_back_t(&tavern, ft_lstnew_t(s1, 0, 1));
-	// ft_lstadd_back_t(&tavern, ft_lstnew_t(s2, fd, 1));
-	// ft_lstadd_back_t(&tavern, ft_lstnew_t(s3, 0, 1));
-	// printf("[%s]\n", tavern->cmd[0]);
-	// current = tavern;
-	// while (current)
-	// {
-	// 	printf("cmd = [%s]\n", current->cmd[0]);
-	// 	current = current->next;
-	// }
-	int fd = open("new_file", O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	tavern->fd_out = fd;
-	execute_cmds(tavern, env);
-	free(s1[0]);
-	free(s1);
-	free(s2[0]);
-	free(s2);
-	free(s3[0]);
-	free(s3);
-}
+// 	tavern = NULL;
+// 	ft_lstadd_back_t(&tavern, ft_lstnew_t(s1, 0, 1));
+// 	// ft_lstadd_back_t(&tavern, ft_lstnew_t(s2, fd, 1));
+// 	// ft_lstadd_back_t(&tavern, ft_lstnew_t(s3, 0, 1));
+// 	// printf("[%s]\n", tavern->cmd[0]);
+// 	// current = tavern;
+// 	// while (current)
+// 	// {
+// 	// 	printf("cmd = [%s]\n", current->cmd[0]);
+// 	// 	current = current->next;
+// 	// }
+// 	int fd = open("new_file", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+// 	tavern->fd_out = fd;
+// 	execute_cmds(tavern, env);
+// 	free(s1[0]);
+// 	free(s1);
+// 	free(s2[0]);
+// 	free(s2);
+// 	free(s3[0]);
+// 	free(s3);
+// }
 
 t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out)
 {
@@ -100,20 +101,20 @@ t_cmd	*ft_lstlast_t(t_cmd *lst)
 	return (lst);
 }
 
-char	*ft_strdup(char *s1)
-{
-	char	*ptr;
-	size_t	slen;
+// char	*ft_strdup(char *s1)
+// {
+// 	char	*ptr;
+// 	size_t	slen;
 
-	slen = ft_strlen(s1) + 1;
-	ptr = (char *)malloc(slen);
-	if (!ptr || !s1)
-		return (0);
-	ft_memcpy(ptr, s1, (size_t)slen);
-	return (ptr);
-}
+// 	slen = ft_strlen_m(s1) + 1;
+// 	ptr = (char *)malloc(slen);
+// 	if (!ptr || !s1)
+// 		return (0);
+// 	ft_memcpy(ptr, s1, (size_t)slen);
+// 	return (ptr);
+// }
 
-void	*ft_memcpy(void *dst, void *src, size_t n)
+void	*ft_memcpy_m(void *dst, void *src, size_t n)
 {
 	size_t	i;
 	char	*s;
