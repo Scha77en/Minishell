@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:51:28 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/22 07:05:02 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 01:58:54 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	here_doc_management(t_cmd *tavern, int *pipfd, char **env)
+void	here_doc_management(t_final_list *final, int *pipfd, char **env)
 {
 	char	*data;
 	int		j;
 	pid_t	pid1;
 
-	data = get_data_r(tavern);
+	data = get_data_r(final);
 	pid1 = fork();
 	if (pid1 == 0)
-		here_doc_cmd(tavern->cmd, pipfd, env, data);
+		here_doc_cmd(final, pipfd, env, data);
 	else
 	{
 		wait(0);
@@ -31,7 +31,7 @@ void	here_doc_management(t_cmd *tavern, int *pipfd, char **env)
 	exit(0);
 }
 
-char	*get_data_hr(t_cmd *tavern)
+char	*get_data_r(t_final_list *final)
 {
 	char	*line;
 	char	*data;
@@ -72,7 +72,7 @@ int	ft_strcmp_herdoc(char *s1, char *s2)
 	return (0);
 }
 
-void	here_doc_cmd(char *cmd, int *pipfd, char **env, char *data)
+void	here_doc_cmd(t_final_list *final, int *pipfd, char **env, char *data)
 {
 	char	**cmd;
 	char	**path;
@@ -85,6 +85,7 @@ void	here_doc_cmd(char *cmd, int *pipfd, char **env, char *data)
 	if (dup2(fd, STDIN_FILENO) < 0)
 		error_out("dup2", 0);
 	close(fd);
+	cmd = ft_split(final->cmds->cmd, ' ');
 	path = find_path(env);
 	i = -1;
 	while (path[++i])

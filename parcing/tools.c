@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 23:43:06 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 01:56:29 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,30 @@ char *fill_word(char *b, int *i, t_env *env)
             if (var != NULL)
                 l += ft_strlen(var);
         }
+        else
+            l++;
         (*i)++;
-        l++;
     }
     f = malloc(sizeof(char) * l +1);
-    // printf("l is :%d", l);
     f[l] = '\0';
     k = 0;
     while(l)
     {
         if (b[s] == '$' && var != NULL)
         {
-            fill_expand(&f, &k, var);
-            printf("f[%c]\n", f[0]);
+            fill_expand(f, &k, var);
             s++;
+            l -= ft_strlen(var);
         }
-        f[k++] = b[s++];
-        l--;
+        else if (b[s] == '$' && var == NULL)
+            return (NULL);
+        if(l)
+        {
+            f[k++] = b[s++];
+            l--;
+        }
     }
     (*i)--;
     return (f);
 }
+

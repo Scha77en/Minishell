@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 00:46:59 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 03:33:29 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void add_node(t_tokens **list, t_tokens *new)
         while (tmp->next)
             tmp = tmp->next;
         tmp->next = new;
-        tmp->next->next = NULL;
     }
 }
 
@@ -69,9 +68,9 @@ t_tokens *tokenizer(char *b, t_tokens *list ,t_env *env)
             i++;
         }
         else if ((node->type = token(b[i], b[i + 1])) == SQUAT)
-            node->tokens = fill_token(b, &i, 34);
+            node->tokens = fill_token(b, &i, 34, env);
         else if ((node->type = token(b[i], b[i + 1])) == DQOUT)
-            node->tokens = fill_token(b, &i, 39);
+            node->tokens = fill_token(b, &i, 39, env);
         else if ((node->type = token(b[i], b[i + 1])) == OUT)
             node->tokens = ">";
         else if ((node->type = token(b[i], b[i + 1])) == IN)
@@ -102,7 +101,6 @@ int main(int ac, char **av, char **env)
     (void)ac;
     (void)av;
     t_cmd *tmp;
-    // t_cmd *current;
     int n_cmd;
     int flg;
     t_cmd *f_list;
@@ -111,17 +109,12 @@ int main(int ac, char **av, char **env)
     char *b;
 
     envr = envirement(env);
-    // while(envr)
-    // {
-    //     printf("%s=%s\n", envr->var, envr->value);
-    //     envr = envr->next;
-    // } //TODO check if the enverement is correct.
     while(1)
     {
-        f_list = create_list();
-        tmp = f_list;
+        f_list = NULL;
+        // tmp = f_list;
         list = NULL;
-        b = readline("Minishell$ ");
+        b = readline("minishell$ ");
         if(b == NULL)
             break;
         if (ft_strlen(b))
@@ -131,6 +124,7 @@ int main(int ac, char **av, char **env)
         while(list)
         {
             add_list(&f_list, create_list());
+            tmp = ft_lstlast_p(f_list);
             int i = -1;
             flg = -1;
             while(list && list->type != NLINE && list->type != PIPE)
@@ -138,38 +132,22 @@ int main(int ac, char **av, char **env)
                 if(!++flg)
                 {
                     n_cmd = n_of_cmd(list);
-                    // printf("nbr cmd = %d ", n_cmd);
                     tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
                     tmp->cmd[n_cmd] = NULL;
                 }
                 fill(&list, tmp, &i);
             }
-            // if (tmp != NULL)
-                tmp = tmp->next;
             list = list->next;
         }
-        // tmp = f_list;
-        // while (tmp->cmd)
-        // {
-        //     // int i = -1;
-        //     // while(tmp->cmd[++i])
-        //     // {
-        //     //     printf("f _ list - :%s\n", tmp->cmd[i]);
-        //     // }
-        //     // printf("fd_out is %d | fd_in is %d\n", tmp->fd_out, tmp->fd_in);
-        //     tmp = tmp->next;
-        // }
-    f_list->next = NULL;
-    // current = f_list;
-    // while(current)
-    // {
-    //     printf("--%s--\n", current->cmd[0]);
-    //     current = current->next;
-    // }
-    // while(1);
-    execute_cmds(f_list, env);
-    free(tmp->cmd);
-    free(tmp);
+        while (f_list)
+        {
+            int i = 0;
+            while(f_list->cmd[i])
+            {
+                printf("cmd : %s\n", f_list->cmd[i++]);
+            }
+            f_list = f_list->next;
+        }
     }
     return(0);
 }

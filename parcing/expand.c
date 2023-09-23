@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:02:45 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 01:57:50 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,11 @@ char *check_if_valid(char *str, int *i ,t_env *env)
     var = compare(var, env);
     return (var);
 }
-void fill_expand(char **f, int *k, char *value)
+void fill_expand(char *f, int *k, char *value)
 {
     int i;
 
-    i = -1;
-    printf("var before is : %s\n", value);
-    while(++i < 4)
-    {
-        *f[(*k)++] = value[i];
-        printf("*[%c]\n", *f[(*k) -1]);//Why one time ????????
-    }
+    i = 0;
+    while(value[i])
+        f[(*k)++] = value[i++];
 }

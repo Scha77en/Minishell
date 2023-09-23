@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:03:15 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 03:44:07 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int token(char fc, char sc)
        return (WORD);
 }
 
-char *fill_token(char *b, int *i, char c)
+char *fill_token(char *b, int *i, char c, t_env *env)
 {
+    int f;
     int s;
     char *fill;
     int k;
@@ -47,8 +48,11 @@ char *fill_token(char *b, int *i, char c)
         s++;
     if (b[++s] == c)
     {
-        // if(c ==  34 && find_exp(b, (*i)+1, 34) >= 0)
-        //     check_if_valid(b, find_exp(b, (*i)+1, 34));
+        if(c ==  34 && (f = find_exp(b, i+1, 34)>= 0))
+        {
+            fill_expand()
+            check_if_valid(b, &f, env);
+        }
         s = (s - *i);
         fill = malloc(sizeof(char) * s);
         fill[s -1] = '\0';
@@ -62,14 +66,16 @@ char *fill_token(char *b, int *i, char c)
 }
 int is_word(int type)
 {
-    if(type == WORD || type == SQUAT || type == DQOUT)
+    if(type == WORD || type == SQUAT
+    || type == DQOUT)
         return (1);
     return (0);
 }
 
 int is_token(int type)
 {
-    if(type == PIPE || type == IN || type == OUT || type == HEREDOC || type == APPEND)
+    if(type == PIPE || type == IN || type == OUT
+    || type == HEREDOC || type == APPEND)
         return (1);
     return (0);
 }

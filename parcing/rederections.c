@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rederections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 10:23:28 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 01:55:25 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ void rederections(t_tokens **list, t_cmd *tmp)
         }
         if (tmp->fd_in == -1)
         {
-            perror("fd_in : Permission denied  .\n");
-            exit(1);
+            perror("Error\n");
         }
     }
     else if (t_lst->type == OUT || t_lst->type == APPEND)
@@ -81,14 +80,11 @@ void rederections(t_tokens **list, t_cmd *tmp)
         if (t_lst->type == WHITESPACE)
             t_lst = t_lst->next;
         if (current->type == OUT)
-            tmp->fd_out = open(t_lst->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+            tmp->fd_out = open(t_lst->tokens,O_CREAT | O_WRONLY | O_TRUNC, 0777);
         else
             tmp->fd_out = open(t_lst->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
         if (tmp->fd_out == -1)
-        {
             perror("fd_out : Permission denied  .\n");
-            exit(1);
-        }
     }
     *list = t_lst;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:02:58 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 02:07:43 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,42 @@ t_cmd *create_list()
     node->next = NULL;
     return (node);
 }
+// t_cmd *create_list_H()
+// {
+//     t_cmd *node;
+
+//     node = malloc(sizeof(t_cmd));
+//     if (!node)
+//         return (NULL);
+//     node->cmd = malloc(sizeof(char *) * 2);
+//     node->cmd[0] = ft_strdup("f");
+//     node->cmd[1] = NULL;
+//     node->fd_in = 0;
+//     node->fd_out = 1;
+//     node->next = NULL;
+//     return (node);
+// }
+
+t_cmd	*ft_lstlast_p(t_cmd *lst)
+{
+	if (!lst)
+		return (0);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
+
 
 void add_list(t_cmd **list, t_cmd *new)
 {
     t_cmd *tmp;
     tmp = NULL;
     if (!(*list))
+    {
+        printf("ENTERED---\n");
         *list = new;
+    }
     else
     {
         tmp = *list;
@@ -79,13 +108,11 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
             (*list) = (*list)->next;
         }
         tmp->cmd[++(*i)] = ft_strdup(word);
-        // printf("tmp->cmd : %s\ni : %d\n", tmp->cmd[*i], *i);
     }
     else if(is_word((*list)->type) && !is_word((*list)->next->type))
     {
         word = (*list)->tokens;
         tmp->cmd[++(*i)] = ft_strdup(word);
-        // printf("tmp->cmd : %s\ni : %d\n", tmp->cmd[*i], *i);
     }
     else if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
         rederections(list, tmp);
