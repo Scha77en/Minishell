@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 06:55:04 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/21 06:22:08 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/22 10:11:39 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	error_out(char *msg, int v)
 		perror(msg);
 	if (v == 1)
 		write(2, msg, ft_strlen(msg));
-	exit(EXIT_FAILURE);
+	// exit(EXIT_FAILURE);
 }
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen_m(char *s)
 {
 	int	i;
 

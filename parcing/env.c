@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:26:20 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/21 15:48:36 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/22 07:02:39 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "msh.h"
+#include "../includes/minishell.h"
 
 t_env	*lstnew()
 {

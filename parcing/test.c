@@ -1,4 +1,4 @@
-#include "msh.h"
+#include "../includes/minishell.h"
 
 
 t_env	*lstnew()

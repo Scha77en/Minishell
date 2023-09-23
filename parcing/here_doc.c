@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:51:28 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/18 20:48:02 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/22 07:05:02 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	here_doc_management(t_cmd *tavern, int *pipfd, char **env)
 	exit(0);
 }
 
-char	*get_data_r(t_cmd *tavern)
+char	*get_data_hr(t_cmd *tavern)
 {
 	char	*line;
 	char	*data;

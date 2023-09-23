@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_m.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 01:31:45 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/07/28 16:27:27 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/21 23:22:43 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../parcing/msh.h"
 
-char	*get_next_line(int fd)
+char	*get_next_line_m(int fd)
 {
 	char			*line;
 	static t_list	*head;
