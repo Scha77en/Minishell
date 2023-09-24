@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:02:58 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 02:55:30 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ t_cmd *create_list()
     node->fd_out = 1;
     node->next = NULL;
     return (node);
+}
+
+t_cmd	*ft_lstlast_p(t_cmd *lst)
+{
+	if (!lst)
+		return (0);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }
 
 void add_list(t_cmd **list, t_cmd *new)

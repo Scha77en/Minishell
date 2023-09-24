@@ -6,94 +6,171 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/23 00:15:20 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/24 09:15:13 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 void	execute_cmds(t_cmd *tavern, char **env)
 {
 	int		pipfd[2];
-	// int		j;
+	int		fd;
+	int		j = 1;
 	// t_cmd	*current;
 	pid_t	pid1;
 	pid_t	pid2 = -1;
 
+	fd = dup(STDIN_FILENO);
 	if (pipe(pipfd) == -1)
 		error_out("pipe", 0);
-	// current = tavern;
-	// while(1)
-	// {
-	// // if (current == NULL)
-	// // 	printf("Current is NULL");
-	// 	printf("__%s__\n", current->cmd[0]);
-	// 	current = current->next;
-	// 	if (current == NULL)
-	// 		break ;
-	// }
-	// while(1);
 	if (tavern->next == NULL)
 	{
-		printf("ENTERED\n");
+		printf("Single Command\n");
 		pid1 = fork();
 		if (pid1 == 0)
 			single_cmd_exec(tavern, env);
-	
 	}
-	// while(1);
+	// current = tavern;
+	// while(current)
+	// {
+	// 	printf("        %s        \n", current->cmd[0]);
+	// 	current = current->next;
+	// }
 	else
 	{
+		int l_size = ft_lstsize(tavern);
 		while (tavern)
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				execute_command(tavern, pipfd, env);
-			else
-				wait(0);
-			if (tavern->next)
 			{
-				// printf("redirecting stdin to pipefd[0]\n");
-				if (dup2(pipfd[0], STDIN_FILENO) < 0)
-					error_out("dup2", 0);
-				close(pipfd[1]);
-				close(pipfd[0]);
+				if (j == 1)
+				{
+					printf("first Command exec :\n");
+					exec_first_cmd(tavern, pipfd, env, fd);
+				}
+				else if (j < l_size)
+				{
+					printf("in between Commands exec :\n");
+					execute_command(tavern, pipfd, env, fd);
+				}
+				else
+				{
+					printf("last Command exec :\n");
+					exec_last_cmd(tavern, pipfd, env, fd);
+				}
 			}
+			// else
+			// 	wait(0);
+			j++;
 			tavern = tavern->next;
 		}
+		close(pipfd[1]);
+		close(pipfd[0]);
+		close(fd);
 	}
 	waiting_und_closing(pid1, pid2, pipfd);
 }
 
-void	execute_command(t_cmd *tavern, int *pipfd, char **env)
+void	exec_first_cmd(t_cmd *tavern, int *pipfd, char **env, int fd)
 {
 	char	**path;
 	int		ret;
 	int		i;
 
-	if (tavern->next)
-	{
-		// printf("redirecting stdout to pipefd[1]\n");
-		if (dup2(pipfd[1], STDOUT_FILENO) < 0)
-			error_out("dup2", 0);
-		close(pipfd[0]);
-		close(pipfd[1]);
-	}
+	close(pipfd[0]);
+	if (dup2(pipfd[1], STDOUT_FILENO) < 0)
+		error_out("dup2", 0);
+	close(pipfd[1]);
 	if (tavern->fd_in != 0)
 	{
-		// printf("redirecting stdin to fd_in\n");
+		printf("redirecting stdin to fd_in\n");
 		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
 			error_out("dup2", 0);
+		close(tavern->fd_in);
 	}
-	close(tavern->fd_in);
 	if (tavern->fd_out != 1)
 	{
-		// printf("redirecting stdout to fd_out\n");
+		printf("redirecting stdout to fd_out\n");
 		if (dup2(tavern->fd_out, STDOUT_FILENO) < 0)
 			error_out("dup2", 0);
+		if (dup2(fd, STDIN_FILENO) < 0)
+			error_out("dup2", 0);
+		close(tavern->fd_out);
 	}
-	close(tavern->fd_out);
+	path = find_path(env);
+	i = -1;
+	while (path[++i])
+		path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
+	i = command_search(path);
+	ret = execve(path[i], tavern->cmd, env);
+	if (ret == -1)
+		error_out("execve", 0);
+}
+
+void	execute_command(t_cmd *tavern, int *pipfd, char **env, int fd)
+{
+	char	**path;
+	int		ret;
+	int		i;
+
+	path = find_path(env);
+	close(pipfd[0]);
+	if (dup2(pipfd[1], STDOUT_FILENO) < 0)
+		error_out("dup2", 0);
+	close(pipfd[1]);
+	if (tavern->fd_in != 0)
+	{
+		printf("redirecting stdin to fd_in\n");
+		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
+			error_out("dup2", 0);
+		close(tavern->fd_in);
+	}
+	if (tavern->fd_out != 1)
+	{
+		printf("redirecting stdout to fd_out\n");
+		if (dup2(tavern->fd_out, STDOUT_FILENO) < 0)
+			error_out("dup2", 0);
+		if (dup2(fd, STDIN_FILENO) < 0)
+			error_out("dup2", 0);
+		close(tavern->fd_out);
+	}
+	i = -1;
+	while (path[++i])
+		path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
+	i = command_search(path);
+	ret = execve(path[i], tavern->cmd, env);
+	if (ret == -1)
+		error_out("execve", 0);
+}
+
+void	exec_last_cmd(t_cmd *tavern, int *pipfd, char **env, int fd)
+{
+	char	**path;
+	int		ret;
+	int		i;
+
+	close(pipfd[1]);
+	if (dup2(pipfd[0], STDIN_FILENO) < 0)
+		error_out("dup2", 0);
+	close(pipfd[0]);
+	if (tavern->fd_in != 0)
+	{
+		printf("redirecting stdin to fd_in\n");
+		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
+			error_out("dup2", 0);
+		close(tavern->fd_in);
+	}
+	if (tavern->fd_out != 1)
+	{
+		printf("redirecting stdout to fd_out\n");
+		if (dup2(tavern->fd_out, STDOUT_FILENO) < 0)
+			error_out("dup2", 0);
+		if (dup2(fd, STDIN_FILENO) < 0)
+			error_out("dup2", 0);
+		close(tavern->fd_out);
+	}
 	path = find_path(env);
 	i = -1;
 	while (path[++i])
@@ -199,12 +276,13 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 	{
 		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
 			error_out("dup2", 0);
+		close(tavern->fd_in);
 	}
-	close(tavern->fd_in);
 	if (tavern->fd_out != 1)
 	{
 		if (dup2(tavern->fd_out, STDOUT_FILENO) < 0)
 			error_out("dup2", 0);
+		close(tavern->fd_out);
 	}
 	path = find_path(env);
 	i = -1;

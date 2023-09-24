@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/22 23:16:54 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/24 09:29:30 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 #  define BUFFER_SIZE 1337
 # endif
 
-# include <paths.h>
-
 // libraries
 
+# include <paths.h>
 # include "../parcing/msh.h"
 # include <unistd.h>
 # include <stdio.h>
@@ -108,11 +107,12 @@ typedef struct s_num
 
 // Minishell execution testing functions
 
+int		ft_lstsize(t_cmd *lst);
 t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
 t_cmd	*ft_lstlast_t(t_cmd *lst);
 void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
 void	execute_cmds(t_cmd *tavern, char **env);
-void	execute_command(t_cmd *tavern, int *pipfd, char **env);
+void	execute_command(t_cmd *tavern, int *pipfd, char **env, int fd);
 void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
 void	command_handler(t_cmd *tavern, int *pipfd, char **env);
 void	manage_children(t_cmd *cmds, int *pipfd, char **env);
@@ -120,6 +120,8 @@ void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
 void	single_cmd_exec(t_cmd *tavern, char **env);
 char	*ft_strdup_m(char *s1);
 void	*ft_memcpy_m(void *dst, void *src, size_t n);
+void	exec_first_cmd(t_cmd *tavern, int *pipfd, char **env, int fd);
+void	exec_last_cmd(t_cmd *tavern, int *pipfd, char **env, int fd);
 
 // here_document
 
@@ -181,7 +183,7 @@ void			ft_lstaddback(t_env **hed, t_env *new);
 t_env			*lstnew();
 ///
 int				white_space(char c);
-char *fill_word(char *b, int *i, t_env *env);
+char			*fill_word(char *b, int *i, t_env *env);
 int				token(char fc, char sc);
 char			*fill_token(char *b, int *i, char c);
 void			add_list(t_cmd **list, t_cmd *new);
@@ -194,8 +196,9 @@ int				n_of_cmd(t_tokens *list);
 void			rederections(t_tokens **list, t_cmd *tmp);
 t_env 			*envirement(char **env);
 int				find_exp(char *s, int *i, char c);
-char *check_if_valid(char *str, int *i ,t_env *env);
+char			*check_if_valid(char *str, int *i ,t_env *env);
 void 			fill_expand(char **f, int *k, char *env);
+t_cmd			*ft_lstlast_p(t_cmd *lst);
 
 #endif
 

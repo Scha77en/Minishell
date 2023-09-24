@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:33 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/22 23:16:22 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/23 03:19:48 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,17 @@ t_data	*ft_lstlast_m(t_data *lst)
 	while (lst->next)
 		lst = lst->next;
 	return (lst);
+}
+
+int	ft_lstsize(t_cmd *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		count++;
+	}
+	return (count);
 }
