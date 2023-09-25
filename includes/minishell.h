@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/25 03:49:59 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/25 12:09:49 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int		ft_lstsize(t_cmd *lst);
 t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
 t_cmd	*ft_lstlast_t(t_cmd *lst);
 void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
-void	execute_cmds(t_cmd *tavern, char **env);
+void	execute_cmds(t_cmd *tavern, char **env, t_env **envr);
 void	execute_command(t_cmd *tavern, char **env);
 void	exec_first_cmd(t_cmd *tavern, char **env);
 void	exec_last_cmd(t_cmd *tavern, char **env);
@@ -126,6 +126,19 @@ void	single_cmd_exec(t_cmd *tavern, char **env);
 char	*ft_strdup_m(char *s1);
 void	*ft_memcpy_m(void *dst, void *src, size_t n);
 
+// builting
+
+int		if_builting(t_cmd *tavern, t_env **env);
+void	print_working_directory(void);
+void	cd_builted(t_cmd *tavern, t_env **env);
+void	oldpwd_update(t_env **env, char *curwd, int v);
+void	oldpwd_search_update(t_env **env, char *cwd);
+t_env	*ft_envnew(char *var);
+void	ft_memdel(void *ptr);
+void	ft_env(t_env *env);
+char	*ft_getenv(t_env **env, char *var);
+void	pwd_update(t_env **env);
+
 // here_document
 
 void	here_doc_management(t_cmd *tavern, int *pipfd, char **env);
@@ -134,7 +147,8 @@ int		ft_strcmp_herdoc(char *s1, char *s2);
 void	here_doc_cmd(t_cmd *tavern, int *pipfd, char **env, char *data);
 int		writing_data(char *data);
 char	*generate_file(void);
-void	waiting_und_closing(pid_t pid1, pid_t pid2, int *pipfd);
+void	waiting_und_closing(pid_t pid1, int *pipfd);
+void	ft_unset(t_cmd *tavern, t_env *env);
 
 // other redirections
 
@@ -166,7 +180,6 @@ int		get_env_path(char **env);
 int		ft_strncmp_m(char *s1, char *s2, int n);
 char	*ft_strjoin_b(char *s1, char *s2, int v);
 char	*ft_strjoin_m(char *s1, char *s2);
-size_t	ft_strlen_m(char *s);
 int		command_search(char **path);
 int		ft_strcmp(char *s1, char *s2);
 void	error_out(char *msg, int v);

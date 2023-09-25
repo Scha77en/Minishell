@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 06:55:04 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/25 08:38:40 by aouhbi           ###   ########.fr       */
+/*   Created: 2023/09/25 09:17:03 by aouhbi            #+#    #+#             */
+/*   Updated: 2023/09/25 09:17:28 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_working_directory(void)
+void	ft_env(t_env *env)
 {
-	char	current_directory[PATH_MAX];
+	t_env	*current;
 
-	if (getcwd(current_directory, sizeof(current_directory)) != NULL)
-		printf("%s\n", current_directory);
-	else 
-		error_out("getcwd", 0);
+	current = env;
+	while (current)
+	{
+		printf("%s=%s\n", current->var, current->value);
+		current = current->next;
+	}
 }
