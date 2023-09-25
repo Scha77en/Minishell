@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/24 09:29:30 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/25 03:49:59 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <stdio.h>
+
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <limits.h>
+# include <dirent.h>
 
 typedef struct s_env
 {
@@ -112,7 +115,9 @@ t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
 t_cmd	*ft_lstlast_t(t_cmd *lst);
 void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
 void	execute_cmds(t_cmd *tavern, char **env);
-void	execute_command(t_cmd *tavern, int *pipfd, char **env, int fd);
+void	execute_command(t_cmd *tavern, char **env);
+void	exec_first_cmd(t_cmd *tavern, char **env);
+void	exec_last_cmd(t_cmd *tavern, char **env);
 void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
 void	command_handler(t_cmd *tavern, int *pipfd, char **env);
 void	manage_children(t_cmd *cmds, int *pipfd, char **env);
@@ -120,8 +125,6 @@ void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
 void	single_cmd_exec(t_cmd *tavern, char **env);
 char	*ft_strdup_m(char *s1);
 void	*ft_memcpy_m(void *dst, void *src, size_t n);
-void	exec_first_cmd(t_cmd *tavern, int *pipfd, char **env, int fd);
-void	exec_last_cmd(t_cmd *tavern, int *pipfd, char **env, int fd);
 
 // here_document
 

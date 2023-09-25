@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 07:07:28 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/25 03:04:30 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int main(int ac, char **av, char **env)
     (void)ac;
     (void)av;
     t_cmd *tmp;
-    // t_cmd *current;
+    t_cmd *current;
     int n_cmd;
     int flg;
     t_cmd *f_list;
@@ -145,12 +145,12 @@ int main(int ac, char **av, char **env)
             tmp = tmp->next;
             list = list->next;
         }
-	// current = f_list;
-	// while(current)
-	// {
-	// 	printf("[  %s  ]\n", current->cmd[0]);
-	// 	current = current->next;
-	// }
+	current = f_list;
+	while(current)
+	{
+		printf("[  %s  ]\n", current->cmd[0]);
+		current = current->next;
+	}
     execute_cmds(f_list, env);
     }
     return(0);

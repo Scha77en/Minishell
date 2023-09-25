@@ -6,11 +6,11 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 08:38:40 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/24 08:41:46 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/25 02:26:57 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 static size_t	env_size(char *env)
 {
@@ -35,30 +35,29 @@ static void	free_node(t_env *envr, t_env *env)
 	ft_memdel(env);
 }
 
-int	ft_unset(char **a, t_cmd *tavern)
+int	ft_unset(t_cmd *tavern, t_env *env)
 {
-	t_env	*env;
-	t_env	*tmp;
+	t_env	*current;
+	t_env	*prev;
+	size_t	size;
+	size_t	i;
 
-	env = tavern->env;
-	if (!(a[1]))
-		return (SUCCESS);
-	if (ft_strncmp(a[1], env->value, env_size(env->value)) == 0)
+	current = env;
+	while (tavern)
 	{
-		tavern->env = (env->next) ? env->next : tavern->env;
-		free_node(tavern, env);
-		return (SUCCESS);
-	}
-	while (env && env->next)
-	{
-		if (ft_strncmp(a[1], env->next->value, env_size(env->next->value)) == 0)
+		size = env_size(tavern->cmd[1]);
+		while (current)
 		{
-			tmp = env->next->next;
-			free_node(tavern, env->next);
-			env->next = tmp;
-			return (SUCCESS);
+			i = 0;
+			while (current->var[i] && current->var[i] != '=')
+				i++;
+			if (ft_strncmp(current->var, tavern->cmd[1], size) == 0
+				&& i == size)
+				free_node(envr, current);
+			prev = current;
+			current = current->next;
 		}
-		env = env->next;
+		tavern = tavern->next;
 	}
-	return (SUCCESS);
+	return (0);
 }
