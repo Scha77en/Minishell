@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/22 23:16:54 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/25 23:22:32 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ void	store_cmd_in_nodes(t_data **data, char **ptr);
 t_cmd	*ft_lstnew_m(char *content);
 void	ft_lstadd_back_m(t_data **lst, t_data *new);
 t_data	*ft_lstlast_m(t_data *lst);
+t_cmd	*ft_lstlast_p(t_cmd *lst);
 void	*free_mem(char **ptr, int j);
 
 // parcing;
@@ -181,9 +182,9 @@ void			ft_lstaddback(t_env **hed, t_env *new);
 t_env			*lstnew();
 ///
 int				white_space(char c);
-char *fill_word(char *b, int *i, t_env *env);
+char			*fill_word(char *b, int *i);
 int				token(char fc, char sc);
-char			*fill_token(char *b, int *i, char c);
+// char			*fill_token(char *b, int *i, char c, t_env *env);
 void			add_list(t_cmd **list, t_cmd *new);
 t_cmd			*create_list();
 char			*ft_strjoin(char const *s1, char const *s2);
@@ -193,9 +194,13 @@ void			fill(t_tokens **list, t_cmd *tmp, int *i);
 int				n_of_cmd(t_tokens *list);
 void			rederections(t_tokens **list, t_cmd *tmp);
 t_env 			*envirement(char **env);
-int				find_exp(char *s, int *i, char c);
-char *check_if_valid(char *str, int *i ,t_env *env);
-void 			fill_expand(char **f, int *k, char *env);
+int				find_exp(char *s);
+char			*check_if_valid(char *str, int *i);
+void 			fill_expand(char *f, int *k, char *env);
+t_tokens		*tokenizer(char *b);
+int				syntax_error(t_tokens *list);
+char *fill_var(char *b, int n, int len);
+char *fill_token(char *b, int *i, char c);
 
 #endif
 
