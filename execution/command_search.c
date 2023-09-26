@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_search.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:00 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/21 22:45:01 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:44:19 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:06 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/23 00:35:37 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:44:41 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 void	error_out(char *msg, int v)
 {

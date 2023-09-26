@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 00:46:55 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/22 23:12:32 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:44:53 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 // int	main(int argc, char **argv, char **env)
 // {

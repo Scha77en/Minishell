@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:51:28 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/21 22:45:21 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:44:34 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 // void	here_doc_management(t_cmd *final, int *pipfd, char **env)
 // {

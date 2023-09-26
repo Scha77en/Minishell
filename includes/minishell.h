@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 09:43:16 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:42:47 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 // libraries
 
-# include "../parcing/msh.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -30,6 +29,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "../libft/libft.h"
 # include <fcntl.h>
 
 typedef struct s_env
@@ -201,6 +201,7 @@ t_tokens		*tokenizer(char *b);
 int				syntax_error(t_tokens *list);
 char *fill_var(char *b, int n, int len);
 char *fill_token(char *b, int *i, char c);
+char *update_line(char *line, char *var, int l);
 
 #endif
 

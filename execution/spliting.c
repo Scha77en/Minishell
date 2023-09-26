@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   spliting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:46:18 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/21 23:17:03 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:43:57 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 static int	rows_num(const char *str, char c)
 {

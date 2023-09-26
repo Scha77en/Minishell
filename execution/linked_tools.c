@@ -6,12 +6,11 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:33 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/23 02:07:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:44:26 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 t_cmd	*ft_lstnew_m(char *content)
 {
