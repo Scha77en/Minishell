@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/26 09:27:23 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:08:59 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ char	*get_data_r(t_tokens *file)
         i = find_exp(line);
 		if (i > 0)
         {
+            int l = i-1;
 			var = check_if_valid(line, &i);
-            
+            if (ft_strlen(var))
+                line = update_line(line, var, l);
         }
 		if (ft_strncmp(line, ft_strjoin(file->tokens, "\n"), ft_strlen(line)) == 0)
 			break ;

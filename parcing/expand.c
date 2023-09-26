@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/26 09:03:28 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:38:55 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,3 +70,28 @@ void fill_expand(char *f, int *k, char *value)
     while(value[i])
         f[(*k)++] = value[i++];
 }
+char *update_line(char *line, char *var, int l)
+{
+	char *r;
+	int i;
+	int k;
+
+	i = 0;
+	k = 0;
+	l = ft_strlen(var) + l;
+	r = malloc(sizeof(char) * (l + 1));
+	r[l] = '\0';
+	while(i < l)
+	{
+		if (line[i] == '$')
+            while(var[k])
+			    r[i++] = var[k++];
+		else
+		{
+			r[i] = line[i];
+			i++;
+		}
+	}
+	return (r);
+}
+
