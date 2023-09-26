@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 22:16:20 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 08:42:47 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,50 +34,72 @@ int token(char fc, char sc)
        return (WORD);
 }
 
-char *fill_token(char *b, int *i, char c, t_env *env)
+char *fill_token(char *b, int *i, char c)
 {
-    int f = 0;
-    int s;
-    char *fill;
-    char *val;
-    int k;
-
-    s = *i;
-    k = 0;
-    fill = NULL;
-    while(b[s+1] && b[s+1] != c)
-        s++;
-    if (b[++s] == c)
+    char *filed;
+    char *var;
+    int len;
+    int n;
+    int lv;
+    n = 0;
+    var = NULL;
+    len = *i + 1;
+    while(b[len] && b[len] != c)
     {
-        f = find_exp(b, (*i) +1, 34);
-        if(c ==  34 && f > 0)
+        if(b[len] == '$' && c == 34)
         {
-            val = check_if_valid(b, &f, env);
-            if (val != NULL)
-                s += ft_strlen(val);
+            n = len;
+            while(b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
+                n++;
+            var = fill_var(b, n, len);
+            lv = ft_strlen(var);
+            len += lv;
+            var = getenv(var++);
+            if (!ft_strlen(var))
+                len++;
         }
-        s = (s - *i);
-            printf("f is %d:\n", s);
-        fill = malloc(sizeof(char) * s);
-        fill[s -1] = '\0';
-        while(fill[k] && b[++(*i)] != c)
-        {
-            if (b[(*i)] == '$' && val != NULL)
-            {
-                int v = 0;
-                while(val[v])
-                {
-                    fill[k++] = val[v++];
-                    (*i)++;   
-                }
-            }
-            fill[k++] = b[(*i)];
-        }
-        ++(*i);
+        else
+            len++;
     }
-    else if (b[s] != c)
-        printf("SYNTAX : Erorr\n");
-    return (fill);
+    if (var != NULL)
+        len += (ft_strlen(var) - lv) - (*i +1);
+    filed = malloc(sizeof(char ) * len);
+    n = 0;
+    len = *i + 1;
+    while(b[len] && b[len] != c)
+    {
+        if(b[len] == '$' && var != NULL && c == 34)
+        {
+            size_t v = 0;
+            while(v < ft_strlen(var))
+                filed[n++] = var[v++];
+            len += lv +1;
+            *i = len;
+        }
+        else
+        {
+            filed[n++] = b[len++];
+            (*i)++;
+        }
+    }
+    filed[n] = '\0';
+    return(filed);
+}
+
+char *fill_var(char *b, int n, int len)
+{
+    int i;
+    char *var;
+
+    i = 0;
+    var = malloc(sizeof(char) * (n - len) + 1);
+    var[(n - len)] = '\0';
+    n = len +1;
+    while(b[n] && (ft_isalpha(b[n]) || b[n] == '_'))
+    {
+        var[i++] = b[n++];
+    }
+    return (var);
 }
 int is_word(int type)
 {

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 02:07:43 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 08:50:15 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,6 @@ t_cmd *create_list()
     node->next = NULL;
     return (node);
 }
-// t_cmd *create_list_H()
-// {
-//     t_cmd *node;
-
-//     node = malloc(sizeof(t_cmd));
-//     if (!node)
-//         return (NULL);
-//     node->cmd = malloc(sizeof(char *) * 2);
-//     node->cmd[0] = ft_strdup("f");
-//     node->cmd[1] = NULL;
-//     node->fd_in = 0;
-//     node->fd_out = 1;
-//     node->next = NULL;
-//     return (node);
-// }
 
 t_cmd	*ft_lstlast_p(t_cmd *lst)
 {

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 01:56:29 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/25 23:21:14 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int white_space(char c)
     return(0);
 }
 
-char *fill_word(char *b, int *i, t_env *env)
+char *fill_word(char *b, int *i)
 {
     char *f;
     char *var;
@@ -34,7 +34,7 @@ char *fill_word(char *b, int *i, t_env *env)
     {
         if (b[(*i)] == '$')
         {
-            var = check_if_valid(b, i, env);
+            var = check_if_valid(b, i);
             if (var != NULL)
                 l += ft_strlen(var);
         }

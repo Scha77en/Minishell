@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 22:52:34 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 07:52:00 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,17 @@ int main(int ac, char **av, char **env)
         if(b == NULL)
             break;
         if (ft_strlen(b))
+        {
             add_history(b);
-        list = tokenizer(b, envr);
-        syntax_error(list);
-        f_list = NULL;
-        while(list)
-            parcer(&list, &f_list);
-        print_list(f_list);
+            list = tokenizer(b);
+            if (syntax_error(list) == -1)
+                list = NULL;
+            f_list = NULL;
+            while(list)
+                parcer(&list, &f_list);
+            if (f_list != NULL)
+                print_list(f_list);
+        }
     }
     return(0);
 }

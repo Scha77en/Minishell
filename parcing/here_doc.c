@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:51:28 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/23 01:58:54 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 00:14:19 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void	here_doc_management(t_final_list *final, int *pipfd, char **env)
 
 char	*get_data_r(t_final_list *final)
 {
+	int i;
 	char	*line;
+	char	*var;
 	char	*data;
 
 	data = malloc(1);
@@ -42,6 +44,7 @@ char	*get_data_r(t_final_list *final)
 	{
 		write(1, "heredoc> ", 10);
 		line = get_next_line(0);
+		
 		if (ft_strcmp_herdoc(line, final->rederections->file) == 0)
 			break ;
 		data = ft_strjoin(data, line);
@@ -115,32 +118,3 @@ int	writing_data(char *data)
 	return (fd);
 }
 
-char	*generate_file(void)
-{
-	int		i;
-	int		j;
-	char	*info;
-	char	*new_name;
-	char	*characters;
-
-	characters = "HiddenabcdefghijklmnopqrstuvwxyzABCDE\
-				FGHIJKLMNOPQRSTUVWXYZ0123456789";
-	j = 0;
-	info = ".Hidden";
-	while (1)
-	{
-		i = 1;
-		new_name = malloc(ft_strlen(info) + 1);
-		new_name[0] = '.';
-		while (info[i] != '\0')
-		{
-			new_name[i++] = characters[j++];
-			if (characters[j] == '\0')
-				j = 0;
-		}
-		new_name[i] = '\0';
-		if (access(new_name, F_OK) != 0)
-			break ;
-	}
-	return (new_name);
-}

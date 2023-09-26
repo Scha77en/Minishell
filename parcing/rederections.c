@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 23:17:37 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 09:27:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,27 @@ int	writing_data(char *data)
 
 char	*get_data_r(t_tokens *file)
 {
+    int i;
 	char	*line;
 	char	*data;
+    char    *var;
 
 	data = malloc(1);
 	data[0] = '\0';
+    if (file->next->type == SQUAT || file->next->type == DQOUT)
+        file->tokens = ft_strjoin(file->tokens, file->next->tokens);
 	while (1)
 	{
 		write(1, "heredoc> ", 10);
 		line = get_next_line(0);
+        if (!ft_strlen(line))
+            break;
+        i = find_exp(line);
+		if (i > 0)
+        {
+			var = check_if_valid(line, &i);
+            
+        }
 		if (ft_strncmp(line, ft_strjoin(file->tokens, "\n"), ft_strlen(line)) == 0)
 			break ;
 		data = ft_strjoin(data, line);
@@ -78,6 +90,8 @@ void rederections(t_tokens **list, t_cmd *tmp)
         else
         {
             data = get_data_r(t_lst);
+            if (t_lst->next->type == SQUAT || t_lst->next->type == DQOUT)
+                t_lst = t_lst->next;
             tmp->fd_in = writing_data(data);//HERDOC!!!!!!
         }
         if (tmp->fd_in == -1)

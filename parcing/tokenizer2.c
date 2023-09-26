@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/23 22:25:10 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/26 07:58:28 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void add_node(t_tokens **list, t_tokens *new)
     }
 }
 
-t_tokens *tokenizer(char *b, t_env *env)
+t_tokens *tokenizer(char *b)
 {
     int i;
     t_tokens *list;
@@ -70,15 +70,15 @@ t_tokens *tokenizer(char *b, t_env *env)
             i++;
         }
         else if ((node->type = token(b[i], b[i + 1])) == SQUAT)
-            node->tokens = fill_token(b, &i, 34, env);
+            node->tokens = fill_token(b, &i, 34);
         else if ((node->type = token(b[i], b[i + 1])) == DQOUT)
-            node->tokens = fill_token(b, &i, 39, env);
+            node->tokens = fill_token(b, &i, 39);
         else if ((node->type = token(b[i], b[i + 1])) == OUT)
             node->tokens = ">";
         else if ((node->type = token(b[i], b[i + 1])) == IN)
             node->tokens = "<";
         else
-            node->tokens = fill_word(b, &i, env);
+            node->tokens = fill_word(b, &i);
         add_node(&list, node);
     }
     node = create_node();
@@ -92,6 +92,8 @@ int syntax_error(t_tokens *list)
     {
         if((is_token(list->type) && !is_word(list->next->type)
         && list->next->type != WHITESPACE))
+            return (printf("syntax error : %s\n", list->tokens), list->type = 0 ,  -1);
+        else if (is_token(list->type) && !is_word(list->next->next->type))
             return (printf("syntax error : %s\n", list->tokens), list->type = 0 ,  -1);
         else
             list = list->next;
