@@ -6,7 +6,8 @@
 		"minishell.h": "c",
 		"__mutex_base": "c",
 		"msh.h": "c",
-		"__node_handle": "c"
+		"__node_handle": "c",
+		"iterator": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

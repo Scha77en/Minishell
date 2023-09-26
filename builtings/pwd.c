@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 06:55:04 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/25 08:38:40 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 06:05:24 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ void	print_working_directory(void)
 
 	if (getcwd(current_directory, sizeof(current_directory)) != NULL)
 		printf("%s\n", current_directory);
-	else 
+	else
 		error_out("getcwd", 0);
 }

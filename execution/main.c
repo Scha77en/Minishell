@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/25 10:32:50 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 06:50:18 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,79 +17,109 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 	int		pipfd[2];
 	int		v;
 	pid_t	pid1;
-	int		l_size;
 	int		fd;
 
-	v = 0;
 	fd = dup(STDIN_FILENO);
 	if (tavern->next == NULL)
 	{
-		printf("Single Command\n");
-		if (if_builting(tavern, envr))
-		{
-			puts("builted");
-			v = 1;
-		}
+		// printf("Single Command\n");
 		pid1 = fork();
-		if (v == 0 && pid1 == 0)
+		if (pid1 == 0)
 		{
-			puts("not builted");
-			single_cmd_exec(tavern, env);
+			v = 0;
+			if (if_builting(tavern, envr))
+			{
+				// puts("builted");
+				v = 1;
+			}
+			if (v == 0)
+			{
+				// puts("not builted");
+				single_cmd_exec(tavern, env);
+			}
 		}
 	}
 	else
 	{
-		l_size = ft_lstsize(tavern);
 		while (tavern)
 		{
-			if (if_builting(tavern, envr))
-				v = 1;
-			else if (v == 0)
+			if (pipe(pipfd) == -1)
+				error_out("pipe", 0);
+			pid1 = fork();
+			if (pid1 == 0)
 			{
-				if (pipe(pipfd) == -1)
-					error_out("pipe", 0);
-				pid1 = fork();
-				if (pid1 == 0)
+				v = 0;
+				if (tavern->next)
 				{
-					if (tavern->next)
+					if (dup2(pipfd[1], STDOUT_FILENO) < 0)
 					{
-						if (dup2(pipfd[1], STDOUT_FILENO) < 0)
-							error_out("dup2", 0);
-						close(pipfd[0]);
-						close(pipfd[1]);
+						printf("[1]\n");
+						error_out("dup2", 0);
 					}
-					execute_command(tavern, env);
+					close(pipfd[1]);
 				}
-				if (dup2(pipfd[0], STDIN_FILENO) < 0)
-					error_out("dup2", 0);
-				close(pipfd[0]);
-				close(pipfd[1]);
-				tavern = tavern->next;
+				if (if_builting(tavern, envr))
+					v = 1;
+				else if (v == 0)
+					execute_command(tavern, env);
 			}
-			v = 0;
+			if (dup2(pipfd[0], STDIN_FILENO) < 0)
+			{
+				printf("[2]\n");
+				error_out("dup2", 0);
+			}
+			close(pipfd[0]);
+			close(pipfd[1]);
+			tavern = tavern->next;
 		}
 	}
-	waiting_und_closing(pid1, pipfd);
-	dup2(fd, STDIN_FILENO);
+	waiting_und_closing(pid1);
+	puts("closing");
+	if (dup2(fd, STDIN_FILENO))
+	{
+		printf("[3]\n");
+		error_out("dup2", 0);
+	}
 	close(fd);
 }
 
 int	if_builting(t_cmd *tavern, t_env **env)
 {
-	// if (ft_strcmp(tavern->cmd[0], "echo") == 0)
-	// 	return (ft_echo(tavern, env), 1);
+	if (ft_strcmp(tavern->cmd[0], "echo") == 0)
+	{
+		check_redirections(tavern);
+		return (echo_builted(tavern), 1);
+	}
 	if (ft_strcmp(tavern->cmd[0], "cd") == 0)
+	{
+		check_redirections(tavern);
 		return (cd_builted(tavern, env), 1);
+	}
 	else if (ft_strcmp(tavern->cmd[0], "pwd") == 0)
+	{
+		check_redirections(tavern);
 		return (print_working_directory(), 1);
-	// else if (ft_strcmp(tavern->cmd[0], "export") == 0)
-		// return (ft_export(tavern, env), 1);
+	}
+	else if (ft_strcmp(tavern->cmd[0], "export") == 0)
+	{
+		check_redirections(tavern);
+		return (ft_export(tavern, env), 1);
+	}
 	else if (ft_strcmp(tavern->cmd[0], "unset") == 0)
+	{
+		check_redirections(tavern);
 		return (ft_unset(tavern, *env), 1);
+	}
 	else if (ft_strcmp(tavern->cmd[0], "env") == 0)
-		return (ft_env(*env), 1);
-	// else if (ft_strcmp(tavern->cmd[0], "exit") == 0)
-		// return (ft_exit(tavern, env), 1);
+	{
+		check_redirections(tavern);
+		return (ft_env(env), 1);
+	}
+	else if (ft_strcmp(tavern->cmd[0], "exit") == 0)
+	{
+		check_redirections(tavern);
+		return (ft_exit(tavern), 1);
+	}
 	return (0);
 }
 
@@ -99,16 +129,7 @@ void	execute_command(t_cmd *tavern, char **env)
 	int		ret;
 	int		i;
 
-	if (tavern->fd_in != 0)
-	{
-		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
-			error_out("dup2", 0);
-	}
-	if (tavern->fd_out != 1)
-	{
-		if (dup2(tavern->fd_out, STDOUT_FILENO) < 0)
-			error_out("dup2", 0);
-	}
+	check_redirections(tavern);
 	path = find_path(env);
 	i = -1;
 	while (path[++i])
@@ -125,7 +146,6 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 	int		ret;
 	int		i;
 
-	// int		fd2;
 	if (tavern->fd_in != 0)
 	{
 		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
@@ -148,9 +168,7 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		error_out("execve", 0);
 }
 
-void	waiting_und_closing(pid_t pid1, int *pipfd)
+void	waiting_und_closing(pid_t pid1)
 {
-	close(pipfd[1]);
-	close(pipfd[0]);
 	waitpid(pid1, NULL, 0);
 }

@@ -212,3 +212,12 @@ minishell output ======> ls" > sd": command not found
 
 0000
 00
+
+
+******************************
+
+here_doc when empty is not yet protected.
+
+pwd > IJIJ // builting + redirection yet to be handled.
+
+echo | cat -e // builting + pipe does not function as expected.

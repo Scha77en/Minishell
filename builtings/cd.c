@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/25 12:25:26 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 04:29:21 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void	cd_builted(t_cmd *tavern, t_env **env)
 		if (getcwd(curwd, PATH_MAX) == NULL)
 			error_out("getcwd", 1);
 		if (chdir(ft_getenv(env, "OLDPWD")) != 0)
+		{
 			printf("Minishell: cd: OLDPWD not set\n");
+			return ;
+		}
 		oldpwd_update(env, curwd, 1);
 		pwd_update(env);
 	}
@@ -89,14 +92,14 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 	t_env	*new;
 	int		v;
 
-	printf("oldpwd_search_update\n");
+	// printf("oldpwd_search_update\n");
 	v = 0;
 	current = *env;
 	while (current)
 	{
 		if (ft_strncmp_m(current->var, "OLDPWD", 6) == 0)
 		{
-			printf("deleting oldpwd\n");
+			// printf("deleting oldpwd\n");
 			current->value = ft_strdup(cwd);
 			v = 1;
 		}
@@ -109,7 +112,7 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 		{
 			if (ft_strncmp_m(current->var, "PWD", 3) == 0)
 			{
-				printf("adding oldpwd\n");
+				// printf("adding oldpwd\n");
 				new = ft_envnew(ft_strdup("OLDPWD"));
 				new->value = ft_strdup(cwd);
 				new->next = current->next;
@@ -222,7 +225,7 @@ void	ft_memdel(void *ptr)
 {
 	if (ptr)
 	{
-		printf("memdel\n");
+		// printf("memdel\n");
 		free(ptr);
 		ptr = NULL;
 	}

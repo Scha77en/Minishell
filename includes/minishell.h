@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/25 12:09:49 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 06:48:37 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,13 @@ void	oldpwd_update(t_env **env, char *curwd, int v);
 void	oldpwd_search_update(t_env **env, char *cwd);
 t_env	*ft_envnew(char *var);
 void	ft_memdel(void *ptr);
-void	ft_env(t_env *env);
+void	ft_env(t_env **env);
 char	*ft_getenv(t_env **env, char *var);
 void	pwd_update(t_env **env);
+void	echo_builted(t_cmd *tavern);
+void	ft_export(t_cmd *tavern, t_env **env);
+void	ft_add_env(t_env **env, char *var, char *value);
+void	ft_exit(t_cmd *tavern);
 
 // here_document
 
@@ -147,11 +151,12 @@ int		ft_strcmp_herdoc(char *s1, char *s2);
 void	here_doc_cmd(t_cmd *tavern, int *pipfd, char **env, char *data);
 int		writing_data(char *data);
 char	*generate_file(void);
-void	waiting_und_closing(pid_t pid1, int *pipfd);
+void	waiting_und_closing(pid_t pid1);
 void	ft_unset(t_cmd *tavern, t_env *env);
 
 // other redirections
 
+void	check_redirections(t_cmd *tavern);
 void	manage_redirection(t_cmd *tavern, int *pipfd, char **env);
 void	handle_input(t_cmd *tavern, int *pipfd, char **env);
 void	handle_output(t_cmd *tavern, int *pipfd, char **env);

@@ -1,29 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection_managment.c                            :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/16 13:18:29 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 06:13:33 by aouhbi           ###   ########.fr       */
+/*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
+/*   Updated: 2023/09/26 04:03:26 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	check_redirections(t_cmd *tavern)
+void	ft_exit(t_cmd *tavern)
 {
-	if (tavern->fd_in != 0)
+	int	i;
+
+	i = 0;
+	if (tavern->cmd[1] == NULL)
+		exit(0);
+	else if (tavern->cmd[1] != NULL && tavern->cmd[2] == NULL)
 	{
-		if (dup2(tavern->fd_in, STDIN_FILENO) < 0)
-			error_out("dup2", 0);
-		close(tavern->fd_in);
+		while (tavern->cmd[1][i] != '\0')
+		{
+			if (ft_isdigit(tavern->cmd[1][i]) == 0)
+			{
+				printf("Minishell: exit: %s: numeric argument required\n",
+					tavern->cmd[1]);
+				exit(255);
+			}
+			i++;
+		}
+		exit(ft_atoi(tavern->cmd[1]));
 	}
-	if (tavern->fd_out != 1)
+	else
 	{
-		if (dup2(tavern->fd_out, STDOUT_FILENO) < 0)
-			error_out("dup2", 0);
-		close(tavern->fd_out);
+		printf("Minishell: exit: too many arguments\n");
+		exit(1);
 	}
 }
