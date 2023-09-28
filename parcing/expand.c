@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/26 11:38:55 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/28 23:08:17 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char *check_if_valid(char *str, int *i)
     int s;
     int n;
     char *var;
+    (*i)++;
     s = (*i);
     n = 0;
     while(str[(*i)] && (ft_isalpha(str[(*i)]) || str[(*i)] == '_'))
@@ -53,12 +54,15 @@ char *check_if_valid(char *str, int *i)
         n++;
     }
     var = malloc(sizeof(char) * (n +1));
+    if (!var)
+        return (NULL);
     n = 0;
     while(s+1 < *i)
         var[n++] = str[s++];
     if (s < *i)
         var[n++] = str[s++];
     var[n] = '\0';
+    printf("in%s:\n", var);
     var = getenv(var);
     return (var);
 }
@@ -80,6 +84,8 @@ char *update_line(char *line, char *var, int l)
 	k = 0;
 	l = ft_strlen(var) + l;
 	r = malloc(sizeof(char) * (l + 1));
+    if (!r)
+        return (NULL);
 	r[l] = '\0';
 	while(i < l)
 	{

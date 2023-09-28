@@ -6,7 +6,7 @@
 
 export iiiiiiiiiiiiii|cat
 
-ls | pwd | cat |                                X
+ls | pwd | cat |                                ok
 
 
 export char(not valid identifier)char/digit..
@@ -15,21 +15,21 @@ cat << ld                                       ok
 
 
 echo '$PWD'sdds"sdsdds" |""ls>agoumi
-input ====> "ls""" > sd
+input ====> "ls""" > sd                         X
 
-ls>agoumi.txt"sdsd""""s"
+ls>agoumi.txt"sdsd""""s"                        X
 ls>sdsd
 
-minishell output ======> ls" > sd": command not found
+minishell output ======> ls" > sd": command not found               OK
 
-bash-3.2$ <|
+bash-3.2$ <|                                                        OK
 bash: syntax error near unexpected token `|'
 
-minishell$ $kdflkd|ls
-minishell$ < $fsjls
+minishell$ $kdflkd|ls                                               OK
+minishell$ < $fsjls                                                 X
 minishell: syntax error near unexpected token `newline':
 
-minishell$ <""
+minishell$ <""                                                      OK
 minishell: syntax error near unexpected token `newline':
 
 
@@ -221,3 +221,22 @@ here_doc when empty is not yet protected.
 pwd > IJIJ // builting + redirection yet to be handled.
 
 echo | cat -e // builting + pipe does not function as expected.
+
+
+export+="    "
+
+
+-I ~/.brew/opt/readline/include
+
+-L ~/.brew/opt/readline/lib
+
+
+
+
+
+
+
+ls | " " | ' ' ok
+
+
+ ""as"wd"wd"sd"

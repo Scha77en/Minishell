@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/25 23:21:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/28 23:08:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char *fill_word(char *b, int *i)
         (*i)++;
     }
     f = malloc(sizeof(char) * l +1);
+    if (!f)
+        return (NULL);
     f[l] = '\0';
     k = 0;
     while(l)

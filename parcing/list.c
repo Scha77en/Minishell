@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/26 08:50:15 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/28 22:31:14 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,7 @@ void add_list(t_cmd **list, t_cmd *new)
     t_cmd *tmp;
     tmp = NULL;
     if (!(*list))
-    {
-        printf("ENTERED---\n");
         *list = new;
-    }
     else
     {
         tmp = *list;
@@ -75,6 +72,8 @@ int n_of_cmd(t_tokens *list)
            list = list->next;
            if (list->type == WHITESPACE)
             list = list->next;
+            while(is_word(list->next->type))
+                list = list->next;
         }
         list = list->next;
     }
@@ -101,5 +100,5 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
     }
     else if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
         rederections(list, tmp);
-    (*list) = (*list)->next;
+    printf("%s | %d\n", (*list)->tokens, (*list)->type);
 }

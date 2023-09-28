@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 11:42:47 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/28 21:51:05 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,10 @@ int				syntax_error(t_tokens *list);
 char *fill_var(char *b, int n, int len);
 char *fill_token(char *b, int *i, char c);
 char *update_line(char *line, char *var, int l);
+int cheak(char *b, int *i, int c);
+t_tokens *concatenat_words(t_tokens *list);
+t_tokens *create_node();
+void add_node(t_tokens **list, t_tokens *new);
 
 #endif
 
