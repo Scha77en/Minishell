@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 04:29:21 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 23:34:27 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	pwd_update(t_env **env)
 		}
 		current = current->next;
 	}
+	ft_add_env(env, ft_strdup("PWD"), ft_strdup(cwd));
 }
 
 void	oldpwd_search_update(t_env **env, char *cwd)

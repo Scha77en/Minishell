@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/25 10:24:13 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 03:54:05 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ t_tokens	*tokenizer(char *b, t_tokens *list, t_env *env)
     add_node(&list, node);
     return (list);
 }
+
 int syntax_error(t_tokens *list)
 {
     while(list->next)
@@ -94,6 +95,13 @@ int syntax_error(t_tokens *list)
             list = list->next;
     }
     return (0);
+}
+
+void    handle_sigint(int sig)
+{
+    (void)sig;
+    printf("\n");
+    exit(0);
 }
 
 int main(int ac, char **av, char **env)
@@ -115,13 +123,14 @@ int main(int ac, char **av, char **env)
     //     printf("%s=%s\n", envr->var, envr->value);
     //     envr = envr->next;
     // } //TODO check if the enverement is correct.
+    signal(SIGINT, handle_sigint);
     while(1)
     {
         f_list = NULL;
         list = NULL;
         b = readline("Minishell$ ");
         if(b == NULL)
-            break;
+            exit(0);
         if (ft_strlen(b))
             add_history(b);
         list = tokenizer(b, list, envr);
@@ -155,3 +164,10 @@ int main(int ac, char **av, char **env)
     }
     return(0);
 }
+
+
+// problems to solve:
+
+// echo | ls         builting | regular command;
+
+// pwd > file         builting > redirection;

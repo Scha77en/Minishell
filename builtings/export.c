@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:10:54 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 04:03:31 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 03:22:56 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ void	ft_export(t_cmd *tavern, t_env **env)
 
 	i = 1;
 	if (tavern->cmd[i] == NULL)
-		ft_env(env);
+		ft_env(env, 1);
 	else
 	{
 		while (tavern->cmd[i] != NULL)
 		{
 			split = ft_split(tavern->cmd[i], '=');
+			// if(plus_sign(split[0]))
+			// 	ft_add_value(env, split);
 			if (split[1] == NULL)
 				ft_add_env(env, split[0], "");
 			else

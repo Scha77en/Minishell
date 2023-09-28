@@ -2,21 +2,9 @@
 
 int main(void)
 {
-	int		v = 0;
-	t_cmd	*tavern;
-	pid_t	pid1;
+	int i = 6;
 
-	tavern->fd_in = 0;
-	pid1 = fork();
-	if (pid1 == 0)
-		child_change(&tavern);
-	if (pid1 == 0)
-	{
-		printf("child process : %d\n", tavern->fd_in);
-	}
-	if (pid1 != 0)
-		printf("main process = %d\n", tavern->fd_in);
-	return(0);
+	printf("Hello, \"%d\" World!\n", i);
 }
 
 void child_change(t_cmd **tavern)

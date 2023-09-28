@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 06:50:18 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 03:49:13 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 						error_out("dup2", 0);
 					}
 					close(pipfd[1]);
+					close(pipfd[0]);
 				}
 				if (if_builting(tavern, envr))
 					v = 1;
@@ -68,12 +69,13 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 				printf("[2]\n");
 				error_out("dup2", 0);
 			}
-			close(pipfd[0]);
+			// close(pipfd[0]);
 			close(pipfd[1]);
 			tavern = tavern->next;
 		}
 	}
-	waiting_und_closing(pid1);
+	waiting_und_closing(pid1, pipfd);
+	// wait(0);
 	puts("closing");
 	if (dup2(fd, STDIN_FILENO))
 	{
@@ -81,6 +83,7 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 		error_out("dup2", 0);
 	}
 	close(fd);
+	// close(pipfd[0]);
 }
 
 int	if_builting(t_cmd *tavern, t_env **env)
@@ -108,12 +111,12 @@ int	if_builting(t_cmd *tavern, t_env **env)
 	else if (ft_strcmp(tavern->cmd[0], "unset") == 0)
 	{
 		check_redirections(tavern);
-		return (ft_unset(tavern, *env), 1);
+		return (ft_unset(tavern, env), 1);
 	}
 	else if (ft_strcmp(tavern->cmd[0], "env") == 0)
 	{
 		check_redirections(tavern);
-		return (ft_env(env), 1);
+		return (ft_env(env, 0), 1);
 	}
 	else if (ft_strcmp(tavern->cmd[0], "exit") == 0)
 	{
@@ -129,6 +132,7 @@ void	execute_command(t_cmd *tavern, char **env)
 	int		ret;
 	int		i;
 
+	printf("regular command\n");
 	check_redirections(tavern);
 	path = find_path(env);
 	i = -1;
@@ -168,7 +172,9 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		error_out("execve", 0);
 }
 
-void	waiting_und_closing(pid_t pid1)
+void	waiting_und_closing(pid_t pid1, int *pipfd)
 {
+	close(pipfd[0]);
+	close(pipfd[1]);
 	waitpid(pid1, NULL, 0);
 }
