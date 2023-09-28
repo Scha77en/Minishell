@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/25 10:24:13 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 09:39:19 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ t_tokens	*create_node(void)
 	node->next = NULL;
 	return (node);
 }
+
+// void    get_pwd(t_env **envr)
+// {
+//     char *pwd;
+//     char *tmp;
+
+//     pwd = malloc(sizeof(char) * 1024);
+//     pwd = getcwd(pwd, 1024);
+//     tmp = ft_strjoin("PWD=", pwd);
+//     set_env(envr, tmp);
+//     free(pwd);
+//     free(tmp);
+// }
 
 void	add_node(t_tokens **list, t_tokens *new)
 {
@@ -84,6 +97,7 @@ t_tokens	*tokenizer(char *b, t_tokens *list, t_env *env)
     add_node(&list, node);
     return (list);
 }
+
 int syntax_error(t_tokens *list)
 {
     while(list->next)
@@ -94,6 +108,13 @@ int syntax_error(t_tokens *list)
             list = list->next;
     }
     return (0);
+}
+
+void    handle_sigint(int sig)
+{
+    (void)sig;
+    printf("\n");
+    exit(0);
 }
 
 int main(int ac, char **av, char **env)
@@ -108,20 +129,24 @@ int main(int ac, char **av, char **env)
     t_tokens *list;
     t_env *envr;
     char *b;
+    // static char *pwd;
 
     envr = envirement(env);
+    
     // while(envr)
     // {
     //     printf("%s=%s\n", envr->var, envr->value);
     //     envr = envr->next;
     // } //TODO check if the enverement is correct.
+    // set_pwd(&envr);
+    signal(SIGINT, handle_sigint);
     while(1)
     {
         f_list = NULL;
         list = NULL;
         b = readline("Minishell$ ");
         if(b == NULL)
-            break;
+            exit(0);
         if (ft_strlen(b))
             add_history(b);
         list = tokenizer(b, list, envr);
@@ -155,3 +180,10 @@ int main(int ac, char **av, char **env)
     }
     return(0);
 }
+
+
+// problems to solve:
+
+// echo | ls         builting | regular command;
+
+// pwd > file         builting > redirection;

@@ -9,7 +9,7 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 
 CC = cc 
 
-FLGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
+FLGS = -Wall -Wextra -Werror -g #-fsanitize=address,undefined
 
 RM = rm -rf
 
