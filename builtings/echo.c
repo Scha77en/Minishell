@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 02:21:12 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 04:20:53 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:20:59 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,41 +19,41 @@ void	echo_builted(t_cmd *tavern)
 
 	i = 1;
 	n = 0;
-	if (tavern->cmd[i] != NULL && ft_strcmp(tavern->cmd[i], "-n") == 0)
+	while (tavern->cmd[i] && tavern->cmd[i][0] == '-')
 	{
-		n = 1;
-		i++;
+		if (tavern->cmd[i] != NULL && ft_strncmp_echo(tavern->cmd[i], "n", ft_strlen(tavern->cmd[i])) == 0)
+		{
+			n = 1;
+			i++;
+		}
+		else
+			break ;
 	}
 	while (tavern->cmd[i] != NULL)
 	{
-		printf("%s", tavern->cmd[i]);
+		write(tavern->fd_out, tavern->cmd[i], ft_strlen(tavern->cmd[i]));
 		if (tavern->cmd[i + 1] != NULL)
-			printf(" ");
+			write(tavern->fd_out, " ", 1);
 		i++;
 	}
 	if (n == 0)
-		printf("\n");
+		write(tavern->fd_out, "\n", 1);
 }
 
-void	ft_echo(t_cmd *tavern)
+int	ft_strncmp_echo(char *s1, char *s2, int n)
 {
 	int	i;
-	int	n;
+	int v;
 
 	i = 1;
-	n = 0;
-	if (tavern->cmd[i] != NULL && ft_strcmp(tavern->cmd[i], "-n") == 0)
+	v = 0;
+	if (s1 == NULL || s2 == NULL)
+		return (0);
+	while (i < n && (s1[i] || s2[v]))
 	{
-		n = 1;
+		if (s1[i] != s2[v])
+			return (s1[i] - s2[v]);
 		i++;
 	}
-	while (tavern->cmd[i] != NULL)
-	{
-		printf("%s", tavern->cmd[i]);
-		if (tavern->cmd[i + 1] != NULL)
-			printf(" ");
-		i++;
-	}
-	if (n == 0)
-		printf("\n");
+	return (0);
 }

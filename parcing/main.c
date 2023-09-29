@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 09:39:19 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 17:40:37 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int main(int ac, char **av, char **env)
     {
         f_list = NULL;
         list = NULL;
-        b = readline("Minishell$ ");
+        b = readline("minishell$ ");
         if(b == NULL)
             exit(0);
         if (ft_strlen(b))
