@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:16:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/21 23:16:52 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/29 16:12:30 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	ft_strncmp_m(char *s1, char *s2, int n)
 
 	i = 0;
 	if (s1 == NULL || s2 == NULL)
+	{
+		puts("Error: Null Pointer Exception!");
 		return (0);
+	}
 	while (i < n && (s1[i] || s2[i]))
 	{
 		if (s1[i] != s2[i])

@@ -4,12 +4,12 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 		../execution/main.c ../execution/get_next_line_m.c ../execution/get_next_line_utils.c ../execution/spliting.c\
 		../execution/joining.c ../execution/path_search.c ../execution/command_search.c ../execution/linked_tools.c\
 		../execution/here_doc.c ../execution/redirection_managment.c ../execution/error_handling.c ../execution/check.c\
-		../builtings/cd.c ../builtings/pwd.c ../builtings/unset.c ../builtings/env.c ../builtings/echo.c\
+		../builtings/cd.c ../builtings/pwd.c ../builtings/unset.c ../builtings/env.c ../builtings/echo.c ../builtings/export_utils.c\
 		../builtings/export.c ../builtings/exit.c
 
 CC = cc 
 
-FLGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
+FLGS = -Wall -Wextra -Werror -g #-fsanitize=address,undefined
 
 RM = rm -rf
 
