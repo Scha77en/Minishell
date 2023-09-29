@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 18:40:15 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:18:41 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void add_node(t_tokens **list, t_tokens *new)
     }
 }
 
-t_tokens *tokenizer(char *b)
+t_tokens *tokenizer(char *b, int *exit_status)
 {
     int i;
     t_tokens *list;
@@ -71,12 +71,12 @@ t_tokens *tokenizer(char *b)
         }
         else if ((node->type = token(b[i], b[i + 1])) == SQUAT)
         {
-            if ((node->tokens = fill_token(b, &i, 34)) == NULL)
+            if ((node->tokens = fill_token(b, &i, 34, exit_status)) == NULL)
                 return (NULL);            
         } 
         else if ((node->type = token(b[i], b[i + 1])) == DQOUT)
         {
-            if ((node->tokens = fill_token(b, &i, 39)) == NULL)
+            if ((node->tokens = fill_token(b, &i, 39, exit_status)) == NULL)
                 return (NULL); 
         }
         else if ((node->type = token(b[i], b[i + 1])) == OUT)
@@ -84,12 +84,13 @@ t_tokens *tokenizer(char *b)
         else if ((node->type = token(b[i], b[i + 1])) == IN)
             node->tokens = "<";
         else
-            node->tokens = fill_word(b, &i);
+            node->tokens = fill_word(b, &i, exit_status);
         add_node(&list, node);
     }
     node = create_node();
     node->type = NLINE;
     add_node(&list, node);
+    // free(node);
     return (list);
 }
 int syntax_error(t_tokens *list)
@@ -98,7 +99,7 @@ int syntax_error(t_tokens *list)
     {
         if((is_token(list->type) && !is_word(list->next->type)
         && list->next->type != WHITESPACE))
-            return (printf("syntax error : %s\n", list->tokens), list->type = 0 ,  -1);
+            return (printf("syntax error : %s\n", list->tokens), list->type = 0 , 258);
         // else if (is_token(list->type) && !is_word(list->next->next->type))
         //     return (printf("syntax error : %s\n", list->tokens), list->type = 0 ,  -1);
         else

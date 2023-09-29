@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 22:31:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:48:57 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,4 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
     }
     else if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
         rederections(list, tmp);
-    printf("%s | %d\n", (*list)->tokens, (*list)->type);
 }

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/28 21:51:05 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 12:52:58 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,9 +182,7 @@ void			ft_lstaddback(t_env **hed, t_env *new);
 t_env			*lstnew();
 ///
 int				white_space(char c);
-char			*fill_word(char *b, int *i);
 int				token(char fc, char sc);
-// char			*fill_token(char *b, int *i, char c, t_env *env);
 void			add_list(t_cmd **list, t_cmd *new);
 t_cmd			*create_list();
 char			*ft_strjoin(char const *s1, char const *s2);
@@ -197,15 +195,17 @@ t_env 			*envirement(char **env);
 int				find_exp(char *s);
 char			*check_if_valid(char *str, int *i);
 void 			fill_expand(char *f, int *k, char *env);
-t_tokens		*tokenizer(char *b);
 int				syntax_error(t_tokens *list);
 char *fill_var(char *b, int n, int len);
-char *fill_token(char *b, int *i, char c);
 char *update_line(char *line, char *var, int l);
 int cheak(char *b, int *i, int c);
 t_tokens *concatenat_words(t_tokens *list);
 t_tokens *create_node();
 void add_node(t_tokens **list, t_tokens *new);
+char *check_if_valid_herdoc(char *str, int *i);
+t_tokens *tokenizer(char *b, int *exit_status);
+char *fill_word(char *b, int *i, int *exit_status);
+char *fill_token(char *b, int *i, char c, int *exit_status);
 
 #endif
 

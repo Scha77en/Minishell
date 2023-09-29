@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 22:12:01 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:14:16 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,6 @@ char	*get_data_r(t_tokens **file)
     if (!data)
         return (NULL);
 	data[0] = '\0';
-    // word = (*file)->tokens;
-    // while (is_word((*file)->next->type))
-    // {
-    //     word = ft_strjoin((*file)->tokens, (*file)->next->tokens);
-    //     (*file) = (*file)->next;
-    // }
-    // (*file)->tokens = word;
 	while (1)
 	{
 		write(1, "heredoc> ", 10);
@@ -60,7 +53,7 @@ char	*get_data_r(t_tokens **file)
 		if (i > 0)
         {
             int l = i-1;
-			var = check_if_valid(line, &i);
+			var = check_if_valid_herdoc(line, &i);
             if (ft_strlen(var))
                 line = update_line(line, var, l);
         }
@@ -88,7 +81,7 @@ void rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
     else
         (*tmp)->fd_out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
     if ((*tmp)->fd_out == -1)
-        perror("fd_out Error\n");
+        perror("fd_out");
 }
 
 void rederections(t_tokens **list, t_cmd *tmp)
@@ -121,7 +114,7 @@ void rederections(t_tokens **list, t_cmd *tmp)
             //HERDOC!!!!!!
         }
         if (tmp->fd_in == -1)
-            perror("Error\n");
+            perror("fd_in");
     }
     else if (t_lst->type == OUT || t_lst->type == APPEND)
         rederect_o_a(&t_lst, &tmp, current);

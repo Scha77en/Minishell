@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 23:08:17 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:00:33 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int find_exp(char *s)
     {
         if(s[i] == '$')
             return(i+1);
-        else if (s[i] == 39 || s[i] == 34)
-            return (0);
+        // else if (s[i] == 39 || s[i] == 34)
+        //     return (0);
         i++;
     }
     return(0);
@@ -62,8 +62,32 @@ char *check_if_valid(char *str, int *i)
     if (s < *i)
         var[n++] = str[s++];
     var[n] = '\0';
-    printf("in%s:\n", var);
     var = getenv(var);
+    return (var);
+}
+char *check_if_valid_herdoc(char *str, int *i)
+{
+    int s;
+    int n;
+    char *var;
+    s = (*i);
+    n = 0;
+    while(str[(*i)] && (ft_isalpha(str[(*i)]) || str[(*i)] == '_'))
+    {
+        (*i)++;
+        n++;
+    }
+    var = malloc(sizeof(char) * (n +1));
+    if (!var)
+        return (NULL);
+    n = 0;
+    while(s+1 < *i)
+        var[n++] = str[s++];
+    if (s < *i)
+        var[n++] = str[s++];
+    var[n] = '\0';
+    var = getenv(var);
+    printf("%s:\n", var);
     return (var);
 }
 void fill_expand(char *f, int *k, char *value)

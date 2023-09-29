@@ -6,13 +6,13 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:12:37 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 22:41:51 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 15:21:38 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char *fill_token(char *b, int *i, char c)
+char *fill_token(char *b, int *i, char c, int *exit_status)
 {
     char *filed;
     char *var;
@@ -38,6 +38,8 @@ char *fill_token(char *b, int *i, char c)
             lv = ft_strlen(var);
             len += lv;
             var = getenv(var++);
+            if (b[n+1] == '?')
+                var = ft_itoa(*exit_status);
             if (!ft_strlen(var))
                 len++;
         }
@@ -61,14 +63,10 @@ char *fill_token(char *b, int *i, char c)
             len += lv +1;
         }
         else
-        {
             filed[n++] = b[len++];
-            *i = len;
-        }
     }
     filed[n] = '\0';
-    if(*i < len)
-        (*i)++;
+    *i = len;
     return(filed);
 }
 
