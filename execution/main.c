@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/28 20:24:50 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/29 11:42:11 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 				printf("[2]\n");
 				error_out("dup2", 0);
 			}
-			close(pipfd[0]);
+			// close(pipfd[0]);
 			close(pipfd[1]);
 			tavern = tavern->next;
 		}
