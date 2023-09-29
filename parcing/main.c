@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/28 03:54:05 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/29 11:41:16 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ t_tokens	*create_node(void)
 	node->next = NULL;
 	return (node);
 }
+
+// void    get_pwd(t_env **envr)
+// {
+//     char *pwd;
+//     char *tmp;
+
+//     pwd = malloc(sizeof(char) * 1024);
+//     pwd = getcwd(pwd, 1024);
+//     tmp = ft_strjoin("PWD=", pwd);
+//     set_env(envr, tmp);
+//     free(pwd);
+//     free(tmp);
+// }
 
 void	add_node(t_tokens **list, t_tokens *new)
 {
@@ -116,19 +129,22 @@ int main(int ac, char **av, char **env)
     t_tokens *list;
     t_env *envr;
     char *b;
+    // static char *pwd;
 
     envr = envirement(env);
+    
     // while(envr)
     // {
     //     printf("%s=%s\n", envr->var, envr->value);
     //     envr = envr->next;
     // } //TODO check if the enverement is correct.
+    // set_pwd(&envr);
     signal(SIGINT, handle_sigint);
     while(1)
     {
         f_list = NULL;
         list = NULL;
-        b = readline("Minishell$ ");
+        b = readline("minishell$ ");
         if(b == NULL)
             exit(0);
         if (ft_strlen(b))

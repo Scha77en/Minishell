@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:06 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/23 00:35:37 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/28 12:29:46 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	error_out(char *msg, int v)
 {
-	printf("---%s\n", msg);
+	printf("error_out: %s\n", msg);
 	if (v == 0)
 		perror(msg);
 	if (v == 1)

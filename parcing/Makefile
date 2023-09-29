@@ -1,4 +1,4 @@
-NAME = Minishell
+NAME = minishell
 
 SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c expand.c\
 		../execution/main.c ../execution/get_next_line_m.c ../execution/get_next_line_utils.c ../execution/spliting.c\
