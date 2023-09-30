@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/29 19:04:10 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/30 20:43:25 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,18 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 	int		pipfd[2];
 	int		v;
 	pid_t	pid1 = -1;
-	// int		fd0;
 	int		for_next = 0;
-	// int		fd1;
 
-	// fd0 = dup(STDIN_FILENO);
-	// fd1 = dup(STDOUT_FILENO);
-	// printf("fd0 first = %d\n", fd0);
-	// printf("fd1 first = %d\n", fd1);
 	v = 0;
 	if (tavern->next == NULL)
 	{
-		// printf("Single Command\n");
-		
 		if (if_builting(tavern, envr))
-		{
 			v = -1;
-		}
 		else
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-			{
-				// puts("not builted");
 				single_cmd_exec(tavern, env);
-			}
 		}
 	}
 	
@@ -61,15 +48,18 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 						printf("[1]\n");
 						error_out("dup2 ", 0);
 					}
+					close(pipfd[1]);
+					close(pipfd[0]);
 				}
 				if (for_next)
+				{
+					if (dup2(for_next, STDIN_FILENO) < 0)
 					{
-						if (dup2(for_next, STDIN_FILENO) < 0)
-						{
-							printf("[2]\n");
-							error_out("dup2", 0);
-						}
+						printf("[2]\n");
+						error_out("dup2", 0);
 					}
+					close(for_next);
+				}
 				if (if_builting(tavern, envr))
 					exit(0);
 				execute_command(tavern, env);
@@ -84,27 +74,10 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 			tavern = tavern->next;
 		}
 	}
-	if (v == 0)
-		waiting_und_closing(pid1, pipfd);
-	// wait(0);
-	// puts("closing");
-	// printf("fd0 = %d\n", fd0);
-	// printf("fd1 = %d\n", fd1);
-	// if (dup2(1, fd1))
-	// {
-	// 	printf("[7]\n");
-	// 	error_out("dup2", 0);
-	// }
-	// if (dup2(0, fd0))
-	// {
-	// 	printf("[3]\n");
-	// 	error_out("dup2", 0);
-	// }
-	// close(fd0);
-	// close(fd1);
-	// close(pipfd[0]);
-	// while (wait(NULL) > 0)
-	// 	;
+	// if (v == 0)
+	// 	waiting_und_closing(pid1, pipfd);
+	while (wait(NULL) > 0)
+		;
 }
 
 int	if_builting(t_cmd *tavern, t_env **env)
@@ -182,13 +155,13 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		error_out("execve", 0);
 }
 
-void	waiting_und_closing(pid_t pid1, int *pipfd)
-{
-	// close(pipfd[0]);
-	// close(pipfd[1]);
-	(void)pipfd;
-	waitpid(pid1, NULL, 0);
-}
+// void	waiting_und_closing(pid_t pid1, int *pipfd)
+// {
+// 	// close(pipfd[0]);
+// 	// close(pipfd[1]);
+// 	(void)pipfd;
+// 	// waitpid(pid1, NULL, 0);
+// }
 
 
 
