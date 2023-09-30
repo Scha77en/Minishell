@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 07:58:37 by abouregb          #+#    #+#             */
-/*   Updated: 2022/11/17 13:47:19 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:32:46 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t	i;
 	char	*s;
 	char	*d;
 
-	i = 0;
 	d = (char *)dst;
 	s = (char *)src;
 	if (dst > src)

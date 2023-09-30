@@ -6,11 +6,12 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 15:06:29 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/30 17:32:38 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 
 void	print_list(t_cmd *f_list)
 {
@@ -122,12 +123,12 @@ int main(int ac, char **av, char **env)
 		{
 			add_history(b);
 			list = tokenizer(b, &exit_status);
-			// while(list)
-			// {
-			// 	printf("list : -%s- | %d\n", list->tokens, list->type);
-			// 	list = list->next;
-			// }
-			// break ;
+		// 	// while(list)
+		// 	// {
+		// 	// 	printf("list : -%s- | %d\n", list->tokens, list->type);
+		// 	// 	list = list->next;
+		// 	// }
+		// 	// break ;
 			if ((exit_status = syntax_error(list)) == 258)
 			{
 				free_list(&list);
@@ -143,7 +144,7 @@ int main(int ac, char **av, char **env)
 				free_f_list(&f_list);
 			}
 		}
-		free(b);
+		// free(b);
 	}
 	return (0);
 }

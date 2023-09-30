@@ -6,7 +6,7 @@ ft_strtrim.c ft_striteri.c ft_split.c ft_itoa.c
 
 CC = cc
 
-FLAGS = -Wall -Wextra -Werror -c
+FLAGS = -c
 
 OBJS = ${SRCS:.c=.o}
 
