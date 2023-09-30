@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/29 14:48:57 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/30 15:09:32 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 t_cmd *create_list()
 {
-    t_cmd *node;
+	t_cmd *node;
 
-    node = malloc(sizeof(t_cmd));
-    if (!node)
-        return (NULL);
-    node->cmd = NULL;
-    node->fd_in = 0;
-    node->fd_out = 1;
-    node->next = NULL;
-    return (node);
+	node = malloc(sizeof(t_cmd));
+	if (!node)
+		return (NULL);
+	node->cmd = NULL;
+	node->fd_in = 0;
+	node->fd_out = 1;
+	node->next = NULL;
+	return (node);
 }
 
 t_cmd	*ft_lstlast_p(t_cmd *lst)
@@ -39,65 +39,65 @@ t_cmd	*ft_lstlast_p(t_cmd *lst)
 
 void add_list(t_cmd **list, t_cmd *new)
 {
-    t_cmd *tmp;
-    tmp = NULL;
-    if (!(*list))
-        *list = new;
-    else
-    {
-        tmp = *list;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp->next = new;
-    }
+	t_cmd *tmp;
+	tmp = NULL;
+	if (!(*list))
+		*list = new;
+	else
+	{
+		tmp = *list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 int n_of_cmd(t_tokens *list)
 {
-    int r;
+	int r;
 
-    r = 0;
-    while(list->type != PIPE && list->type != NLINE)
-    {
-        if(is_word(list->type) && !is_word(list->next->type))
-            r++;
-        else if (is_word(list->type) && is_word(list->next->type))
-        {
-            while(is_word(list->next->type))
-                list = list->next;
-            r++;
-        }
-        else if (list->type == IN || list->type == OUT || list->type == HEREDOC || list->type == APPEND)
-        {
-           list = list->next;
-           if (list->type == WHITESPACE)
-            list = list->next;
-            while(is_word(list->next->type))
-                list = list->next;
-        }
-        list = list->next;
-    }
-    return (r);
+	r = 0;
+	while(list->type != PIPE && list->type != NLINE)
+	{
+		if(is_word(list->type) && !is_word(list->next->type))
+			r++;
+		else if (is_word(list->type) && is_word(list->next->type))
+		{
+			while(is_word(list->next->type))
+				list = list->next;
+			r++;
+		}
+		else if (list->type == IN || list->type == OUT || list->type == HEREDOC || list->type == APPEND)
+		{
+		   list = list->next;
+		   if (list->type == WHITESPACE)
+			list = list->next;
+			while(is_word(list->next->type))
+				list = list->next;
+		}
+		list = list->next;
+	}
+	return (r);
 }
 
 void fill(t_tokens **list, t_cmd *tmp, int *i)
 {
-    char *word;
-    if (is_word((*list)->type) && is_word((*list)->next->type))
-    {
-        word = (*list)->tokens;
-        while(is_word((*list)->next->type))
-        {
-            word = ft_strjoin(word, (*list)->next->tokens);
-            (*list) = (*list)->next;
-        }
-        tmp->cmd[++(*i)] = ft_strdup(word);
-    }
-    else if(is_word((*list)->type) && !is_word((*list)->next->type))
-    {
-        word = (*list)->tokens;
-        tmp->cmd[++(*i)] = ft_strdup(word);
-    }
-    else if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
-        rederections(list, tmp);
+	char *word;
+	char *tmpe;
+
+		if (is_word((*list)->type))
+		{
+			word = (*list)->tokens;
+			while(is_word((*list)->next->type))
+			{
+				tmpe = ft_strjoin(word, (*list)->next->tokens);
+				free(word);
+				word = tmpe;
+				(*list) = (*list)->next;
+			}
+			tmp->cmd[++(*i)] = ft_strdup(word);
+			free(tmpe);
+		}
+	if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
+		rederections(list, tmp);
 }

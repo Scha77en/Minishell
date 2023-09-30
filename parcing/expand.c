@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/29 15:00:33 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/09/29 21:28:50 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char *check_if_valid(char *str, int *i)
     int s;
     int n;
     char *var;
+    char *value;
     (*i)++;
     s = (*i);
     n = 0;
@@ -62,8 +63,8 @@ char *check_if_valid(char *str, int *i)
     if (s < *i)
         var[n++] = str[s++];
     var[n] = '\0';
-    var = getenv(var);
-    return (var);
+    value = getenv(var);
+    return (free(var), value);
 }
 char *check_if_valid_herdoc(char *str, int *i)
 {

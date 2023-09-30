@@ -4,7 +4,7 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 		../execution/joining.c ../execution/path_search.c ../execution/command_search.c ../execution/linked_tools.c\
 		../execution/here_doc.c ../execution/redirection_managment.c ../execution/error_handling.c ../execution/check.c
 CC = cc 
-FLGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
+FLGS = -Wall -Wextra -Werror -g #-fsanitize=address,undefined
 RM = rm -rf
 OBJ = $(SRC:%.c=%.o)
 
