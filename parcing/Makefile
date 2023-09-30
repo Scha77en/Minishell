@@ -7,21 +7,20 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 		../builtings/cd.c ../builtings/pwd.c ../builtings/unset.c ../builtings/env.c ../builtings/echo.c\
 		../builtings/export.c ../builtings/exit.c
 
+READLINE = $(shell brew --prefix readline)
+
 CC = cc 
-
-FLGS = -Wall -Wextra -Werror -g -fsanitize=address,undefined
-
+FLGS =  -g -I$(READLINE)/include#-fsanitize=address,undefined
 RM = rm -rf
-
 OBJ = $(SRC:%.c=%.o)
 
 all : $(NAME)
 
-%.o : %.c ../includes/minishell.h
+%.o : %.c ../includes/minishell.h  
 	$(CC) $(FLGS) -c $< -o $@
 
 $(NAME) : $(OBJ)
-	$(CC) $(FLGS)  ../libft/libft.a -lreadline $^ -o $@
+	$(CC) $(OBJ) ../libft/libft.a -L$(READLINE)/lib -lreadline -o $@
 
 clean :
 	$(RM) $(OBJ)

@@ -102,6 +102,7 @@ void	ft_join_value(t_env **env, char **split)
 	t_env	*current;
 	char	*join;
 
+	join = NULL;
 	current = *env;
 	while (current)
 	{
