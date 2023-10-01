@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/29 11:42:11 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/30 20:43:25 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,18 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 	int		pipfd[2];
 	int		v;
 	pid_t	pid1 = -1;
-	int		fd0;
-	// int		fd1;
+	int		for_next = 0;
 
-	fd0 = dup(STDIN_FILENO);
-	// fd1 = dup(STDOUT_FILENO);
-	// printf("fd1 first = %d\n", fd1);
 	v = 0;
 	if (tavern->next == NULL)
 	{
-		// printf("Single Command\n");
-		
 		if (if_builting(tavern, envr))
-		{
 			v = -1;
-		}
 		else
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-			{
-				// puts("not builted");
 				single_cmd_exec(tavern, env);
-			}
 		}
 	}
 	
@@ -59,47 +48,34 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 						printf("[1]\n");
 						error_out("dup2 ", 0);
 					}
-					if (tavern->fd_out == 1)
-						tavern->fd_out = pipfd[1];
-				}
-				if (if_builting(tavern, envr))
-					exit(0);
-				if (tavern->next)
-				{
 					close(pipfd[1]);
 					close(pipfd[0]);
 				}
+				if (for_next)
+				{
+					if (dup2(for_next, STDIN_FILENO) < 0)
+					{
+						printf("[2]\n");
+						error_out("dup2", 0);
+					}
+					close(for_next);
+				}
+				if (if_builting(tavern, envr))
+					exit(0);
 				execute_command(tavern, env);
 			}
-			if (dup2(pipfd[0], STDIN_FILENO) < 0)
+			if (for_next)
+				close(for_next);
+			if (tavern->next)
 			{
-				printf("[2]\n");
-				error_out("dup2", 0);
+				close(pipfd[1]);
+				for_next = pipfd[0];
 			}
-			// close(pipfd[0]);
-			close(pipfd[1]);
 			tavern = tavern->next;
 		}
 	}
-	if (v == 0)
-		waiting_und_closing(pid1, pipfd);
-	// wait(0);
-	// puts("closing");
-	// printf("fd1 = %d\n", fd1);
-	// printf("fd0 = %d\n", fd0);
-	// if (dup2(fd1, STDOUT_FILENO))
-	// {
-	// 	printf("[7]\n");
-	// 	error_out("dup2", 0);
-	// }
-	if (dup2(fd0, STDIN_FILENO))
-	{
-		printf("[3]\n");
-		error_out("dup2", 0);
-	}
-	close(fd0);
-	// close(fd1);
-	close(pipfd[0]);
+	// if (v == 0)
+	// 	waiting_und_closing(pid1, pipfd);
 	while (wait(NULL) > 0)
 		;
 }
@@ -179,12 +155,13 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		error_out("execve", 0);
 }
 
-void	waiting_und_closing(pid_t pid1, int *pipfd)
-{
-	close(pipfd[0]);
-	close(pipfd[1]);
-	waitpid(pid1, NULL, 0);
-}
+// void	waiting_und_closing(pid_t pid1, int *pipfd)
+// {
+// 	// close(pipfd[0]);
+// 	// close(pipfd[1]);
+// 	(void)pipfd;
+// 	// waitpid(pid1, NULL, 0);
+// }
 
 
 
@@ -192,11 +169,13 @@ void	waiting_und_closing(pid_t pid1, int *pipfd)
 
 
 
-// fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e;
+// fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e; !--DONE--! => solved but created a new problem, cat | cat | ls;
 
 // echo -nnnnnnnn protection; --DONE--
 
-// unset and export with alphabics and numbers procetction, only alphabics and _ is allowed first, after the first numerics are also allowed in the followings;
+// unset and export with alphabics and numbers procetction, only alphabics and _ is allowed first, after the first numerics are also allowed in the followings; --DONE--
+
+// the split in the export should be splitting with one = only and not more;
 
 // pwd if failed, get the path from the satitc variable you saved into it ealier in the main; also if the path is changed, change the static variable;
 
@@ -217,3 +196,6 @@ void	waiting_und_closing(pid_t pid1, int *pipfd)
 // minishell: config: No such file or directory
 // ./minishell ls
 // /bin/ls: /bin/ls: cannot execute binary file
+
+// while true; do lsof -c minishell; done
+// while true; do leaks minishell; done
