@@ -147,6 +147,7 @@ int main(int ac, char **av, char **env)
         b = readline("minishell$ ");
         if(b == NULL)
             exit(0);
+         rl_replace_line("", 0);
         if (ft_strlen(b))
             add_history(b);
         list = tokenizer(b, list, envr);

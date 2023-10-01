@@ -16,11 +16,8 @@ void	print_working_directory(t_cmd *tavern)
 {
 	char	current_directory[PATH_MAX];
 
-	printf("fd out : %d\n", tavern->fd_out); 
 	if (getcwd(current_directory, sizeof(current_directory)) != NULL)
 	{
-		// printf("[%s]\n", current_directory);
-		// printf("[%d]\n", tavern->fd_out);
 		write(tavern->fd_out, current_directory, ft_strlen(current_directory));
 	}
 	else

@@ -54,11 +54,9 @@ static int	fin(char *s1, char *set)
 
 char	*ft_strtrim(char const	*s1, char const	*set)
 {
-	int		i;
 	int		a;
 	int		b;
 
-	i = 0;
 	if (!s1 || !set)
 		return (NULL);
 	if (ft_strlen(s1) == 0)

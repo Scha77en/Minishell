@@ -120,6 +120,7 @@ void	ft_join_value(t_env **env, char **split)
 	char	*join;
 	int		k;
 
+	join = NULL;
 	current = *env;
 	k = ft_strlen(split[0]);
 	printf("%s\n", split[0]);
