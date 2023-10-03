@@ -19,9 +19,9 @@ void	echo_builted(t_cmd *tavern)
 
 	i = 1;
 	n = 0;
-	while (tavern->cmd[i] && tavern->cmd[i][0] == '-')
+	while (tavern->cmd[i] && tavern->cmd[i][0] == '-' && tavern->cmd[i][1])
 	{
-		if (tavern->cmd[i] != NULL && ft_strncmp_echo(tavern->cmd[i], "n", ft_strlen(tavern->cmd[i])) == 0)
+		if (ft_strncmp_echo(tavern->cmd[i], "n", ft_strlen(tavern->cmd[i])) == 0)
 		{
 			n = 1;
 			i++;

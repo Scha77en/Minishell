@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/29 11:41:16 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/29 13:24:16 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,10 +181,3 @@ int main(int ac, char **av, char **env)
     }
     return(0);
 }
-
-
-// problems to solve:
-
-// echo | ls         builting | regular command;
-
-// pwd > file         builting > redirection;

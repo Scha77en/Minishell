@@ -74,8 +74,6 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 			tavern = tavern->next;
 		}
 	}
-	// if (v == 0)
-	// 	waiting_und_closing(pid1, pipfd);
 	while (wait(NULL) > 0)
 		;
 }
@@ -83,40 +81,19 @@ void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
 int	if_builting(t_cmd *tavern, t_env **env)
 {
 	if (ft_strcmp(tavern->cmd[0], "echo") == 0)
-	{
-		// check_redirections(tavern);
 		return (echo_builted(tavern), 1);
-	}
 	if (ft_strcmp(tavern->cmd[0], "cd") == 0)
-	{
-		// check_redirections(tavern);
 		return (cd_builted(tavern, env), 1);
-	}
 	else if (ft_strcmp(tavern->cmd[0], "pwd") == 0)
-	{
-		// check_redirections(tavern);
 		return (print_working_directory(tavern), 1);
-	}
 	else if (ft_strcmp(tavern->cmd[0], "export") == 0)
-	{
-		// check_redirections(tavern);
 		return (ft_export(tavern, env), 1);
-	}
 	else if (ft_strcmp(tavern->cmd[0], "unset") == 0)
-	{
-		// check_redirections(tavern);
 		return (ft_unset(tavern, env), 1);
-	}
 	else if (ft_strcmp(tavern->cmd[0], "env") == 0)
-	{
-		// check_redirections(tavern);
 		return (ft_env(env, 0), 1);
-	}
 	else if (ft_strcmp(tavern->cmd[0], "exit") == 0)
-	{
-		// check_redirections(tavern);
 		return (ft_exit(tavern), 1);
-	}
 	return (0);
 }
 
@@ -126,7 +103,6 @@ void	execute_command(t_cmd *tavern, char **env)
 	int		ret;
 	int		i;
 
-	printf("regular command\n");
 	check_redirections(tavern);
 	path = find_path(env);
 	i = -1;
@@ -169,15 +145,19 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 
 
 
-// fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e; !--DONE--! => solved but created a new problem, cat | cat | ls;
+// fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e; !--DONE--! => solved but created a new problem, cat | cat | ls; --DONE--
 
 // echo -nnnnnnnn protection; --DONE--
 
+// echo - n skips the '-' in my program and it shouldn't, fix that. --DONE--
+
 // unset and export with alphabics and numbers procetction, only alphabics and _ is allowed first, after the first numerics are also allowed in the followings; --DONE--
 
-// the split in the export should be splitting with one = only and not more;
+// the split in the export should be splitting with one = only and not more; --DONE--
 
 // pwd if failed, get the path from the satitc variable you saved into it ealier in the main; also if the path is changed, change the static variable;
+// Note: the evaluator may unset the env from the start with "./minishell env -i" command
+// check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=.
 
 // when you do cd, if the path is not found, dont change the pwd;
 
