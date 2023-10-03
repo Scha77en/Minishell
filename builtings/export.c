@@ -28,10 +28,8 @@ void	ft_export(t_cmd *tavern, t_env **env)
 			{
 				split = split_export(tavern->cmd[i]);
 				if (split[1] == NULL)
-				{
 					ft_add_env(env, split);
 
-				}
 				else if(plus_sign(split[0], 0) > 0)
 					ft_join_value(env, split);
 				else
@@ -149,6 +147,11 @@ void	ft_add_env(t_env **env, char **split)
 	t_env	*current;
 	t_env	*new;
 
+	if (!env)
+	{
+		*env = ft_envnew(split[0], split[1]);
+		return ;
+	}
 	current = *env;
 	while (current)
 	{

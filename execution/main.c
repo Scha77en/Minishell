@@ -156,10 +156,11 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 // the split in the export should be splitting with one = only and not more; --DONE--
 
 // pwd if failed, get the path from the satitc variable you saved into it ealier in the main; also if the path is changed, change the static variable;
-// Note: the evaluator may unset the env from the start with "./minishell env -i" command
-// check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=.
+// Hint : whenever u call chdir() in "cd" change the PWD value to what chdir is changing to.
+// when you do cd, if the path is not found, dont change the PWD;
 
-// when you do cd, if the path is not found, dont change the pwd;
+// Note: the evaluator may unset the env from the start with "./minishell env -i" command
+// check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
 
 // handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
 

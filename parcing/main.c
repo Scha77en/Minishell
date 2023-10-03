@@ -129,9 +129,12 @@ int main(int ac, char **av, char **env)
     t_tokens *list;
     t_env *envr;
     char *b;
-    // static char *pwd;
+    static char *pwd;
 
-    envr = envirement(env);
+    if (!env)
+        set_env(&envr);
+    else
+        envr = envirement(env);
     
     // while(envr)
     // {

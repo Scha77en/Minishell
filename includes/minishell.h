@@ -136,7 +136,7 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value);
 void	cd_builted(t_cmd *tavern, t_env **env);
 void	oldpwd_update(t_env **env, char *curwd, int v);
 void	oldpwd_search_update(t_env **env, char *cwd);
-t_env	*ft_envnew(char *var);
+t_env	*ft_envnew(char *var, char *value);
 void	ft_memdel(void *ptr);
 void	ft_env(t_env **env, int v);
 char	*ft_getenv(t_env **env, char *var);
@@ -156,6 +156,7 @@ void	ft_join_value(t_env **env, char **split);
 char	*ft_strndup(char *s, int n);
 void	ft_exit(t_cmd *tavern);
 void	ft_unset(t_cmd *tavern, t_env **envr);
+void	set_env(t_env **env);
 
 // here_document
 

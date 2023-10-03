@@ -21,6 +21,6 @@ void	print_working_directory(t_cmd *tavern)
 		write(tavern->fd_out, current_directory, ft_strlen(current_directory));
 	}
 	else
-		error_out("getcwd", 0);
+		return ;
 	write(tavern->fd_out, "\n", 1);
 }

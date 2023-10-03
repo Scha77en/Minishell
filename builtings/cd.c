@@ -114,7 +114,7 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 			if (ft_strncmp_m(current->var, "PWD", 3) == 0)
 			{
 				// printf("adding oldpwd\n");
-				new = ft_envnew(ft_strdup("OLDPWD"));
+				new = ft_envnew(ft_strdup("OLDPWD"), NULL);
 				new->value = ft_strdup(cwd);
 				new->next = current->next;
 				current->next = new;
@@ -125,7 +125,7 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 	}
 }
 
-t_env	*ft_envnew(char *var)
+t_env	*ft_envnew(char *var, char *value)
 {
 	t_env	*new;
 
@@ -133,7 +133,7 @@ t_env	*ft_envnew(char *var)
 	if (!new)
 		return (NULL);
 	new->var = var;
-	new->value = NULL;
+	new->value = value;
 	new->next = NULL;
 	return (new);
 }
