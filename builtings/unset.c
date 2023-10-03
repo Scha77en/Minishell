@@ -17,15 +17,17 @@ void	ft_unset(t_cmd *tavern, t_env **envr)
 	int		i;
 	t_env	*tmp;
 	t_env	*prev;
+	char	*target;
 
 	i = 0;
 	while (tavern->cmd[++i])
 	{
+		target = back_slash_parce(tavern->cmd[i], 1);
 		tmp = *envr;
 		prev = NULL;
 		while (tmp)
 		{
-			if (!ft_strcmp(tavern->cmd[i], tmp->var))
+			if (!ft_strcmp(target, tmp->var))
 			{
 				if (prev == NULL)
 					*envr = tmp->next;
@@ -40,4 +42,5 @@ void	ft_unset(t_cmd *tavern, t_env **envr)
 			tmp = tmp->next;
 		}
 	}
+	free(target);
 }
