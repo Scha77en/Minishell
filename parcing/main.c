@@ -181,10 +181,3 @@ int main(int ac, char **av, char **env)
     }
     return(0);
 }
-
-
-// problems to solve:
-
-// echo | ls         builting | regular command;
-
-// pwd > file         builting > redirection;
