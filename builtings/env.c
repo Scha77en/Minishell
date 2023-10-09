@@ -44,7 +44,7 @@ void	set_env(t_env **env)
 	char	**under_s;
 	char	cwd[PATH_MAX];
 
-	getcwd(cwd, sizeof(cwd));	
+	getcwd(cwd, sizeof(cwd));
 	env = NULL;
 	ft_lstaddback(env, ft_envnew(ft_strdup("PWD"), cwd));
 	ft_lstaddback(env, ft_envnew(ft_strdup("PATH"), ft_strdup("/home/Schatten/.\

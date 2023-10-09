@@ -135,14 +135,14 @@ int main(int ac, char **av, char **env)
         set_env(&envr);
     else
         envr = envirement(env);
-    
+    pwd = ft_getenv(&envr, "PWD");
     // while(envr)
     // {
     //     printf("%s=%s\n", envr->var, envr->value);
     //     envr = envr->next;
     // } //TODO check if the enverement is correct.
     // set_pwd(&envr);
-    signal(SIGINT, handle_sigint);
+    // signal(SIGINT, handle_sigint);
     while(1)
     {
         f_list = NULL;
@@ -180,7 +180,7 @@ int main(int ac, char **av, char **env)
 	// 	printf("[  %s  ]\n", current->cmd[0]);
 	// 	current = current->next;
 	// }
-    execute_cmds(f_list, env, &envr);
+    pwd = execute_cmds(&f_list, env, &envr, pwd);
     }
     return(0);
 }
