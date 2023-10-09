@@ -18,7 +18,6 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 
 	if ((*tavern)->cmd[1] == NULL)
 	{
-		puts("---------[1]--------");
 		oldpwd_update(env, NULL, 0);
 		if (chdir(ft_getenv(env, "HOME")) != 0)
 			error_out("chdir", 0);
@@ -27,7 +26,6 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 	}
 	else if (ft_strcmp((*tavern)->cmd[1], "-") == 0)
 	{
-		puts("---------[2]--------");
 		getcwd(curwd, PATH_MAX);
 		if (chdir(ft_getenv(env, "OLDPWD")) != 0)
 		{
@@ -47,7 +45,6 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 	}
 	else
 	{
-		puts("---------[3]--------");
 		oldpwd_update(env, NULL, 0);
 		pwd_update(env);
 		redefine_pwd(pwd, (*tavern)->cmd[1]);

@@ -21,22 +21,14 @@ void	print_working_directory(t_cmd **tavern, char **pwd)
 		write((*tavern)->fd_out, current_directory, ft_strlen(current_directory));
 	}
 	else
-	{
-		puts("error");
-		printf ("||%s||\n", *pwd);
 		write((*tavern)->fd_out, *pwd, ft_strlen(*pwd));
-	}
 	write((*tavern)->fd_out, "\n", 1);
 }
 
 void	redefine_pwd(char **pwd, char *define)
 {
 	if (!ft_strcmp(define, "..") || !ft_strcmp(define, "."))
-	{
-		puts("here");
 		*pwd = ft_strjoin_b(*pwd, ft_strdup(define), 1);
-		printf("pwd = %s\n", *pwd);
-	}
 	else
 	{
 		if (*pwd)

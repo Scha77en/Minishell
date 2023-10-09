@@ -24,19 +24,6 @@ t_tokens	*create_node(void)
 	return (node);
 }
 
-// void    get_pwd(t_env **envr)
-// {
-//     char *pwd;
-//     char *tmp;
-
-//     pwd = malloc(sizeof(char) * 1024);
-//     pwd = getcwd(pwd, 1024);
-//     tmp = ft_strjoin("PWD=", pwd);
-//     set_env(envr, tmp);
-//     free(pwd);
-//     free(tmp);
-// }
-
 void	add_node(t_tokens **list, t_tokens *new)
 {
 	t_tokens	*tmp;
@@ -122,7 +109,6 @@ int main(int ac, char **av, char **env)
     (void)ac;
     (void)av;
     t_cmd *tmp;
-    // t_cmd *current;
     int n_cmd;
     int flg;
     t_cmd *f_list;
@@ -136,12 +122,6 @@ int main(int ac, char **av, char **env)
     else
         envr = envirement(env);
     pwd = ft_getenv(&envr, "PWD");
-    // while(envr)
-    // {
-    //     printf("%s=%s\n", envr->var, envr->value);
-    //     envr = envr->next;
-    // } //TODO check if the enverement is correct.
-    // set_pwd(&envr);
     // signal(SIGINT, handle_sigint);
     while(1)
     {
@@ -174,12 +154,6 @@ int main(int ac, char **av, char **env)
             tmp = tmp->next;
             list = list->next;
         }
-	// current = f_list;
-	// while(current)
-	// {
-	// 	printf("[  %s  ]\n", current->cmd[0]);
-	// 	current = current->next;
-	// }
     pwd = execute_cmds(&f_list, env, &envr, pwd);
     }
     return(0);

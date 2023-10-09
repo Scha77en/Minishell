@@ -44,20 +44,14 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 				if ((*tavern)->next)
 				{
 					if (dup2(pipfd[1], STDOUT_FILENO) < 0)
-					{
-						printf("[1]\n");
 						error_out("dup2 ", 0);
-					}
 					close(pipfd[1]);
 					close(pipfd[0]);
 				}
 				if (for_next)
 				{
 					if (dup2(for_next, STDIN_FILENO) < 0)
-					{
-						printf("[2]\n");
 						error_out("dup2", 0);
-					}
 					close(for_next);
 				}
 				if (if_builting(tavern, envr, &pwd))
@@ -150,14 +144,6 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 	}
 }
 
-// void	waiting_und_closing(pid_t pid1, int *pipfd)
-// {
-// 	// close(pipfd[0]);
-// 	// close(pipfd[1]);
-// 	(void)pipfd;
-// 	// waitpid(pid1, NULL, 0);
-// }
-
 
 
 
@@ -188,6 +174,8 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 // sort the envirement when you print it with export only;
 
 // handle when the PATH is unseted; the result should be fixed;
+
+// error_out must write the msg in the fd_out.
 
 // remove the leaks;
 
