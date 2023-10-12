@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+int     g_status = 0;
+
 t_tokens	*create_node(void)
 {
 	t_tokens	*node;
@@ -97,13 +99,6 @@ int syntax_error(t_tokens *list)
     return (0);
 }
 
-void    handle_sigint(int sig)
-{
-    (void)sig;
-    printf("\n");
-    exit(0);
-}
-
 int main(int ac, char **av, char **env)
 {
     (void)ac;
@@ -122,14 +117,17 @@ int main(int ac, char **av, char **env)
     else
         envr = envirement(env);
     pwd = ft_getenv(&envr, "PWD");
-    // signal(SIGINT, handle_sigint);
+    signal(SIGINT, handle_sigint);
     while(1)
     {
         f_list = NULL;
         list = NULL;
         b = readline("minishell$ ");
         if(b == NULL)
+        {
+            printf("exit\n");
             exit(0);
+        }
          rl_replace_line("", 0);
         if (ft_strlen(b))
             add_history(b);

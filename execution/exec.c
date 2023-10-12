@@ -17,6 +17,7 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 	int		pipfd[2];
 	int		v;
 	pid_t	pid1 = -1;
+   	pid_t terminatedPid;
 	int		for_next = 0;
 
 	v = 0;
@@ -69,7 +70,18 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 		}
 	}
 	while (wait(NULL) > 0)
-		;
+	{
+ 		terminatedPid = wait(&g_status);
+ 		if (WIFEXITED(g_status)) {
+			// Child process exited normally
+ 	    	g_status = WEXITSTATUS(g_status);
+ 		}
+		else
+		{
+			// Child process exited abnormally
+			g_status = WTERMSIG(g_status);
+		}
+	}
 	return (pwd);
 }
 
@@ -89,6 +101,12 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_env(env, 0), 1);
 	else if (ft_strcmp((*tavern)->cmd[0], "exit") == 0)
 		return (ft_exit((*tavern)), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "$?") == 0)
+	{
+		write((*tavern)->fd_out, &g_status, 1);
+		return (write((*tavern)->fd_out, "\n", 1), 1);
+	}
+
 	return (0);
 }
 

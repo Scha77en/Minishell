@@ -35,6 +35,8 @@
 # include <dirent.h>
 # include "../libft/libft.h"
 
+extern int     g_status;
+
 typedef struct s_env
 {
 	char			*var;
