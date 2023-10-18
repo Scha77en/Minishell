@@ -121,7 +121,9 @@ void	rederections(t_tokens **list, t_cmd *tmp)
 		if (tmp->fd_in == -1)
 			perror("fd_in");
 	}
-	else if (t_lst->type == OUT || t_lst->type == APPEND)
+	if (t_lst->type == OUT || t_lst->type == APPEND)
+	{
 		rederect_o_a(&t_lst, &tmp, current);
+	}
 	*list = t_lst;
 }

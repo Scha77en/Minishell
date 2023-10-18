@@ -17,7 +17,6 @@ char	**split_export(char *split)
 	char	**str;
 	char	*s0;
 	char	*s1;
-	static char	*tmp;
 	int		i;
 
 	i = 0;

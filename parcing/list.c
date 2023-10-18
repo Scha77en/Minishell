@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 15:09:32 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/11 07:59:32 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int n_of_cmd(t_tokens *list)
 		else if (list->type == IN || list->type == OUT || list->type == HEREDOC || list->type == APPEND)
 		{
 		   list = list->next;
-		   if (list->type == WHITESPACE)
-			list = list->next;
+			if (list->type == WHITESPACE)
+				list = list->next;
 			while(is_word(list->next->type))
 				list = list->next;
 		}
@@ -90,14 +90,17 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
 			word = (*list)->tokens;
 			while(is_word((*list)->next->type))
 			{
+				printf("list : %s\n", (*list)->tokens);
 				tmpe = ft_strjoin(word, (*list)->next->tokens);
 				free(word);
 				word = tmpe;
 				(*list) = (*list)->next;
 			}
-			tmp->cmd[++(*i)] = ft_strdup(word);
-			free(tmpe);
+			printf("list after : %s\n", (*list)->tokens);
+			tmp->cmd[++(*i)] = word;
+			// free(tmpe);
 		}
-	if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
+	if ((*list)->type == IN || (*list)->type == OUT
+		|| (*list)->type == HEREDOC || (*list)->type == APPEND)
 		rederections(list, tmp);
 }

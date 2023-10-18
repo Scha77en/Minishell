@@ -15,16 +15,16 @@
 char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 {
 	int		pipfd[2];
-	int		v;
+	// int		v;
 	pid_t	pid1 = -1;
-   	pid_t terminatedPid;
+   	// pid_t terminatedPid;
 	int		for_next = 0;
 
-	v = 0;
+	// v = 0;
 	if ((*tavern)->next == NULL)
 	{
 		if (if_builting(tavern, envr, &pwd))
-			v = -1;
+			;
 		else
 		{
 			pid1 = fork();
@@ -71,7 +71,7 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 	}
 	while (wait(NULL) > 0)
 	{
- 		terminatedPid = wait(&g_status);
+ 		// terminatedPid = wait(&g_status);
  		if (WIFEXITED(g_status)) {
 			// Child process exited normally
  	    	g_status = WEXITSTATUS(g_status);

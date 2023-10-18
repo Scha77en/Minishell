@@ -110,7 +110,9 @@ char *update_line(char *line, char *var, int l)
 	l = ft_strlen(var) + l;
 	r = malloc(sizeof(char) * (l + 1));
     if (!r)
+    {
         return (NULL);
+    }
 	r[l] = '\0';
 	while(i < l)
 	{
