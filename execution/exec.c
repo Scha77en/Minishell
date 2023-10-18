@@ -101,11 +101,8 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_env(env, 0), 1);
 	else if (ft_strcmp((*tavern)->cmd[0], "exit") == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "$?") == 0)
-	{
-		write((*tavern)->fd_out, &g_status, 1);
-		return (write((*tavern)->fd_out, "\n", 1), 1);
-	}
+	else if (ft_strcmp((*tavern)->cmd[0], "??") == 0)
+		return (printf("%d\n", g_status), 1);
 
 	return (0);
 }
