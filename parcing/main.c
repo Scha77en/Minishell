@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 17:32:38 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/18 08:02:47 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	print_list(t_cmd *f_list)
 {
 	int	i;
 
-	i = 0;
 	while (f_list)
 	{
+		i = 0;
 		while (f_list->cmd[i])
 		{
 			printf("cmd : %s\n", f_list->cmd[i++]);
@@ -36,17 +36,18 @@ void 	parcer(t_tokens *list, t_cmd **f_list)
 	int		n_cmd;
 	int		i;
 
+	while (list->type != NLINE)
+	{
 	i = -1;
 	add_list(f_list, create_list());
 	tmp = ft_lstlast_p(*f_list);
 	flg = -1;
-	while (list)
-	{
 		while (list && list->type != NLINE && list->type != PIPE)
 		{
 			if (!++flg)
 			{
 				n_cmd = n_of_cmd(list);
+				printf("NBR : %d\n", n_cmd);
 				tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
 				if (!tmp->cmd)
 					return ;
@@ -55,7 +56,11 @@ void 	parcer(t_tokens *list, t_cmd **f_list)
 			fill(&list, tmp, &i);
 			list = list->next;
 		}
-		list = list->next;
+		if (list->type == PIPE)
+		{
+			list = list->next;
+			tmp = tmp->next;
+		}
 	}
 }
 void f()
@@ -76,7 +81,7 @@ void	free_list(t_tokens **list)
 		{
 			printf("f : %s\n", current->tokens);
 			// free(current->tokens);
-			// free(current);
+			free(current);
 		}
 		lst = lst->next;
 	}
@@ -100,20 +105,11 @@ void	free_f_list(t_cmd **f_list)
 		free(current);
 	}
 }
-
-int main(int ac, char **av, char **env)
+void minishell(t_env *envr, int exit_status, char *b)
 {
 	t_tokens	*list;
 	t_cmd		*f_list;
-	t_env		*envr;
-	int			exit_status;
-	char		*b;
 
-	atexit(f);
-	(void)ac;
-	(void)av;
-	exit_status = 0;
-	envr = envirement(env);
 	while (1)
 	{
 		b = readline("minishell$ ");
@@ -123,12 +119,6 @@ int main(int ac, char **av, char **env)
 		{
 			add_history(b);
 			list = tokenizer(b, &exit_status);
-		// 	// while(list)
-		// 	// {
-		// 	// 	printf("list : -%s- | %d\n", list->tokens, list->type);
-		// 	// 	list = list->next;
-		// 	// }
-		// 	// break ;
 			if ((exit_status = syntax_error(list)) == 258)
 			{
 				free_list(&list);
@@ -136,7 +126,8 @@ int main(int ac, char **av, char **env)
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list);
+				parcer(list, &f_list);//?hna katbaddal list ba9i maareftch 3lach....?
+			
 			free_list(&list);
 			if (f_list != NULL)
 			{
@@ -144,7 +135,22 @@ int main(int ac, char **av, char **env)
 				free_f_list(&f_list);
 			}
 		}
-		// free(b);
 	}
+	
+}
+
+int main(int ac, char **av, char **env)
+{
+	
+	t_env		*envr;
+	int			exit_status;
+	char		*b;
+
+	// atexit(f);
+	(void)ac;
+	(void)av;
+	exit_status = 0;
+	envr = envirement(env);
+	minishell(envr, exit_status, b);
 	return (0);
 }

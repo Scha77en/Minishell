@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/30 13:22:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/18 08:14:59 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,8 @@ char	*fill_word(char *b, int *i, int *exit_status);
 char	*fill_token(char *b, int *i, char c, int *exit_status);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b, int *exit_status);
+char	*fill_token_(char *b, int len, int *i, char c, int *exit_status);
+char	*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 #endif
 
 // it will be improved with time and what we would need;
