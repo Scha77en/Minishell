@@ -1,6 +1,5 @@
-NAME = minishell
-
-SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c expand.c\
+NAME = Minishell
+SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c expand.c tokenizer2.c concatenat_Words.c fill_token.c \
 		../execution/exec.c ../execution/get_next_line_m.c ../execution/get_next_line_utils.c ../execution/spliting.c\
 		../execution/joining.c ../execution/path_search.c ../execution/command_search.c ../execution/linked_tools.c\
 		../execution/here_doc.c ../execution/redirection_managment.c ../execution/error_handling.c ../execution/check.c\
@@ -9,9 +8,12 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 
 READLINE = $(shell brew --prefix readline)
 
-CC = cc 
-FLGS =  -g -I$(READLINE)/include#-fsanitize=address,undefined
+CC = cc
+
+FLGS =  -Wall -Wextra -Werror -g -I$(READLINE)/include#-fsanitize=address,undefined
+
 RM = rm -rf
+
 OBJ = $(SRC:%.c=%.o)
 
 all : $(NAME)

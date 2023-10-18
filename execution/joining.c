@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   joining.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:25 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/21 23:00:05 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/26 11:44:05 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../parcing/msh.h"
 
 char	*ft_strjoin_b(char *s1, char *s2, int v)
 {

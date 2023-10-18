@@ -3,156 +3,147 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/29 13:24:16 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/09/30 15:06:29 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int     g_status = 0;
-
-t_tokens	*create_node(void)
+void	print_list(t_cmd *f_list)
 {
-	t_tokens	*node;
+	int	i;
 
-	node = malloc(sizeof(t_tokens));
-	if (!node)
-		return (NULL);
-	node->tokens = NULL;
-	node->next = NULL;
-	return (node);
+	i = 0;
+	while (f_list)
+	{
+		while (f_list->cmd[i])
+		{
+			printf("cmd : %s\n", f_list->cmd[i++]);
+		}
+		printf("fd_in : %d | fd_out : %d\n", f_list->fd_in, f_list->fd_out);
+		printf("-------------\n");
+		f_list = f_list->next;
+	}
+}
+void 	parcer(t_tokens *list, t_cmd **f_list)
+{
+	t_cmd	*tmp;
+	int		flg;
+	int		n_cmd;
+	int		i;
+
+	i = -1;
+	add_list(f_list, create_list());
+	tmp = ft_lstlast_p(*f_list);
+	flg = -1;
+	while (list)
+	{
+		while (list && list->type != NLINE && list->type != PIPE)
+		{
+			if (!++flg)
+			{
+				n_cmd = n_of_cmd(list);
+				tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
+				if (!tmp->cmd)
+					return ;
+				tmp->cmd[n_cmd] = NULL;
+			}
+			fill(&list, tmp, &i);
+			list = list->next;
+		}
+		list = list->next;
+	}
+}
+void f()
+{
+	system("leaks minishell");
 }
 
-void	add_node(t_tokens **list, t_tokens *new)
+void	free_list(t_tokens **list)
 {
-	t_tokens	*tmp;
+	t_tokens	*current;
+	t_tokens	*lst;
 
-	if (!(*list))
-		*list = new;
-	else
+	lst = *list;
+	while (lst)
 	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-		tmp->next->next = NULL;
+		current = lst;
+		if (current->tokens != NULL)
+		{
+			printf("f : %s\n", current->tokens);
+			// free(current->tokens);
+			// free(current);
+		}
+		lst = lst->next;
 	}
 }
 
-t_tokens	*tokenizer(char *b, t_tokens *list, t_env *env)
+void	free_f_list(t_cmd **f_list)
 {
-	int			i;
-	t_tokens	*node;
+	t_cmd	*current;
+	t_cmd	*lst;
+	int		i;
 
-	i = -1;
-	while (b[++i])
+	i = 0;
+	lst = *f_list;
+	while (lst)
 	{
-		node = create_node();
-		if ((node->type = token(b[i], ' ')) == WHITESPACE)
-		{
-			node->tokens = " ";
-			while (white_space(b[i + 1]))
-				i++;
-		}
-		else if ((node->type = token(b[i], b[i + 1])) == PIPE)
-            node->tokens = "|";
-        else if ((node->type = token(b[i], b[i + 1])) == HEREDOC)
-        {
-            node->tokens = "<<";
-            i++;
-        }
-        else if ((node->type = token(b[i], b[i + 1])) == APPEND)
-        {
-            node->tokens = ">>";
-            i++;
-        }
-        else if ((node->type = token(b[i], b[i + 1])) == SQUAT)
-            node->tokens = fill_token(b, &i, 34);
-        else if ((node->type = token(b[i], b[i + 1])) == DQOUT)
-            node->tokens = fill_token(b, &i, 39);
-        else if ((node->type = token(b[i], b[i + 1])) == OUT)
-            node->tokens = ">";
-        else if ((node->type = token(b[i], b[i + 1])) == IN)
-            node->tokens = "<";
-        else
-            node->tokens = fill_word(b, &i, env);
-        add_node(&list, node);
-    }
-    node = create_node();
-    node->type = NLINE;
-    add_node(&list, node);
-    return (list);
-}
-
-int syntax_error(t_tokens *list)
-{
-    while(list->next)
-    {
-        if((is_token(list->type) && !is_word(list->next->type) && list->next->type != WHITESPACE))
-            return (printf("syntax error : %s\n", list->tokens), list->type = 0 ,  -1);
-        else
-            list = list->next;
-    }
-    return (0);
+		current = lst;
+		lst = lst->next;
+		while (current->cmd[i])
+			free(current->cmd[i++]);
+		free(current->cmd);
+		free(current);
+	}
 }
 
 int main(int ac, char **av, char **env)
 {
-    (void)ac;
-    (void)av;
-    t_cmd *tmp;
-    int n_cmd;
-    int flg;
-    t_cmd *f_list;
-    t_tokens *list;
-    t_env *envr;
-    char *b;
-    static char *pwd;
+	t_tokens	*list;
+	t_cmd		*f_list;
+	t_env		*envr;
+	int			exit_status;
+	char		*b;
 
-    if (!env)
-        set_env(&envr);
-    else
-        envr = envirement(env);
-    pwd = ft_getenv(&envr, "PWD");
-    signal(SIGINT, handle_sigint);
-    while(1)
-    {
-        f_list = NULL;
-        list = NULL;
-        b = readline("minishell$ ");
-        if(b == NULL)
-        {
-            printf("exit\n");
-            exit(0);
-        }
-         rl_replace_line("", 0);
-        if (ft_strlen(b))
-            add_history(b);
-        list = tokenizer(b, list, envr);
-        syntax_error(list);
-        while(list)
-        {
-            add_list(&f_list, create_list());
-            tmp = ft_lstlast_p(f_list);
-            int i = -1;
-            flg = -1;
-            while(list && list->type != NLINE && list->type != PIPE)
-            {
-                if(!++flg)
-                {
-                    n_cmd = n_of_cmd(list);
-                    tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
-                    tmp->cmd[n_cmd] = NULL;
-                }
-                fill(&list, tmp, &i);
-            }
-            tmp = tmp->next;
-            list = list->next;
-        }
-    pwd = execute_cmds(&f_list, env, &envr, pwd);
-    }
-    return(0);
+	atexit(f);
+	(void)ac;
+	(void)av;
+	exit_status = 0;
+	envr = envirement(env);
+	while (1)
+	{
+		b = readline("minishell$ ");
+		if (b == NULL)
+			break;
+		if (ft_strlen(b))
+		{
+			add_history(b);
+			list = tokenizer(b, &exit_status);
+			// while(list)
+			// {
+			// 	printf("list : -%s- | %d\n", list->tokens, list->type);
+			// 	list = list->next;
+			// }
+			// break ;
+			if ((exit_status = syntax_error(list)) == 258)
+			{
+				free_list(&list);
+				list = NULL;
+			}
+			f_list = NULL;
+			if (list)
+				parcer(list, &f_list);
+			free_list(&list);
+			if (f_list != NULL)
+			{
+				print_list(f_list);
+				free_f_list(&f_list);
+			}
+		}
+		free(b);
+	}
+	return (0);
 }
