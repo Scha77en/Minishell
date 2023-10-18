@@ -12,26 +12,34 @@
 
 #include "../includes/minishell.h"
 
-void	cd_builted(t_cmd *tavern, t_env **env)
+void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 {
 	char	curwd[PATH_MAX];
 
-	if (tavern->cmd[1] == NULL)
+	if ((*tavern)->cmd[1] == NULL)
 	{
 		oldpwd_update(env, NULL, 0);
 		if (chdir(ft_getenv(env, "HOME")) != 0)
 			error_out("chdir", 0);
+		redefine_pwd(pwd, ft_getenv(env, "HOME"));
 		pwd_update(env);
 	}
-	else if (ft_strcmp(tavern->cmd[1], "-") == 0)
+	else if (ft_strcmp((*tavern)->cmd[1], "-") == 0)
 	{
-		if (getcwd(curwd, PATH_MAX) == NULL)
-			error_out("getcwd", 1);
+		getcwd(curwd, PATH_MAX);
 		if (chdir(ft_getenv(env, "OLDPWD")) != 0)
 		{
-			printf("Minishell: cd: OLDPWD not set\n");
+			if (ft_getenv(env, "OLDPWD") == NULL)
+				write((*tavern)->fd_out, "Minishell: cd: OLDPWD not set\n", 31);
+			else
+			{
+				write ((*tavern)->fd_out, "Minishell: cd: ", 15);
+				write((*tavern)->fd_out, ft_getenv(env, "OLDPWD") ,ft_strlen(ft_getenv(env, "OLDPWD")));
+				write((*tavern)->fd_out, " : No such file or directory\n", 30);
+			}
 			return ;
 		}
+		redefine_pwd(pwd, ft_getenv(env, "OLDPWD"));
 		oldpwd_update(env, curwd, 1);
 		pwd_update(env);
 	}
@@ -39,12 +47,17 @@ void	cd_builted(t_cmd *tavern, t_env **env)
 	{
 		oldpwd_update(env, NULL, 0);
 		pwd_update(env);
-		if (chdir(tavern->cmd[1]) != 0)
+		redefine_pwd(pwd, (*tavern)->cmd[1]);
+		if (chdir((*tavern)->cmd[1]) != 0)
 		{
-			error_out("chdir", 0);
+			write((*tavern)->fd_out, "cd: error retrieving current directory\n", 40);
 			return ;
 		}
-		pwd_update(env);
+		if (!getcwd(curwd, PATH_MAX))
+		{
+			write((*tavern)->fd_out, "cd: error retrieving current directory: ", 41);
+			write((*tavern)->fd_out, "getcwd : cannot access parent directories: No such file or directory\n", 70);
+		}
 	}
 }
 
@@ -55,14 +68,14 @@ void	oldpwd_update(t_env **env, char *curwd, int v)
 	if (v == 0)
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)
-			error_out("getcwd", 0);
+			return ;
 		oldpwd_search_update(env, cwd);
 	}
 	else if (v == 1)
 	{
 		oldpwd_search_update(env, curwd);
 		if (getcwd(curwd, PATH_MAX) == NULL)
-			error_out("getcwd", 0);
+			return ;
 		printf("%s\n", curwd);
 	}
 }
@@ -73,7 +86,7 @@ void	pwd_update(t_env **env)
 	t_env	*current;
 
 	if (getcwd(cwd, PATH_MAX) == NULL)
-		error_out("getcwd", 0);
+		return ;
 	current = *env;
 	while (current)
 	{
@@ -114,7 +127,7 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 			if (ft_strncmp_m(current->var, "PWD", 3) == 0)
 			{
 				// printf("adding oldpwd\n");
-				new = ft_envnew(ft_strdup("OLDPWD"));
+				new = ft_envnew(ft_strdup("OLDPWD"), NULL);
 				new->value = ft_strdup(cwd);
 				new->next = current->next;
 				current->next = new;
@@ -125,7 +138,7 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 	}
 }
 
-t_env	*ft_envnew(char *var)
+t_env	*ft_envnew(char *var, char *value)
 {
 	t_env	*new;
 
@@ -133,7 +146,7 @@ t_env	*ft_envnew(char *var)
 	if (!new)
 		return (NULL);
 	new->var = var;
-	new->value = NULL;
+	new->value = value;
 	new->next = NULL;
 	return (new);
 }

@@ -35,6 +35,8 @@
 # include <dirent.h>
 # include "../libft/libft.h"
 
+extern int     g_status;
+
 typedef struct s_env
 {
 	char			*var;
@@ -115,7 +117,7 @@ int		ft_lstsize(t_cmd *lst);
 t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
 t_cmd	*ft_lstlast_t(t_cmd *lst);
 void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
-void	execute_cmds(t_cmd *tavern, char **env, t_env **envr);
+char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd);
 void	execute_command(t_cmd *tavern, char **env);
 void	exec_first_cmd(t_cmd *tavern, char **env);
 void	exec_last_cmd(t_cmd *tavern, char **env);
@@ -130,13 +132,14 @@ void	handle_sigint(int sig);
 
 // builting
 
-int		if_builting(t_cmd *tavern, t_env **env);
-void	print_working_directory(t_cmd *tavern);
+int		if_builting(t_cmd **tavern, t_env **env, char **pwd);
+void	print_working_directory(t_cmd **tavern, char **pwd);
+void	redefine_pwd(char **pwd, char *define);
 void	ft_add_env_pwd(t_env **env, char *var, char *value);
-void	cd_builted(t_cmd *tavern, t_env **env);
+void	cd_builted(t_cmd **tavern, t_env **env, char **pwd);
 void	oldpwd_update(t_env **env, char *curwd, int v);
 void	oldpwd_search_update(t_env **env, char *cwd);
-t_env	*ft_envnew(char *var);
+t_env	*ft_envnew(char *var, char *value);
 void	ft_memdel(void *ptr);
 void	ft_env(t_env **env, int v);
 char	*ft_getenv(t_env **env, char *var);
@@ -156,6 +159,7 @@ void	ft_join_value(t_env **env, char **split);
 char	*ft_strndup(char *s, int n);
 void	ft_exit(t_cmd *tavern);
 void	ft_unset(t_cmd *tavern, t_env **envr);
+void	set_env(t_env **env);
 
 // here_document
 

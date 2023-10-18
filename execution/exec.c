@@ -12,88 +12,98 @@
 
 #include "../includes/minishell.h"
 
-void	execute_cmds(t_cmd *tavern, char **env, t_env **envr)
+char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 {
 	int		pipfd[2];
 	int		v;
 	pid_t	pid1 = -1;
+   	pid_t terminatedPid;
 	int		for_next = 0;
 
 	v = 0;
-	if (tavern->next == NULL)
+	if ((*tavern)->next == NULL)
 	{
-		if (if_builting(tavern, envr))
+		if (if_builting(tavern, envr, &pwd))
 			v = -1;
 		else
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				single_cmd_exec(tavern, env);
+				single_cmd_exec((*tavern), env);
 		}
 	}
 	
 	else
 	{
-		while (tavern)
+		while ((*tavern))
 		{
-			if (tavern->next && pipe(pipfd) == -1)
+			if ((*tavern)->next && pipe(pipfd) == -1)
 				error_out("pipe", 0);
 			pid1 = fork();
 			if (pid1 == 0)
 			{
-				if (tavern->next)
+				if ((*tavern)->next)
 				{
 					if (dup2(pipfd[1], STDOUT_FILENO) < 0)
-					{
-						printf("[1]\n");
 						error_out("dup2 ", 0);
-					}
 					close(pipfd[1]);
 					close(pipfd[0]);
 				}
 				if (for_next)
 				{
 					if (dup2(for_next, STDIN_FILENO) < 0)
-					{
-						printf("[2]\n");
 						error_out("dup2", 0);
-					}
 					close(for_next);
 				}
-				if (if_builting(tavern, envr))
+				if (if_builting(tavern, envr, &pwd))
 					exit(0);
-				execute_command(tavern, env);
+				execute_command((*tavern), env);
 			}
 			if (for_next)
 				close(for_next);
-			if (tavern->next)
+			if ((*tavern)->next)
 			{
 				close(pipfd[1]);
 				for_next = pipfd[0];
 			}
-			tavern = tavern->next;
+			*tavern = (*tavern)->next;
 		}
 	}
 	while (wait(NULL) > 0)
-		;
+	{
+ 		terminatedPid = wait(&g_status);
+ 		if (WIFEXITED(g_status)) {
+			// Child process exited normally
+ 	    	g_status = WEXITSTATUS(g_status);
+ 		}
+		else
+		{
+			// Child process exited abnormally
+			g_status = WTERMSIG(g_status);
+		}
+	}
+	return (pwd);
 }
 
-int	if_builting(t_cmd *tavern, t_env **env)
+int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 {
-	if (ft_strcmp(tavern->cmd[0], "echo") == 0)
-		return (echo_builted(tavern), 1);
-	if (ft_strcmp(tavern->cmd[0], "cd") == 0)
-		return (cd_builted(tavern, env), 1);
-	else if (ft_strcmp(tavern->cmd[0], "pwd") == 0)
-		return (print_working_directory(tavern), 1);
-	else if (ft_strcmp(tavern->cmd[0], "export") == 0)
-		return (ft_export(tavern, env), 1);
-	else if (ft_strcmp(tavern->cmd[0], "unset") == 0)
-		return (ft_unset(tavern, env), 1);
-	else if (ft_strcmp(tavern->cmd[0], "env") == 0)
+	if (ft_strcmp((*tavern)->cmd[0], "echo") == 0)
+		return (echo_builted((*tavern)), 1);
+	if (ft_strcmp((*tavern)->cmd[0], "cd") == 0)
+		return (cd_builted(tavern, env, pwd), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "pwd") == 0)
+		return (print_working_directory(tavern, pwd), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "export") == 0)
+		return (ft_export((*tavern), env), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "unset") == 0)
+		return (ft_unset((*tavern), env), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "env") == 0)
 		return (ft_env(env, 0), 1);
-	else if (ft_strcmp(tavern->cmd[0], "exit") == 0)
-		return (ft_exit(tavern), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "exit") == 0)
+		return (ft_exit((*tavern)), 1);
+	else if (ft_strcmp((*tavern)->cmd[0], "??") == 0)
+		return (printf("%d\n", g_status), 1);
+
 	return (0);
 }
 
@@ -104,14 +114,23 @@ void	execute_command(t_cmd *tavern, char **env)
 	int		i;
 
 	check_redirections(tavern);
-	path = find_path(env);
-	i = -1;
-	while (path[++i])
-		path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
-	i = command_search(path);
-	ret = execve(path[i], tavern->cmd, env);
-	if (ret == -1)
-		error_out("execve", 0);
+	if (access(tavern->cmd[0], F_OK) == 0)
+	{
+		ret = execve(tavern->cmd[0], tavern->cmd, env);
+		if (ret == -1)
+			error_out("execve", 0);
+	}
+	else
+	{
+		path = find_path(env);
+		i = -1;
+		while (path[++i])
+			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
+		i = command_search(path);
+		ret = execve(path[i], tavern->cmd, env);
+		if (ret == -1)
+			error_out("execve", 0);
+	}
 }
 
 void	single_cmd_exec(t_cmd *tavern, char **env)
@@ -121,23 +140,24 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 	int		i;
 
 	check_redirections(tavern);
-	path = find_path(env);
-	i = -1;
-	while (path[++i])
-		path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
-	i = command_search(path);
-	ret = execve(path[i], tavern->cmd, NULL);
-	if (ret == -1)
-		error_out("execve", 0);
+	if (access(tavern->cmd[0], F_OK) == 0)
+	{
+		ret = execve(tavern->cmd[0], tavern->cmd, NULL);
+		if (ret == -1)
+			error_out("execve", 0);
+	}
+	else
+	{
+		path = find_path(env);
+		i = -1;
+		while (path[++i])
+			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
+		i = command_search(path);
+		ret = execve(path[i], tavern->cmd, NULL);
+		if (ret == -1)
+			error_out("execve", 0);
+	}
 }
-
-// void	waiting_und_closing(pid_t pid1, int *pipfd)
-// {
-// 	// close(pipfd[0]);
-// 	// close(pipfd[1]);
-// 	(void)pipfd;
-// 	// waitpid(pid1, NULL, 0);
-// }
 
 
 
@@ -155,11 +175,14 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 
 // the split in the export should be splitting with one = only and not more; --DONE--
 
-// pwd if failed, get the path from the satitc variable you saved into it ealier in the main; also if the path is changed, change the static variable;
-// Note: the evaluator may unset the env from the start with "./minishell env -i" command
-// check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=.
+// pwd if failed, get the path from the satitc variable you saved into it ealier in the main; also if the path is changed, change the static variable; --DONE--
+// Hint : whenever u call chdir() in "cd" change the PWD value to what chdir is changing to. --DONE--
+// when you do cd, if the path is not found, dont change the PWD; --DONE--
 
-// when you do cd, if the path is not found, dont change the pwd;
+// Note: the evaluator may unset the env from the start with "./minishell env -i" command
+// check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
+
+// add the signals and handle them;
 
 // handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
 
@@ -167,7 +190,7 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 
 // handle when the PATH is unseted; the result should be fixed;
 
-// add the signals and handle them;
+// error_out must write the msg in the fd_out.
 
 // remove the leaks;
 

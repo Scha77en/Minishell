@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+int     g_status = 0;
+
 t_tokens	*create_node(void)
 {
 	t_tokens	*node;
@@ -23,19 +25,6 @@ t_tokens	*create_node(void)
 	node->next = NULL;
 	return (node);
 }
-
-// void    get_pwd(t_env **envr)
-// {
-//     char *pwd;
-//     char *tmp;
-
-//     pwd = malloc(sizeof(char) * 1024);
-//     pwd = getcwd(pwd, 1024);
-//     tmp = ft_strjoin("PWD=", pwd);
-//     set_env(envr, tmp);
-//     free(pwd);
-//     free(tmp);
-// }
 
 void	add_node(t_tokens **list, t_tokens *new)
 {
@@ -110,35 +99,24 @@ int syntax_error(t_tokens *list)
     return (0);
 }
 
-void    handle_sigint(int sig)
-{
-    (void)sig;
-    printf("\n");
-    exit(0);
-}
-
 int main(int ac, char **av, char **env)
 {
     (void)ac;
     (void)av;
     t_cmd *tmp;
-    // t_cmd *current;
     int n_cmd;
     int flg;
     t_cmd *f_list;
     t_tokens *list;
     t_env *envr;
     char *b;
-    // static char *pwd;
+    static char *pwd;
 
-    envr = envirement(env);
-    
-    // while(envr)
-    // {
-    //     printf("%s=%s\n", envr->var, envr->value);
-    //     envr = envr->next;
-    // } //TODO check if the enverement is correct.
-    // set_pwd(&envr);
+    if (!env)
+        set_env(&envr);
+    else
+        envr = envirement(env);
+    pwd = ft_getenv(&envr, "PWD");
     signal(SIGINT, handle_sigint);
     while(1)
     {
@@ -146,7 +124,10 @@ int main(int ac, char **av, char **env)
         list = NULL;
         b = readline("minishell$ ");
         if(b == NULL)
+        {
+            printf("exit\n");
             exit(0);
+        }
          rl_replace_line("", 0);
         if (ft_strlen(b))
             add_history(b);
@@ -171,13 +152,7 @@ int main(int ac, char **av, char **env)
             tmp = tmp->next;
             list = list->next;
         }
-	// current = f_list;
-	// while(current)
-	// {
-	// 	printf("[  %s  ]\n", current->cmd[0]);
-	// 	current = current->next;
-	// }
-    execute_cmds(f_list, env, &envr);
+    pwd = execute_cmds(&f_list, env, &envr, pwd);
     }
     return(0);
 }
