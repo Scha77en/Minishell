@@ -48,7 +48,6 @@ void 	parcer(t_tokens *list, t_cmd **f_list)
 			if (!++flg)
 			{
 				n_cmd = n_of_cmd(list);
-				printf("NBR : %d\n", n_cmd);
 				tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
 				if (!tmp->cmd)
 					return ;
@@ -134,8 +133,8 @@ void minishell(char **env, t_env **envr, char *b)
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list);//?hna katbaddal list ba9i maareftch 3lach....?
-			
-			pwd = execute_cmds(&f_list, env, envr, pwd);
+			if (f_list->cmd[0] != NULL)
+				pwd = execute_cmds(&f_list, env, envr, pwd);
 			// free_list(&list);
 			// if (f_list != NULL)
 			// {

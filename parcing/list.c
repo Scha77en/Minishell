@@ -90,13 +90,11 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
 			word = (*list)->tokens;
 			while(is_word((*list)->next->type))
 			{
-				printf("list : %s\n", (*list)->tokens);
 				tmpe = ft_strjoin(word, (*list)->next->tokens);
 				free(word);
 				word = tmpe;
 				(*list) = (*list)->next;
 			}
-			printf("list after : %s\n", (*list)->tokens);
 			tmp->cmd[++(*i)] = word;
 			// free(tmpe);
 		}

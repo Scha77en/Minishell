@@ -10,7 +10,7 @@ READLINE = $(shell brew --prefix readline)
 
 CC = cc
 
-FLGS =  -Wall -Wextra -Werror -g -I$(READLINE)/include#-fsanitize=address,undefined
+FLGS = -Wall -Wextra -Werror -g -I$(READLINE)/include#-fsanitize=address,undefined
 
 RM = rm -rf
 

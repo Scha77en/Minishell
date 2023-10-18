@@ -24,7 +24,7 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 	if ((*tavern)->next == NULL)
 	{
 		if (if_builting(tavern, envr, &pwd))
-			;
+				;
 		else
 		{
 			pid1 = fork();
@@ -32,7 +32,6 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 				single_cmd_exec((*tavern), env);
 		}
 	}
-	
 	else
 	{
 		while ((*tavern))
@@ -182,7 +181,7 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 // Note: the evaluator may unset the env from the start with "./minishell env -i" command
 // check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
 
-// add the signals and handle them;
+// add the signals and handle them; --DONE--
 
 // handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
 
