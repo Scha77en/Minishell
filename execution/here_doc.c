@@ -123,7 +123,7 @@
 // 	char	*new_name;
 // 	char	*characters;
 
-// 	characters = "HiddenabcdefghijklmnopqrstuvwxyzABCDE\
+// 	characters = "HiddenabcdefghijklmnopqrstuvwxyzABCDE
 // 				FGHIJKLMNOPQRSTUVWXYZ0123456789";
 // 	j = 0;
 // 	info = ".Hidden";

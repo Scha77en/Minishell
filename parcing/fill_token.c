@@ -44,7 +44,7 @@ char	*_fill_token(char *var, int len, int lv, int *i, char *b, int c)
 }
 
 
-char	*fill_token(char *b, int *i, char c, int *exit_status)
+char	*fill_token(char *b, int *i, char c)
 {
 	char	*filed;
 	int		len;
@@ -55,7 +55,7 @@ char	*fill_token(char *b, int *i, char c, int *exit_status)
 		return (NULL);
 	}
 	len = *i + 1;
-	filed = fill_token_(b, len, i, c, exit_status);
+	filed = fill_token_(b, len, i, c);
 	return (filed);
 }
 

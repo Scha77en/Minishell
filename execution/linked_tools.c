@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:33 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 11:44:26 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:49:14 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ t_cmd	*ft_lstnew_m(char *content)
 	if (!node1)
 		return (0);
 	node1 -> cmd = &content;
-    node1 -> fd_in = 0;
-    node1 -> fd_out = 1;
 	node1 -> next = NULL;
 	// node1 -> previous = NULL;
 	return (node1);
@@ -49,4 +47,17 @@ t_data	*ft_lstlast_m(t_data *lst)
 	while (lst->next)
 		lst = lst->next;
 	return (lst);
+}
+
+int	ft_lstsize(t_cmd *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		count++;
+	}
+	return (count);
 }

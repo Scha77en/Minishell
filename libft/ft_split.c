@@ -14,9 +14,6 @@
 
 static	char	**ffree(char **str, int j)
 {
-	int	i;
-
-	i = 0;
 	while (j >= 0)
 	{
 		free(str[j]);
@@ -87,13 +84,7 @@ char	**ft_split(char const *s, char c)
 {
 	char	**str;
 	int		b;
-	int		a;
-	int		i;
-	int		j;
 
-	j = 0;
-	a = 0;
-	i = 0;
 	if (!s)
 		return (NULL);
 	b = nwords((char *)s, c);

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/13 16:08:28 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/19 17:05:20 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *t_oken(char *str, int *i, char *b, int type)
 	*i = r;
 	return (ft_strdup(str));
 }
-t_tokens *fill_node(t_tokens *node, char *b, int *i, int *exit_status)
+t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env *env)
 {
 	if ((node->type = token(b[*i], ' ')) == WHITESPACE)
 		node->tokens = t_oken(" ", i, b, -1);
@@ -69,20 +69,20 @@ t_tokens *fill_node(t_tokens *node, char *b, int *i, int *exit_status)
 		node->tokens = t_oken("<", i, b, -1);
 	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
 	{
-		if ((node->tokens = fill_token(b, i, 34, exit_status)) == NULL)
+		if ((node->tokens = fill_token(b, i, 34)) == NULL)
 			return (NULL);
 	}
 	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
 	{
-		if ((node->tokens = fill_token(b, i, 39, exit_status)) == NULL)
+		if ((node->tokens = fill_token(b, i, 39)) == NULL)
 			return (NULL); 
 	}
 	else
-		node->tokens = fill_word(b, i, exit_status);
+		node->tokens = fill_word(b, i, env);
 	return (node);
 }
 
-t_tokens	*tokenizer(char *b, int *exit_status)
+t_tokens	*tokenizer(char *b, t_env *envr)
 {
 	int			i;
 	t_tokens	*list;
@@ -94,7 +94,7 @@ t_tokens	*tokenizer(char *b, int *exit_status)
 	while (b[i])
 	{
 		node = create_node();
-		c_node =  fill_node(node, b, &i, exit_status);
+		c_node =  fill_node(node, b, &i,envr);
 		if (!c_node)
 			return (NULL);
 		add_node(&list, c_node);

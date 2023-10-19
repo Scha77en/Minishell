@@ -3,49 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 06:55:04 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/22 10:11:39 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/10/19 18:54:11 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_current_directory(void)
+void	print_working_directory(t_cmd **tavern, char **pwd)
 {
 	char	current_directory[PATH_MAX];
 
 	if (getcwd(current_directory, sizeof(current_directory)) != NULL)
-		printf("%s\n", current_directory);
-	else 
-		error_out("getcwd", 0);
-}
-
-int	main(void)
-{
-	print_current_directory();
-}
-
-void	error_out(char *msg, int v)
-{
-	if (v == 0)
-		perror(msg);
-	if (v == 1)
-		write(2, msg, ft_strlen(msg));
-	// exit(EXIT_FAILURE);
-}
-
-size_t	ft_strlen_m(char *s)
-{
-	int	i;
-
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i] != '\0')
 	{
-		i++;
+		write((*tavern)->fd->out, current_directory, ft_strlen(current_directory));
 	}
-	return (i);
+	else
+		write((*tavern)->fd->out, *pwd, ft_strlen(*pwd));
+	write((*tavern)->fd->out, "\n", 1);
+}
+
+void	redefine_pwd(char **pwd, char *define)
+{
+	if (!ft_strcmp(define, "..") || !ft_strcmp(define, "."))
+		*pwd = ft_strjoin_b(*pwd, ft_strdup(define), 1);
+	else
+	{
+		if (*pwd)
+			free(*pwd);
+		*pwd = ft_strdup(define);
+	}
 }

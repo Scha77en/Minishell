@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/29 21:28:50 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/19 19:31:55 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int find_exp(char *s)
     {
         if(s[i] == '$')
             return(i+1);
-        // else if (s[i] == 39 || s[i] == 34)
-        //     return (0);
+
         i++;
     }
     return(0);
@@ -88,7 +87,6 @@ char *check_if_valid_herdoc(char *str, int *i)
         var[n++] = str[s++];
     var[n] = '\0';
     var = getenv(var);
-    printf("%s:\n", var);
     return (var);
 }
 void fill_expand(char *f, int *k, char *value)
@@ -110,7 +108,9 @@ char *update_line(char *line, char *var, int l)
 	l = ft_strlen(var) + l;
 	r = malloc(sizeof(char) * (l + 1));
     if (!r)
+    {
         return (NULL);
+    }
 	r[l] = '\0';
 	while(i < l)
 	{
@@ -123,6 +123,6 @@ char *update_line(char *line, char *var, int l)
 			i++;
 		}
 	}
-	return (r);
+	return (ft_strjoin(r, "\n"));
 }
 
