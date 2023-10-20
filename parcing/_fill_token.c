@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 15:53:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/19 17:09:38 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:21:22 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,4 @@ char	*fill_token_(char *b, int len, int *i, char c)
 			len++;
 	}
 	return (_fill_token(var, len, lv, i, b, c));
-}
-
-int len_var(char *value, t_env *env)
-{
-	while(env)
-	{
-		if (ft_strcmp(value, env->value) == 0)
-			return (ft_strlen(env->var) + 1);
-		env = env->next;
-	}
-	return (0);
 }

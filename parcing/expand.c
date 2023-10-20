@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/19 19:31:55 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:00:17 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ char *check_if_valid(char *str, int *i)
     int s;
     int n;
     char *var;
-    char *value;
-    (*i)++;
+
     s = (*i);
     n = 0;
     while(str[(*i)] && (ft_isalpha(str[(*i)]) || str[(*i)] == '_'))
@@ -62,8 +61,7 @@ char *check_if_valid(char *str, int *i)
     if (s < *i)
         var[n++] = str[s++];
     var[n] = '\0';
-    value = getenv(var);
-    return (free(var), value);
+    return (var);
 }
 char *check_if_valid_herdoc(char *str, int *i)
 {
@@ -72,6 +70,11 @@ char *check_if_valid_herdoc(char *str, int *i)
     char *var;
     s = (*i);
     n = 0;
+    if (str[(*i)] == '?')
+    {
+        (*i)++;
+        n += ft_strlen(ft_itoa(g_status));
+    }
     while(str[(*i)] && (ft_isalpha(str[(*i)]) || str[(*i)] == '_'))
     {
         (*i)++;
@@ -80,17 +83,30 @@ char *check_if_valid_herdoc(char *str, int *i)
     var = malloc(sizeof(char) * (n +1));
     if (!var)
         return (NULL);
-    n = 0;
-    while(s+1 < *i)
-        var[n++] = str[s++];
-    if (s < *i)
-        var[n++] = str[s++];
     var[n] = '\0';
+    n = 0;
+    while(s < *i)
+    {
+        if (str[s] == '?')
+        {
+            var = ft_itoa(g_status);
+            s++;
+            n += ft_strlen(ft_itoa(g_status));
+            while(s < *i && str[s] != '?')
+                var[n++] = str[s++];
+        }//! n9dar nkhdam hnaya b recursion anred had l statemen function 
+        else
+            var[n++] = str[s++];
+    }
+    // if (s < *i)
+    //     var[n++] = str[s++];
     var = getenv(var);
     return (var);
 }
 void fill_expand(char *f, int *k, char *value)
 {
+    if (!ft_isdigit(value[0]))
+        value = getenv(value);
     int i;
 
     i = 0;

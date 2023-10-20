@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/19 19:07:49 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 16:08:10 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 		if (ft_strlen(b))
 		{
 			add_history(b);
-			list = tokenizer(b, *envr);
+			list = tokenizer(b);
 			if ((g_status = syntax_error(list)) == 258)
 			{
 				free_list(&list);
@@ -129,7 +129,7 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, fd);//?hna katbaddal list ba9i maareftch 3lach....?
-			if (f_list->cmd[0] != NULL)
+			if (f_list && f_list->cmd[0] != NULL)
 				pwd = execute_cmds(&f_list, env, envr, pwd);
 			// free_list(&list);
 			// if (f_list != NULL)

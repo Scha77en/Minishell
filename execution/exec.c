@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/30 20:43:25 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/10/20 16:44:52 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_env(env, 0), 1);
 	else if (ft_strcmp((*tavern)->cmd[0], "exit") == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "??") == 0)
+	else if (ft_strcmp((*tavern)->cmd[0], "$?") == 0)
 		return (printf("%d\n", g_status), 1);
 
 	return (0);
@@ -154,7 +154,12 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		i = command_search(path);
 		ret = execve(path[i], tavern->cmd, NULL);
 		if (ret == -1)
-			error_out("execve", 0);
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, " : command not found\n", 22);
+			exit(127);	
+			
+		}
 	}
 }
 

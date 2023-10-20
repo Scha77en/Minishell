@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/19 17:05:20 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:20:18 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char *t_oken(char *str, int *i, char *b, int type)
 	*i = r;
 	return (ft_strdup(str));
 }
-t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env *env)
+t_tokens *fill_node(t_tokens *node, char *b, int *i)
 {
 	if ((node->type = token(b[*i], ' ')) == WHITESPACE)
 		node->tokens = t_oken(" ", i, b, -1);
@@ -78,11 +78,11 @@ t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env *env)
 			return (NULL); 
 	}
 	else
-		node->tokens = fill_word(b, i, env);
+		node->tokens = fill_word(b, i);
 	return (node);
 }
 
-t_tokens	*tokenizer(char *b, t_env *envr)
+t_tokens	*tokenizer(char *b)
 {
 	int			i;
 	t_tokens	*list;
@@ -94,7 +94,7 @@ t_tokens	*tokenizer(char *b, t_env *envr)
 	while (b[i])
 	{
 		node = create_node();
-		c_node =  fill_node(node, b, &i,envr);
+		c_node =  fill_node(node, b, &i);
 		if (!c_node)
 			return (NULL);
 		add_node(&list, c_node);

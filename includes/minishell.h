@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/10/19 19:06:11 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 16:19:55 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ typedef enum e_token
 	IN,       // <
 	WORD,      // string
 	PIPE,     // |
-	NLINE,     // |
+	NLINE,
+	SLH ,    // |
 }	t_token;
 
 // get_next_line() structure;
@@ -245,14 +246,14 @@ char		*update_line(char *line, char *var, int l);
 int			cheak(char *b, int *i, int c);
 void		add_node(t_tokens **list, t_tokens *new);
 char		*check_if_valid_herdoc(char *str, int *i);
-char		*fill_word(char *b, int *i, t_env *env);
+char		*fill_word(char *b, int *i);
 char		*fill_token(char *b, int *i, char c);
 char		*fill_token_(char *b, int len, int *i, char c);
 char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 t_tokens	*create_node(void);
-t_tokens	*tokenizer(char *b, t_env *envr);
+t_tokens	*tokenizer(char *b);
 void 		minishell(char **env, t_env **envr, char *b, t_fd **fd);
-int			len_var(char *value, t_env *env);
+// int			len_var(char *value, t_env *env);
 
 #endif
 

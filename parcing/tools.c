@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/19 17:10:15 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:02:26 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,15 @@ int len_word(char *b, int *i, char **var)
 	{
 		if (b[(*i)] == '$')
 		{
-			*var = check_if_valid(b, i);
+			if (b[++(*i)] == '?')
+			{
+				*var = ft_itoa(g_status);
+				l += ft_strlen(ft_itoa(g_status));
+			}
+			else
+				*var = check_if_valid(b, i);
 			if (*var != NULL)
-				l += ft_strlen(*var);
+				l += ft_strlen(getenv(*var));
 		}
 		else
 		{
@@ -41,7 +47,7 @@ int len_word(char *b, int *i, char **var)
 	}
 	return (l);
 }
-char *fill_wrd(char *var, int s, char *b, int l, t_env *env)
+char *fill_wrd(char *var, int s, char *b, int l)
 {
 	char	*f;
 	int		k;
@@ -53,13 +59,13 @@ char *fill_wrd(char *var, int s, char *b, int l, t_env *env)
 	f[l] = '\0';
 	while (l > 0)
 	{
-		if (b[s] == '$' && var != NULL)
+		if (b[s] == '$' && (getenv(var) != NULL || ft_isdigit(var[0])))
 		{
 			fill_expand(f, &k, var);
-			s += len_var(var, env);
-			l -= ft_strlen(var);
+			s += ft_strlen(var) + 1;
+			l -= ft_strlen(getenv(var));
 		}
-		else if (b[s] == '$' && var == NULL)
+		else if (b[s] == '$' && getenv(var) == NULL)
 			return (free(f), NULL);
 		else
 		{
@@ -70,7 +76,7 @@ char *fill_wrd(char *var, int s, char *b, int l, t_env *env)
 	return (f);
 }
 
-char	*fill_word(char *b, int *i, t_env *env)
+char	*fill_word(char *b, int *i)
 {
 	char	*f;
 	char	*var;
@@ -80,6 +86,6 @@ char	*fill_word(char *b, int *i, t_env *env)
 	var = NULL;
 	s = (*i);
 	l = len_word(b, i, &var);
-	f = fill_wrd(var, s, b, l, env);
+	f = fill_wrd(var, s, b, l);
 	return (f);
 }

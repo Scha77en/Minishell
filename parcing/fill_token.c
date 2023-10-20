@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:12:37 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/18 08:15:52 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:14:50 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*_fill_token(char *var, int len, int lv, int *i, char *b, int c)
 	}
 	filed[n] = '\0';
 	*i = len+1;
+	if (ft_strcmp(filed, "$?") == 0)
+		filed = ft_itoa(g_status);
     return (filed);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:00 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 11:44:19 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/19 20:47:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ int	command_search(char **path)
 		if (access(path[i], X_OK) == 0)
 			return (i);
 	}
-	perror("Command Not Found");
-	exit(EXIT_FAILURE);
+	return (-1);
 }
