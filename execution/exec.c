@@ -81,16 +81,6 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 			g_status = WTERMSIG(g_status);
 		}
 	}
-	if ((*tavern)->fd->out != 1)
-	{
-		close((*tavern)->fd->out);
-		(*tavern)->fd->out = 1;
-	}
-	if((*tavern)->fd->in != 0)
-	{
-		close((*tavern)->fd->in);
-		(*tavern)->fd->in = 0;
-	}
 	return (pwd);
 }
 

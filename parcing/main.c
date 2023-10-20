@@ -134,8 +134,20 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, fd);//?hna katbaddal list ba9i maareftch 3lach....?
-			if (f_list->cmd[0] != NULL)
+			if (f_list && f_list->cmd[0] != NULL)
+			{
 				pwd = execute_cmds(&f_list, env, envr, pwd);
+				if (f_list && f_list->fd->out != 1)
+				{
+					close(f_list->fd->out);
+					f_list->fd->out = 1;
+				}
+				if(f_list && f_list->fd->in != 0)
+				{
+					close(f_list->fd->in);
+					f_list->fd->in = 0;
+				}
+			}
 			// free_list(&list);
 			// if (f_list != NULL)
 			// {
