@@ -19,10 +19,11 @@ t_cmd	*ft_lstnew_m(char *content)
 	node1 = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!node1)
 		return (0);
+	node1 -> fd = (t_fd *)malloc(sizeof(t_fd));
 	node1 -> cmd = &content;
-    node1 -> fd_in = 0;
-    node1 -> fd_out = 1;
-	node1 -> next = NULL;
+    node1->fd->in = 0;
+    node1->fd->out = 1;
+	node1->next = NULL;
 	// node1 -> previous = NULL;
 	return (node1);
 }
@@ -33,7 +34,7 @@ void	ft_lstadd_back_m(t_data **lst, t_data *new)
 
 	if (!new)
 		return ;
-	while (!*lst)
+	if (!*lst)
 	{
 		*lst = new;
 		return ;

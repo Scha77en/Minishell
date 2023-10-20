@@ -81,14 +81,27 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	}
 	(*t_lst)->tokens = word;
 	if (current->type == OUT)
-		(*tmp)->fd_out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	{
+		printf("[3]%d\n", (*tmp)->fd->out);
+		if ((*tmp)->fd->out != 1)
+		{
+			printf("close\n");
+			close((*tmp)->fd->out);
+		}
+		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	}
 	else
-		(*tmp)->fd_out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
-	if ((*tmp)->fd_out == -1)
+	{
+		printf("[4]%d\n", (*tmp)->fd->out);
+		if ((*tmp)->fd->out != 1)
+			close((*tmp)->fd->out);
+		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
+	}
+	if ((*tmp)->fd->out == -1)
 		perror("fd_out");
 }
 
-void	rederections(t_tokens **list, t_cmd *tmp)
+void	rederections(t_tokens **list, t_cmd **tmp)
 {
 	t_tokens	*t_lst;
 	char		*word;
@@ -110,20 +123,28 @@ void	rederections(t_tokens **list, t_cmd *tmp)
 		}
 		t_lst->tokens = word;
 		if (current->type == IN)
-			tmp->fd_in = open(t_lst->tokens, O_RDONLY);
+		{
+			printf("[1]%d\n", (*tmp)->fd->in);
+			if ((*tmp)->fd->in != 0)
+				close((*tmp)->fd->in);
+			(*tmp)->fd->in = open(t_lst->tokens, O_RDONLY);
+		}
 		else
 		{
+			printf("[2]%d\n", (*tmp)->fd->in);
+			if ((*tmp)->fd->in != 0)
+				close((*tmp)->fd->in);
 			data = get_data_r(&t_lst);
 			if (is_word(t_lst->type) && is_word(t_lst->next->type))
 				t_lst = t_lst->next;
-			tmp->fd_in = writing_data(data);
+			(*tmp)->fd->in = writing_data(data);
 		}
-		if (tmp->fd_in == -1)
+		if ((*tmp)->fd->in == -1)
 			perror("fd_in");
 	}
 	if (t_lst->type == OUT || t_lst->type == APPEND)
 	{
-		rederect_o_a(&t_lst, &tmp, current);
+		rederect_o_a(&t_lst, tmp, current);
 	}
 	*list = t_lst;
 }

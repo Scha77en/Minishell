@@ -18,11 +18,11 @@ void	print_working_directory(t_cmd **tavern, char **pwd)
 
 	if (getcwd(current_directory, sizeof(current_directory)) != NULL)
 	{
-		write((*tavern)->fd_out, current_directory, ft_strlen(current_directory));
+		write((*tavern)->fd->out, current_directory, ft_strlen(current_directory));
 	}
 	else
-		write((*tavern)->fd_out, *pwd, ft_strlen(*pwd));
-	write((*tavern)->fd_out, "\n", 1);
+		write((*tavern)->fd->out, *pwd, ft_strlen(*pwd));
+	write((*tavern)->fd->out, "\n", 1);
 }
 
 void	redefine_pwd(char **pwd, char *define)

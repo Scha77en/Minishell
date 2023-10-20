@@ -37,6 +37,12 @@
 
 extern int     g_status;
 
+typedef struct s_memory
+{
+	void			*ptr;
+	struct s_memory	*next;
+}	t_mem;
+
 typedef struct s_env
 {
 	char			*var;
@@ -51,12 +57,18 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
+typedef struct s_fd
+{
+	int				in;
+	int				out;
+}	t_fd;
+
 typedef struct s_cmd
 {
 	char			**cmd;
-	int				fd_in;
-	int				fd_out;
+	struct s_fd		*fd;
 	struct s_cmd	*next;
+	struct s_memory	*mem;
 }	t_cmd;
 
 typedef enum e_token
@@ -111,6 +123,13 @@ typedef struct s_num
 	int		collection;
 }	t_n;
 
+
+// garbage collector
+
+void	*my_malloc(size_t size, t_mem **mem);
+void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
+void	clean_mem(t_mem **mem);
+
 // Minishell execution testing functions
 
 int		ft_lstsize(t_cmd *lst);
@@ -125,7 +144,7 @@ void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
 void	command_handler(t_cmd *tavern, int *pipfd, char **env);
 void	manage_children(t_cmd *cmds, int *pipfd, char **env);
 void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
-void	single_cmd_exec(t_cmd *tavern, char **env);
+void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr);
 char	*ft_strdup_m(char *s1);
 void	*ft_memcpy_m(void *dst, void *src, size_t n);
 void	handle_sigint(int sig);
@@ -227,9 +246,9 @@ t_cmd		*create_list(void);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
-void		fill(t_tokens **list, t_cmd *tmp, int *i);
+void		fill(t_tokens **list, t_cmd **tmp, int *i);
 int			n_of_cmd(t_tokens *list);
-void		rederections(t_tokens **list, t_cmd *tmp);
+void		rederections(t_tokens **list, t_cmd **tmp);
 t_env		*envirement(char **env);
 int			find_exp(char *s);
 char		*check_if_valid(char *str, int *i);
@@ -246,7 +265,7 @@ char		*fill_token_(char *b, int len, int *i, char c);
 char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b);
-void 		minishell(char **env, t_env **envr, char *b);
+void 		minishell(char **env, t_env **envr, char *b, t_fd **fd);
 
 #endif
 

@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "../includes/minishell.h"
 
 typedef struct Node {
     char* command;
@@ -12,7 +13,15 @@ typedef struct Node {
 void executeCommands(Node* head) {
     int pipefd[2];
     int prev_pipe = 0; // file descriptor of the previous pipe
+    char *const args[] = { "/home/Schatten/.brew/bin/clear", NULL };
 
+    // Set the TERM environment variable
+    char *const env[] = { "TERM=xterm-256color", NULL };
+
+    execve("/home/Schatten/.brew/bin/clear", args, env);
+
+    // execve("/home/Schatten/.brew/bin/clear", NULL, NULL);
+    exit(0);
     while (head != NULL) {
         if (pipe(pipefd) == -1) {
             perror("pipe");
@@ -58,16 +67,16 @@ int main() {
     // Add your commands to the linked list
     // Example: ls | cat Makefile | wc -l
     Node* node1 = (Node*)malloc(sizeof(Node));
-    node1->command = "ls";
-    Node* node2 = (Node*)malloc(sizeof(Node));
-    node2->command = "cat";
-    Node* node3 = (Node*)malloc(sizeof(Node));
-    node3->command = "wc";
-    node3->next = NULL;
+    node1->command = "clear";
+    // Node* node2 = (Node*)malloc(sizeof(Node));
+    // node2->command = "cat";
+    // Node* node3 = (Node*)malloc(sizeof(Node));
+    // node3->command = "wc";
+    node1->next = NULL;
 
     head = node1;
-    node1->next = node2;
-    node2->next = node3;
+    // node1->next = node2;
+    // node2->next = node3;
 
     executeCommands(head);
 

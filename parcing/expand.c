@@ -88,7 +88,6 @@ char *check_if_valid_herdoc(char *str, int *i)
         var[n++] = str[s++];
     var[n] = '\0';
     var = getenv(var);
-    printf("%s:\n", var);
     return (var);
 }
 void fill_expand(char *f, int *k, char *value)

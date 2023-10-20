@@ -19,9 +19,10 @@ t_cmd *create_list()
 	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (NULL);
+	node->fd = malloc(sizeof(t_fd));
 	node->cmd = NULL;
-	node->fd_in = 0;
-	node->fd_out = 1;
+	node->fd->in = 0;
+	node->fd->out = 1;
 	node->next = NULL;
 	return (node);
 }
@@ -80,7 +81,7 @@ int n_of_cmd(t_tokens *list)
 	return (r);
 }
 
-void fill(t_tokens **list, t_cmd *tmp, int *i)
+void fill(t_tokens **list, t_cmd **tmp, int *i)
 {
 	char *word;
 	char *tmpe;
@@ -95,7 +96,7 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
 				word = tmpe;
 				(*list) = (*list)->next;
 			}
-			tmp->cmd[++(*i)] = word;
+			(*tmp)->cmd[++(*i)] = word;
 			// free(tmpe);
 		}
 	if ((*list)->type == IN || (*list)->type == OUT

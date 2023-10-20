@@ -36,6 +36,5 @@ int	command_search(char **path)
 		if (access(path[i], X_OK) == 0)
 			return (i);
 	}
-	perror("Command Not Found");
-	exit(EXIT_FAILURE);
+	return (-1);
 }
