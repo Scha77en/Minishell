@@ -141,8 +141,8 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 				}
 			}
 			free(b);
-			free_f_list(&f_list);
-			free_tokens(&list);
+			// free_f_list(&f_list);
+			// free_tokens(&list);
 		}
 	}
 }
@@ -186,7 +186,7 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	minishell(env, &envr, b, &fd);
-	free_env(&envr);
-	free(fd);
+	// free_env(&envr);
+	// free(fd);
 	return (0);
 }

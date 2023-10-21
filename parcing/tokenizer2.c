@@ -98,7 +98,6 @@ t_tokens	*tokenizer(char *b)
 		if (!c_node)
 			return (NULL);
 		add_node(&list, c_node);
-		free(c_node);
 	}
 	node = create_node();
 	node->type = NLINE;
