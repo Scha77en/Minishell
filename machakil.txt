@@ -221,3 +221,15 @@ here_doc when empty is not yet protected.
 pwd > IJIJ // builting + redirection yet to be handled.
 
 echo | cat -e // builting + pipe does not function as expected.
+
+
+
+
+$USERNAME$USENM   x
+
+
+ <<""|""       delemeter is 0 why ?
+
+
+
+ $?

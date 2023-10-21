@@ -1,242 +1,53 @@
+minishell$ echo $USER$USER
+aer-raouUSER
+minishell$ $USER$USER
+Command Not Found: No such file or directory
+minishell$ echo $USER$USER
+aer-raouUSER
+minishell$ $USER$USER
+Command Not Found: No such file or directory
 
-<< "|"                                           X
 
 
+minishell$ $USER_$USER
+minishell$ $USER $USER
+[1]    62553 segmentation fault  ./minishell
 
 
-export iiiiiiiiiiiiii|cat
+minishell$ $USER;$USER
+[1]    66147 segmentation fault  ./minishell
 
-ls | pwd | cat |                                ok
 
+minishell$ clear
+TERM environment variable not set.
 
-export char(not valid identifier)char/digit..
-cat << ld                                       ok
 
+minishell$ $USER)$USER
+[1]    68256 segmentation fault  ./minishell
 
+_________________________________________________
+__________________________________________________
 
-echo '$PWD'sdds"sdsdds" |""ls>agoumi
-input ====> "ls""" > sd                         X
+minishell$ $HOME
+error_out: execve
+execve: Permission denied
 
-ls>agoumi.txt"sdsd""""s"                        X
-ls>sdsd
 
-minishell output ======> ls" > sd": command not found               OK
 
-bash-3.2$ <|                                                        OK
-bash: syntax error near unexpected token `|'
+ echo $?
 
-minishell$ $kdflkd|ls                                               OK
-minishell$ < $fsjls                                                 X
-minishell: syntax error near unexpected token `newline':
 
-minishell$ <""                                                      OK
-minishell: syntax error near unexpected token `newline':
+ minishell$ $USER*$USER
 
 
-minishell: >: command not found
-***********************************************************minishell$ <'>'
+minishell$ ls > a
+minishell$ ls > a>B>A>S>D>F>G>G>H
 
 
-
-                                        minishell$ cat << l         ??????
-                                        > $USER'$USER'"$USER"ll     ???????
-                                        > l
-                                        ^C
-
-
-
-export dd=$
-
-
-
-minishell$ export _
-minishell: export: `_': not a valid identifier
-
-
-declare -x a="$$$$"
-declare -x a="   "
-declare -x a="$"
-declare -x d444
-minishell$ export a+=$a
-
-minishell$ unset ""
-
-
-minishell$ unset COMMAND_MODE
-minishell : unset: `COMMAND_MODE': not a valid identifier
-
-
-minishell$ ls|
-> |
-Libft                   inc                     minishell
-Makefile                ll                      minishell_tester
-execution               machakil.txt
-herdoc      
-
-
-
-                                                minishell$ << $USER
-                                                > ls
-                                                > ls
-                                                > user
-                                                > USER
-                                                > $USER
-                                                > yoibarki
-                                                minishell$ 
-
-
-minishell$ export a="ls ls "
-minishell$ > $a 
-minishell$ > $a  ls
-minishell$ > $a  ls lkdjsghdklshgkldsghdks dkshdkshkl
-ls: dkshdkshkl: No such file or directory
-ls: lkdjsghdklshgkldsghdks: No such file or directory
-minishell$ 
-
-
-
-echo $"" 
-$
-
-
-minishell$ unset HOME
-minishell$ cd
-minishell$ pwd
-/Users/yoibarki/Desktop/hal3aar
-minishell$ $?
-minishell: 0: command not found
-minishell$ 
-
-
-
-
-
-
-minishell$ cd o
-minishell: cd: o: No such file or directory
-minishell$ $?
-minishell: 1: command not found
-minishell$ 
-
-
-
-
-minishell$ a
-minishell: a: command not found
-
-
-./minishell
-minishell$ exit ""
-output should be ===> minishell: exit:  : numeric argument required
-
-minishell$ exit $UESR
-exit
-
-
-
-minishell$ <<""|""
-> 
-minishell$ <<""|ls
-> 
-minishell$ < a|ls
-                                                                                    ////0    minishell$ < a|wc
-                                                                                    ////0    minishell$ 
-
-
-
-                                                                                    minishell$ export a=echo
-                                                                                    minishell$ $a=jdgsjk jdkdf
-                                                                                    jdkdf
-                                                                                    minishell$
-
-
-
-
-bash-3.2$ mkdir -p 1/2/3/4
-bash-3.2$ cd 1/2/3/4/
-bash-3.2$ cd ..
-bash: cd: ..: No such file or directory
-bash-3.2$ pwd
-/Users/yoibarki/Desktop/soon/1/2/3/4
-bash-3.2$ unset PWD
-bash-3.2$ unset OLDPWD
-bash-3.2$ unset HOME
-bash-3.2$ pwd
-/Users/yoibarki/Desktop/soon/1/2/3/4
-bash-3.2$ 
-
-
-
-
-
-
-                                                    echo `'>'` "agoumi1"1
-bash: >: command not found
-agoumi11
-
-
-
-                                                    minishell$ echo "'$PWD'''''''''''''''''''"
-'/Users/yoibarki/Desktop/soon'
-
-
-
-"'pwd'" 
-
-
-
-
-//  export jsjkdf\kajsf
-// minishell$ export
-
-
-
-export d+=123
-export d=hello
-export d=+world
-ls | pwd | cat |
-
-
-export char(not valid identifier)char/digit..
-cat << ld
-
-
-
-echo '$PWD'sdds"sdsdds" |""ls>agoumi
-input ====> "ls""" > sd
-
-ls>agoumi.txt"sdsd""""s"
-ls>sdsd
-
-minishell output ======> ls" > sd": command not found
-
-0000
-00
-
-
-******************************
-
-here_doc when empty is not yet protected.
-
-pwd > IJIJ // builting + redirection yet to be handled.
-
-echo | cat -e // builting + pipe does not function as expected.
-
-
-export+="    "
-
-
--I ~/.brew/opt/readline/include
-
--L ~/.brew/opt/readline/lib
-
-
-
-
-
-
-
-ls | " " | ' ' ok
-
-
- ""as"wd"wd"sd"
+minishell$ cat << a
+heredoc> $USER
+aer-raou:         hadxi makhasox itla3
+heredoc> $HOME
+/Users/aer-raou:   hadxi makhasox itla3
+heredoc> a
+aer-raou/Users/aer-raouminishell$       khasek \n

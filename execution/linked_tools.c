@@ -20,8 +20,6 @@ t_cmd	*ft_lstnew_m(char *content)
 	if (!node1)
 		return (0);
 	node1 -> cmd = &content;
-    node1 -> fd_in = 0;
-    node1 -> fd_out = 1;
 	node1 -> next = NULL;
 	// node1 -> previous = NULL;
 	return (node1);

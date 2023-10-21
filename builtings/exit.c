@@ -18,7 +18,10 @@ void	ft_exit(t_cmd *tavern)
 
 	i = 0;
 	if (tavern->cmd[1] == NULL)
+	{
+		printf("exit\n");
 		exit(0);
+	}
 	else if (tavern->cmd[1] != NULL && tavern->cmd[2] == NULL)
 	{
 		while (tavern->cmd[1][i] != '\0')

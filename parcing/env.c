@@ -96,8 +96,5 @@ t_env	*envirement(char **env)
 			nv->value[++i] = env[n][s++];
 		n++;
 	}
-	free(nv->value);
-	free(nv->var);
-	free(nv);
 	return (head);
 }

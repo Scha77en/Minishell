@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 00:16:03 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 16:24:20 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	token(char fc, char sc)
 		return (OUT);
 	else if (fc == ' ')
 		return (WHITESPACE);
+	else if (fc == 92)
+		return (SLH);
 	else
 		return (WORD);
 }
@@ -60,5 +62,17 @@ int	is_token(int type)
 	if (type == PIPE || type == IN || type == OUT
 		|| type == HEREDOC || type == APPEND)
 		return (1);
+	return (0);
+}
+int	syntax_error(t_tokens *list)
+{
+	while (list)
+	{
+		if (((is_token(list->type) && !is_word(list->next->type)
+				&& list->next->type != WHITESPACE)) || list->type == SLH)
+			return (printf("syntax error : %s\n", list->tokens), 258);
+		else
+			list = list->next;
+	}
 	return (0);
 }

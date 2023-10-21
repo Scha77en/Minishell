@@ -24,7 +24,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <paths.h>
-# include "../parcing/msh.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
@@ -35,7 +34,6 @@
 # include <signal.h>
 # include <limits.h>
 # include <dirent.h>
-# include "../libft/libft.h"
 
 extern int     g_status;
 
@@ -53,12 +51,17 @@ typedef struct s_tokens
 	struct s_tokens	*next;
 }	t_tokens;
 
+typedef struct s_fd
+{
+	int				in;//?0
+	int				out;//? 1
+}	t_fd;
+
 typedef struct s_cmd
 {
 	char			**cmd;
-	int				fd_in;
-	int				fd_out;
 	struct s_cmd	*next;
+	struct s_fd 	*fd;
 }	t_cmd;
 
 typedef enum e_token
@@ -72,7 +75,8 @@ typedef enum e_token
 	IN,       // <
 	WORD,      // string
 	PIPE,     // |
-	NLINE,     // |
+	NLINE,
+	SLH ,    // |
 }	t_token;
 
 // get_next_line() structure;
@@ -218,34 +222,39 @@ void	*free_mem(char **ptr, int j);
 // parcing;
 
 //get_next_line
-char	*get_next_line(int fd);
+char		*get_next_line(int fd);
 // linkedlist of env
-void	ft_lstaddback(t_env **hed, t_env *new);
-t_env	*lstnew(void);
-int		white_space(char c);
-int		token(char fc, char sc);
-void	add_list(t_cmd **list, t_cmd *new);
-t_cmd	*create_list(void);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		is_word(int type);
-int		is_token(int type);
-void	fill(t_tokens **list, t_cmd *tmp, int *i);
-int		n_of_cmd(t_tokens *list);
-void	rederections(t_tokens **list, t_cmd *tmp);
-t_env	*envirement(char **env);
-int		find_exp(char *s);
-char	*check_if_valid(char *str, int *i);
-void	fill_expand(char *f, int *k, char *env);
-int		syntax_error(t_tokens *list);
-char	*fill_var(char *b, int n, int len);
-char	*update_line(char *line, char *var, int l);
-int		cheak(char *b, int *i, int c);
-void	add_node(t_tokens **list, t_tokens *new);
-char	*check_if_valid_herdoc(char *str, int *i);
-char	*fill_word(char *b, int *i, int *exit_status);
-char	*fill_token(char *b, int *i, char c, int *exit_status);
+void		ft_lstaddback(t_env **hed, t_env *new);
+t_env		*lstnew(void);
+int			white_space(char c);
+int			token(char fc, char sc);
+void		add_list(t_cmd **list, t_cmd *new);
+t_cmd		*create_list(void);
+char		*ft_strjoin(char const *s1, char const *s2);
+int			is_word(int type);
+int			is_token(int type);
+void		fill(t_tokens **list, t_cmd *tmp, int *i);
+int			n_of_cmd(t_tokens *list);
+void		rederections(t_tokens **list, t_cmd *tmp);
+t_env		*envirement(char **env);
+int			find_exp(char *s);
+char		*check_if_valid(char *str, int *i);
+void		fill_expand(char *f, int *k, char *env);
+int			syntax_error(t_tokens *list);
+char		*fill_var(char *b, int n, int len);
+char		*update_line(char *line, char *var, int l);
+int			cheak(char *b, int *i, int c);
+void		add_node(t_tokens **list, t_tokens *new);
+char		*check_if_valid_herdoc(char *str, int *i);
+char		*fill_word(char *b, int *i);
+char		*fill_token(char *b, int *i, char c);
+char		*fill_token_(char *b, int len, int *i, char c);
+char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 t_tokens	*create_node(void);
-t_tokens	*tokenizer(char *b, int *exit_status);
+t_tokens	*tokenizer(char *b);
+void 		minishell(char **env, t_env **envr, char *b, t_fd **fd);
+// int			len_var(char *value, t_env *env);
+
 #endif
 
 // it will be improved with time and what we would need;

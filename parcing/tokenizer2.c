@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 14:53:32 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 15:20:18 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	add_node(t_tokens **list, t_tokens *new)
 	t_tokens	*tmp;
 
 	if (!(*list))
+	{
 		*list = new;
+	}
 	else
 	{
 		tmp = *list;
@@ -38,69 +40,67 @@ void	add_node(t_tokens **list, t_tokens *new)
 		tmp->next = new;
 	}
 }
+char *t_oken(char *str, int *i, char *b, int type)
+{
+	int r;
 
-t_tokens	*tokenizer(char *b, int *exit_status)
+	r = *i;
+	while (white_space(b[r+1]))
+			r++;
+	r++;
+	if (type == HEREDOC || type == APPEND)
+		r++;
+	*i = r;
+	return (ft_strdup(str));
+}
+t_tokens *fill_node(t_tokens *node, char *b, int *i)
+{
+	if ((node->type = token(b[*i], ' ')) == WHITESPACE)
+		node->tokens = t_oken(" ", i, b, -1);
+	else if ((node->type = token(b[*i], b[*i + 1])) == PIPE)
+		node->tokens = t_oken("|", i, b, -1);
+	else if ((node->type = token(b[*i], b[*i + 1])) == HEREDOC)
+		node->tokens = t_oken("<<", i, b, HEREDOC);
+	else if ((node->type = token(b[*i], b[*i + 1])) == APPEND)
+		node->tokens = t_oken(">>", i, b, APPEND);
+	else if ((node->type = token(b[*i], b[*i + 1])) == OUT)
+		node->tokens = t_oken(">", i, b, -1);
+	else if ((node->type = token(b[*i], b[*i + 1])) == IN)
+		node->tokens = t_oken("<", i, b, -1);
+	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
+	{
+		if ((node->tokens = fill_token(b, i, 34)) == NULL)
+			return (NULL);
+	}
+	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
+	{
+		if ((node->tokens = fill_token(b, i, 39)) == NULL)
+			return (NULL); 
+	}
+	else
+		node->tokens = fill_word(b, i);
+	return (node);
+}
+
+t_tokens	*tokenizer(char *b)
 {
 	int			i;
 	t_tokens	*list;
 	t_tokens	*node;
+	t_tokens	*c_node;
 
 	i = 0;
 	list = NULL;
 	while (b[i])
 	{
 		node = create_node();
-		if ((node->type = token(b[i], ' ')) == WHITESPACE)
-		{
-			node->tokens = ft_strdup(" ");
-			while (white_space(b[i +1]))
-				i++;
-		}
-		else if ((node->type = token(b[i], b[i + 1])) == PIPE)
-			node->tokens = ft_strdup("|");
-		else if ((node->type = token(b[i], b[i + 1])) == HEREDOC)
-		{
-			node->tokens = ft_strdup("<<");
-			i++;
-		}
-		else if ((node->type = token(b[i], b[i + 1])) == APPEND)
-		{
-			node->tokens = ft_strdup(">>");
-			i++;
-		}
-		else if ((node->type = token(b[i], b[i + 1])) == SQUAT)
-		{
-			if ((node->tokens = fill_token(b, &i, 34, exit_status)) == NULL)
-				return (NULL);
-		}
-		else if ((node->type = token(b[i], b[i + 1])) == DQOUT)
-		{
-			if ((node->tokens = fill_token(b, &i, 39, exit_status)) == NULL)
-				return (NULL); 
-		}
-		else if ((node->type = token(b[i], b[i + 1])) == OUT)
-			node->tokens = ft_strdup(">");
-		else if ((node->type = token(b[i], b[i + 1])) == IN)
-			node->tokens = ft_strdup("<");
-		else
-			node->tokens = fill_word(b, &i, exit_status);
-		add_node(&list, node);
+		c_node =  fill_node(node, b, &i);
+		if (!c_node)
+			return (NULL);
+		add_node(&list, c_node);
 	}
 	node = create_node();
 	node->type = NLINE;
 	add_node(&list, node);
 	return (list);
-}
-
-int	syntax_error(t_tokens *list)
-{
-	while (list)
-	{
-		if ((is_token(list->type) && !is_word(list->next->type)
-				&& list->next->type != WHITESPACE))
-			return (printf("syntax error : %s\n", list->tokens), 258);
-		else
-			list = list->next;
-	}
-	return (0);
 }

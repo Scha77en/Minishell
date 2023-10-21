@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 15:09:32 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:45:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ t_cmd *create_list()
 	if (!node)
 		return (NULL);
 	node->cmd = NULL;
-	node->fd_in = 0;
-	node->fd_out = 1;
 	node->next = NULL;
 	return (node);
 }
@@ -70,8 +68,8 @@ int n_of_cmd(t_tokens *list)
 		else if (list->type == IN || list->type == OUT || list->type == HEREDOC || list->type == APPEND)
 		{
 		   list = list->next;
-		   if (list->type == WHITESPACE)
-			list = list->next;
+			if (list->type == WHITESPACE)
+				list = list->next;
 			while(is_word(list->next->type))
 				list = list->next;
 		}
@@ -95,9 +93,10 @@ void fill(t_tokens **list, t_cmd *tmp, int *i)
 				word = tmpe;
 				(*list) = (*list)->next;
 			}
-			tmp->cmd[++(*i)] = ft_strdup(word);
-			free(tmpe);
+			tmp->cmd[++(*i)] = word;
+			// free(tmpe);
 		}
-	if ((*list)->type == IN || (*list)->type == OUT || (*list)->type == HEREDOC || (*list)->type == APPEND)
+	if ((*list)->type == IN || (*list)->type == OUT
+		|| (*list)->type == HEREDOC || (*list)->type == APPEND)
 		rederections(list, tmp);
 }

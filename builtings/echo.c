@@ -31,13 +31,13 @@ void	echo_builted(t_cmd *tavern)
 	}
 	while (tavern->cmd[i] != NULL)
 	{
-		write(tavern->fd_out, tavern->cmd[i], ft_strlen(tavern->cmd[i]));
+		write(tavern->fd->out, tavern->cmd[i], ft_strlen(tavern->cmd[i]));
 		if (tavern->cmd[i + 1] != NULL)
-			write(tavern->fd_out, " ", 1);
+			write(tavern->fd->out, " ", 1);
 		i++;
 	}
 	if (n == 0)
-		write(tavern->fd_out, "\n", 1);
+		write(tavern->fd->out, "\n", 1);
 }
 
 int	ft_strncmp_echo(char *s1, char *s2, int n)

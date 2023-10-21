@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
 /*   Updated: 2023/09/29 11:43:07 by aouhbi           ###   ########.fr       */
@@ -30,12 +30,12 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		if (chdir(ft_getenv(env, "OLDPWD")) != 0)
 		{
 			if (ft_getenv(env, "OLDPWD") == NULL)
-				write((*tavern)->fd_out, "Minishell: cd: OLDPWD not set\n", 31);
+				write((*tavern)->fd->out, "Minishell: cd: OLDPWD not set\n", 31);
 			else
 			{
-				write ((*tavern)->fd_out, "Minishell: cd: ", 15);
-				write((*tavern)->fd_out, ft_getenv(env, "OLDPWD") ,ft_strlen(ft_getenv(env, "OLDPWD")));
-				write((*tavern)->fd_out, " : No such file or directory\n", 30);
+				write ((*tavern)->fd->out, "Minishell: cd: ", 15);
+				write((*tavern)->fd->out, ft_getenv(env, "OLDPWD") ,ft_strlen(ft_getenv(env, "OLDPWD")));
+				write((*tavern)->fd->out, " : No such file or directory\n", 30);
 			}
 			return ;
 		}
@@ -50,13 +50,13 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		redefine_pwd(pwd, (*tavern)->cmd[1]);
 		if (chdir((*tavern)->cmd[1]) != 0)
 		{
-			write((*tavern)->fd_out, "cd: error retrieving current directory\n", 40);
+			write((*tavern)->fd->out, "cd: error retrieving current directory\n", 40);
 			return ;
 		}
 		if (!getcwd(curwd, PATH_MAX))
 		{
-			write((*tavern)->fd_out, "cd: error retrieving current directory: ", 41);
-			write((*tavern)->fd_out, "getcwd : cannot access parent directories: No such file or directory\n", 70);
+			write((*tavern)->fd->out, "cd: error retrieving current directory: ", 41);
+			write((*tavern)->fd->out, "getcwd : cannot access parent directories: No such file or directory\n", 70);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/17 00:46:55 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 11:44:53 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:53:09 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out)
 		return (0);
 	// printf("%s\n", content);
 	node1->cmd = content;
-	node1->fd_in = fd_in;
-	node1->fd_out = fd_out;
+	node1->fd->in = fd_in;
+	node1->fd->out = fd_out;
 	node1->next = NULL;
 	return (node1);
 }

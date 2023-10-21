@@ -15,16 +15,16 @@
 char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 {
 	int		pipfd[2];
-	int		v;
+	// int		v;
 	pid_t	pid1 = -1;
-   	pid_t terminatedPid;
+   	// pid_t terminatedPid;
 	int		for_next = 0;
 
-	v = 0;
+	// v = 0;
 	if ((*tavern)->next == NULL)
 	{
 		if (if_builting(tavern, envr, &pwd))
-			v = -1;
+				;
 		else
 		{
 			pid1 = fork();
@@ -32,7 +32,6 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 				single_cmd_exec((*tavern), env);
 		}
 	}
-	
 	else
 	{
 		while ((*tavern))
@@ -71,7 +70,7 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 	}
 	while (wait(NULL) > 0)
 	{
- 		terminatedPid = wait(&g_status);
+ 		// terminatedPid = wait(&g_status);
  		if (WIFEXITED(g_status)) {
 			// Child process exited normally
  	    	g_status = WEXITSTATUS(g_status);
@@ -101,7 +100,7 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_env(env, 0), 1);
 	else if (ft_strcmp((*tavern)->cmd[0], "exit") == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "??") == 0)
+	else if (ft_strcmp((*tavern)->cmd[0], "$?") == 0)
 		return (printf("%d\n", g_status), 1);
 
 	return (0);
@@ -155,7 +154,12 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		i = command_search(path);
 		ret = execve(path[i], tavern->cmd, NULL);
 		if (ret == -1)
-			error_out("execve", 0);
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, " : command not found\n", 22);
+			exit(127);	
+			
+		}
 	}
 }
 
@@ -182,7 +186,11 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 // Note: the evaluator may unset the env from the start with "./minishell env -i" command
 // check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
 
+<<<<<<< HEAD
 // add the signals and handle them;
+=======
+// add the signals and handle them; --DONE--
+>>>>>>> f2666ddf2aae92c84bbcf2725acca21d5e64a421
 
 // handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
 

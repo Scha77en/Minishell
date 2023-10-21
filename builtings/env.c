@@ -38,10 +38,6 @@ void	ft_env(t_env **env, int v)
 
 void	set_env(t_env **env)
 {
-	char	**pwd;
-	char	**path;
-	char	**shell_lvl;
-	char	**under_s;
 	char	cwd[PATH_MAX];
 
 	getcwd(cwd, sizeof(cwd));

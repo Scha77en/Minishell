@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/30 14:39:00 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:02:26 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,53 +19,73 @@ int	white_space(char c)
 		return (1);
 	return (0);
 }
-
-char	*fill_word(char *b, int *i, int *exit_status)
+int len_word(char *b, int *i, char **var)
 {
-	char	*f;
-	char	*var;
-	int		l;
-	int		s;
-	int		k;
+	int l;
 
-	var = NULL;
 	l = 0;
-	s = (*i);
 	while (b[(*i)] && b[(*i)] != '>' && b[(*i)] != '<' && b[(*i)] != 39
 		&& b[(*i)] != '|' && b[(*i)] != 34 && !white_space(b[(*i)]))
 	{
 		if (b[(*i)] == '$')
 		{
-			var = check_if_valid(b, i);
-			if (b[((*i) + 1)] == '?')
-				var = ft_itoa(*exit_status);
-			if (var != NULL)
-				l += ft_strlen(var);
+			if (b[++(*i)] == '?')
+			{
+				*var = ft_itoa(g_status);
+				l += ft_strlen(ft_itoa(g_status));
+			}
+			else
+				*var = check_if_valid(b, i);
+			if (*var != NULL)
+				l += ft_strlen(getenv(*var));
 		}
 		else
+		{
 			l++;
-		(*i)++;
+			(*i)++;
+		}
 	}
+	return (l);
+}
+char *fill_wrd(char *var, int s, char *b, int l)
+{
+	char	*f;
+	int		k;
+
+	k  = 0;
 	f = malloc(sizeof(char) * l +1);
 	if (!f)
 		return (NULL);
 	f[l] = '\0';
-	k = 0;
-	while (l)
+	while (l > 0)
 	{
-		if (b[s] == '$' && var != NULL)
+		if (b[s] == '$' && (getenv(var) != NULL || ft_isdigit(var[0])))
 		{
 			fill_expand(f, &k, var);
-			s++;
-			l -= ft_strlen(var);
+			s += ft_strlen(var) + 1;
+			l -= ft_strlen(getenv(var));
 		}
-		else if (b[s] == '$' && var == NULL)
+		else if (b[s] == '$' && getenv(var) == NULL)
 			return (free(f), NULL);
-		if (l)
+		else
 		{
 			f[k++] = b[s++];
 			l--;
 		}
 	}
+	return (f);
+}
+
+char	*fill_word(char *b, int *i)
+{
+	char	*f;
+	char	*var;
+	int		l;
+	int		s;
+
+	var = NULL;
+	s = (*i);
+	l = len_word(b, i, &var);
+	f = fill_wrd(var, s, b, l);
 	return (f);
 }
