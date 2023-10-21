@@ -14,7 +14,6 @@
 
 void	error_out(char *msg, int v)
 {
-	printf("error_out: %s\n", msg);
 	if (v == 0)
 		perror(msg);
 	if (v == 1)

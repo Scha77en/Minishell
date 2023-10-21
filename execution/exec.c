@@ -29,7 +29,7 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				single_cmd_exec((*tavern), env);
+				single_cmd_exec((*tavern), env, envr);
 		}
 	}
 	else
@@ -117,7 +117,11 @@ void	execute_command(t_cmd *tavern, char **env)
 	{
 		ret = execve(tavern->cmd[0], tavern->cmd, env);
 		if (ret == -1)
+		{
 			error_out("execve", 0);
+			g_status = 126;
+			exit(126);
+		}
 	}
 	else
 	{
@@ -128,22 +132,33 @@ void	execute_command(t_cmd *tavern, char **env)
 		i = command_search(path);
 		ret = execve(path[i], tavern->cmd, env);
 		if (ret == -1)
-			error_out("execve", 0);
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			g_status = 127;
+			exit(127);
+		}
 	}
 }
 
-void	single_cmd_exec(t_cmd *tavern, char **env)
+void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 {
 	char	**path;
 	int		ret;
 	int		i;
 
+	(void)envr;
+	ret = 0;
 	check_redirections(tavern);
 	if (access(tavern->cmd[0], F_OK) == 0)
 	{
-		ret = execve(tavern->cmd[0], tavern->cmd, NULL);
+		ret = execve(tavern->cmd[0], tavern->cmd, env);
 		if (ret == -1)
+		{
 			error_out("execve", 0);
+			g_status = 126;
+			exit(126);
+		}
 	}
 	else
 	{
@@ -152,18 +167,16 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
-		ret = execve(path[i], tavern->cmd, NULL);
+		ret = execve(path[i], tavern->cmd, env);
 		if (ret == -1)
 		{
 			ft_putstr_fd(tavern->cmd[0], 2);
-			write(2, " : command not found\n", 22);
-			exit(127);	
-			
+			write(2, ": command not found\n", 20);
+			g_status = 127;
+			exit(127);
 		}
 	}
 }
-
-
 
 
 
@@ -187,20 +200,42 @@ void	single_cmd_exec(t_cmd *tavern, char **env)
 // check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // add the signals and handle them;
 =======
 // add the signals and handle them; --DONE--
 >>>>>>> f2666ddf2aae92c84bbcf2725acca21d5e64a421
+=======
+// add the signals and handle them; --DONE--
+>>>>>>> 167608004b9862019aed7ebcd4ca5bc7a8684595
 
-// handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
+// only the 0,1,2 should be remaining after every command, the rest should be closed; --DONE--
 
-// sort the envirement when you print it with export only;
 
-// handle when the PATH is unseted; the result should be fixed;
+/***************************************************************************************************************************************************************************************************/
 
-// error_out must write the msg in the fd_out.
 
-// remove the leaks;
+// 1- handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
+
+// 2- when exporting a variable without a value (which means without '=' sign), it should not be added in the env, but it will be available when executing export;
+
+// 3- set the garbage collector;
+
+// 4- sort the envirement when you print it with export only;
+
+// 5- handle when the PATH is unseted; the result should be fixed;
+
+// 6- error_out must write the msg in the fd_out.
+
+
+// 7-
+// minishell$ $USER
+// Schatten: command not found "expected"
+// execve: Bad address "result"
+
+// minishell$ $HOME
+// minishell: /home/Schatten: Is a directory "expected"
+// execve: Bad address "result"
 
 // ./minishell + an argument should return for example :
 // ./minishell config:

@@ -51,7 +51,7 @@
 // 	// 	current = current->next;
 // 	// }
 // 	int fd = open("new_file", O_CREAT | O_WRONLY | O_TRUNC, 0777);
-// 	tavern->fd_out = fd;
+// 	tavern->fd->out = fd;
 // 	execute_cmds(tavern, env);
 // 	free(s1[0]);
 // 	free(s1);
