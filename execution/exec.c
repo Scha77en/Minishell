@@ -199,15 +199,7 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 // Note: the evaluator may unset the env from the start with "./minishell env -i" command
 // check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// add the signals and handle them;
-=======
 // add the signals and handle them; --DONE--
->>>>>>> f2666ddf2aae92c84bbcf2725acca21d5e64a421
-=======
-// add the signals and handle them; --DONE--
->>>>>>> 167608004b9862019aed7ebcd4ca5bc7a8684595
 
 // only the 0,1,2 should be remaining after every command, the rest should be closed; --DONE--
 

@@ -233,3 +233,11 @@ $USERNAME$USENM   x
 
 
  $?
+
+minishell$ $USER$USERNAM
+expected :
+        $aouhbi: command not found
+
+result :
+        $                    (empty)
+
