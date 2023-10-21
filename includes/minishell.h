@@ -37,12 +37,6 @@
 
 extern int     g_status;
 
-typedef struct s_memory
-{
-	void			*ptr;
-	struct s_memory	*next;
-}	t_mem;
-
 typedef struct s_env
 {
 	char			*var;
@@ -68,7 +62,6 @@ typedef struct s_cmd
 	char			**cmd;
 	struct s_fd		*fd;
 	struct s_cmd	*next;
-	struct s_memory	*mem;
 }	t_cmd;
 
 typedef enum e_token
@@ -126,9 +119,9 @@ typedef struct s_num
 
 // garbage collector
 
-void	*my_malloc(size_t size, t_mem **mem);
-void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
-void	clean_mem(t_mem **mem);
+// void	*my_malloc(size_t size, t_mem **mem);
+// void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
+// void	clean_mem(t_mem **mem);
 
 // Minishell execution testing functions
 
@@ -226,9 +219,6 @@ int		ft_strcmp(char *s1, char *s2);
 void	error_out(char *msg, int v);
 void	type_specifier(t_data **data, char *cmd);
 void	store_cmd_in_nodes(t_data **data, char **ptr);
-t_cmd	*ft_lstnew_m(char *content);
-void	ft_lstadd_back_m(t_data **lst, t_data *new);
-t_data	*ft_lstlast_m(t_data *lst);
 t_cmd	*ft_lstlast_p(t_cmd *lst);
 void	*free_mem(char **ptr, int j);
 

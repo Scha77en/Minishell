@@ -199,6 +199,7 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 
 // add the signals and handle them; --DONE--
 
+// only the 0,1,2 should be remaining after every command, the rest should be closed; --DONE--
 
 
 /***************************************************************************************************************************************************************************************************/
@@ -208,16 +209,16 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 
 // 2- when exporting a variable without a value (which means without '=' sign), it should not be added in the env, but it will be available when executing export;
 
-// 3- only the 0,1,2 should be remaining after every command, the rest should be closed;
+// 3- set the garbage collector;
 
-// 4- set the garbage collector;
+// 4- sort the envirement when you print it with export only;
 
-// 5- sort the envirement when you print it with export only;
+// 5- handle when the PATH is unseted; the result should be fixed;
 
-// 6- handle when the PATH is unseted; the result should be fixed;
+// 6- error_out must write the msg in the fd_out.
 
-// 7- error_out must write the msg in the fd_out.
 
+// 7-
 // minishell$ $USER
 // Schatten: command not found "expected"
 // execve: Bad address "result"

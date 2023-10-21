@@ -44,22 +44,22 @@ void	clean_mem(t_mem **mem)
 	mem = NULL;
 }
 
-void	leaks(void)
-{
-	system("leak a.out");
-}
+// void	leaks(void)
+// {
+// 	system("leak a.out");
+// }
 
-int main(void)
-{
-	// atexit(leaks);
-	t_mem	*mem;
-	t_cmd	*tavern;
-	char	**word;
+// int main(void)
+// {
+// 	// atexit(leaks);
+// 	t_mem	*mem;
+// 	t_cmd	*tavern;
+// 	char	**word;
 
-	mem = NULL;
-	tavern = my_malloc(sizeof(t_cmd), &mem);
-	tavern->cmd = my_malloc(sizeof(char *) * 2, &mem);
-	word = my_malloc(sizeof(char *) * 2, &mem);
-	// while(1);
-	// clean_mem(&mem);
-}
+// 	mem = NULL;
+// 	tavern = my_malloc(sizeof(t_cmd), &mem);
+// 	tavern->cmd = my_malloc(sizeof(char *) * 2, &mem);
+// 	word = my_malloc(sizeof(char *) * 2, &mem);
+// 	// while(1);
+// 	// clean_mem(&mem);
+// }
