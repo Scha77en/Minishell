@@ -12,14 +12,14 @@
 
 #include "../includes/minishell.h"
 
-t_cmd *create_list()
+t_cmd *create_list(t_fd **fd)
 {
 	t_cmd *node;
 
 	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (NULL);
-	node->fd = malloc(sizeof(t_fd));
+	node->fd = *fd;
 	node->cmd = NULL;
 	node->next = NULL;
 	return (node);

@@ -40,8 +40,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
 	while (list->type != NLINE)
 	{
 	i = -1;
-	add_list(f_list, create_list());
-	(*f_list)->fd = *fd;
+	add_list(f_list, create_list(fd));
 	tmp = ft_lstlast_p(*f_list);
 	flg = -1;
 		while (list && list->type != NLINE && list->type != PIPE)
@@ -111,6 +110,7 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 		b = readline("minishell$ ");
 		if (b == NULL)
 		{
+			update_shlvl(envr, -1);
 			printf("exit\n");
 			break;
 		}

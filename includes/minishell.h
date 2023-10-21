@@ -41,6 +41,7 @@ typedef struct s_env
 {
 	char			*var;
 	char			*value;
+	int				id;
 	struct s_env	*next;
 }t_env;
 
@@ -164,8 +165,8 @@ char	**split_export(char *split);
 char	*back_slash_parce(char *str, int flag);
 int		back_slash(char *str);
 int		slash_size(char *str);
-void	ft_add_env(t_env **env, char **split);
-int		check_validity(char *str);
+void	ft_add_env(t_env **env, char **split, int v);
+int		check_validity(char *str, int *v);
 int		alpha_undscore(char c);
 int		plus_sign(char *str, int v);
 void	ft_join_value(t_env **env, char **split);
@@ -173,6 +174,7 @@ char	*ft_strndup(char *s, int n);
 void	ft_exit(t_cmd *tavern);
 void	ft_unset(t_cmd *tavern, t_env **envr);
 void	set_env(t_env **env);
+void	update_shlvl(t_env **envr, int v);
 
 // here_document
 
@@ -233,7 +235,7 @@ t_env		*lstnew(void);
 int			white_space(char c);
 int			token(char fc, char sc);
 void		add_list(t_cmd **list, t_cmd *new);
-t_cmd		*create_list(void);
+t_cmd		*create_list(t_fd **fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);

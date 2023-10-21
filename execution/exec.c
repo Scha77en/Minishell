@@ -15,12 +15,21 @@
 char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 {
 	int		pipfd[2];
-	// int		v;
 	pid_t	pid1 = -1;
    	// pid_t terminatedPid;
 	int		for_next = 0;
 
 	// v = 0;
+	if (!ft_strncmp((*tavern)->cmd[0], "exit", 5))
+	{
+		update_shlvl(envr, -1);
+	}
+	if (!ft_strncmp((*tavern)->cmd[0], "./minishell", 12) ||
+			!ft_strncmp((*tavern)->cmd[0], "minishell", 10))
+	{
+		update_shlvl(envr, 1);
+		
+	}
 	if ((*tavern)->next == NULL)
 	{
 		if (if_builting(tavern, envr, &pwd))
@@ -119,7 +128,6 @@ void	execute_command(t_cmd *tavern, char **env)
 		if (ret == -1)
 		{
 			error_out("execve", 0);
-			g_status = 126;
 			exit(126);
 		}
 	}
@@ -135,7 +143,6 @@ void	execute_command(t_cmd *tavern, char **env)
 		{
 			ft_putstr_fd(tavern->cmd[0], 2);
 			write(2, ": command not found\n", 20);
-			g_status = 127;
 			exit(127);
 		}
 	}
@@ -156,7 +163,6 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 		if (ret == -1)
 		{
 			error_out("execve", 0);
-			g_status = 126;
 			exit(126);
 		}
 	}
@@ -172,7 +178,6 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 		{
 			ft_putstr_fd(tavern->cmd[0], 2);
 			write(2, ": command not found\n", 20);
-			g_status = 127;
 			exit(127);
 		}
 	}
@@ -237,3 +242,22 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 
 // while true; do lsof -c minishell; done
 // while true; do leaks minishell; done
+
+
+// $export test
+// $env
+//  	<--envirement without test
+// $export
+//		<--envirement with test no '='
+
+// $export test= or test+=
+// $env
+//		<--envirement with test=
+// $export
+//		<--envirement with test=
+
+// $export test=123 or test+=123
+// $env
+//		<--envirement with test=123
+// $export
+//		<--envirement with test=123

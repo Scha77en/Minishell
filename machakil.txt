@@ -234,6 +234,8 @@ $USERNAME$USENM   x
 
  $?
 
+---------
+
 minishell$ $USER$USERNAM
 expected :
         $aouhbi: command not found
@@ -241,3 +243,15 @@ expected :
 result :
         $                    (empty)
 
+--------
+
+cat << "" | ls "" | wc -l
+> 
+ls: cannot access '': No such file or directory
+0
+
+-----------
+
+cat << "" | ""ls | wc -l
+> 
+13
