@@ -1,10 +1,11 @@
 #include "../includes/minishell.h"
 
-void	*my_malloc(size_t size, t_mem **mem)
+void	*my_malloc(size_t size)
 {
+	t_mem	**mem;
 	t_mem	*new_mem;
 
-	new_mem = malloc(sizeof(t_mem));
+	*new_mem = malloc(sizeof(t_mem));
 	if (!new_mem)
 		error_out("malloc", 1);
 	new_mem->ptr = malloc(size);

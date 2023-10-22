@@ -1,15 +1,15 @@
 #include <stdio.h>
 
-void    change_value(int i)
+char   *change_value(char *str)
 {
-    i = 1;
+    str = "No";
 }
 
 int main()
 {
-    int i = 0;
+    char *str[] = {"hello", "world"};
 
-    printf("%d\n", i);
-    change_value(i);
-    printf("%d\n", i);
+    char *ok = change_value(*str);
+    printf("str = %s\n", str[0]);
+    printf("ok = %s\n", ok);
 }

@@ -23,12 +23,10 @@ void	ft_unset(t_cmd *tavern, t_env **envr)
 	while (tavern->cmd[++i])
 	{
 		target = back_slash_parce(tavern->cmd[i], 1);
-		printf("%s\n", target);
 		tmp = *envr;
 		prev = NULL;
 		while (tmp)
 		{
-			printf("%s\n", tmp->var);
 			if (!ft_strncmp(target, tmp->var, ft_strlen(target)))
 			{
 				if (prev == NULL)

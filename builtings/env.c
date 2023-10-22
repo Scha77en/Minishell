@@ -15,10 +15,17 @@
 void	ft_env(t_env **env, int v)
 {
 	t_env	*current;
+	char	*path;
 
 	current = *env;
 	if (v == 0)
 	{
+		path = ft_getenv(env, "PATH");
+		if (!path)
+		{
+			write(2, "minishell: env: No such file or directory\n", 43);
+			return ;
+		}
 		while (current)
 		{
 			if (current->id == 0)
@@ -28,6 +35,8 @@ void	ft_env(t_env **env, int v)
 	}
 	else if (v == 1)
 	{
+		// current = export_sort(*env);
+		current = export_sort(*env);
 		while (current)
 		{
 			if (current->id == 0)
@@ -55,21 +64,56 @@ void	set_env(t_env **env)
 	ft_lstaddback(env, ft_envnew(ft_strdup("_"), ft_strdup("/usr/bin/env")));
 }
 
-void	update_shlvl(t_env **envr, int v)
+void swap(t_env *a, t_env *b)
+{
+    char *temp_var = a->var;
+    char *temp_value = a->value;
+    int temp_id = a->id;
+
+    a->var = b->var;
+    a->value = b->value;
+    a->id = b->id;
+
+    b->var = temp_var;
+    b->value = temp_value;
+    b->id = temp_id;
+}
+
+char	**update_env(t_env **envr)
+{
+	char	**current;
+
+	current = env_to_char(envr);
+	return (current);
+}
+
+
+char	**env_to_char(t_env **env)
 {
 	t_env	*current;
+	char	**u_env;
+	int		i;
 
-	current = *envr;
+	current = *env;
+	i = 0;
 	while (current)
 	{
-		if (ft_strncmp(current->var, "SHLVL", 5) == 0)
-		{
-			if (v == 1)
-				current->value = ft_itoa(ft_atoi(current->value) + 1);
-			else if (v == -1)
-				current->value = ft_itoa(ft_atoi(current->value) - 1);
-			return ;
-		}
 		current = current->next;
+		i++;
 	}
+	u_env = malloc(sizeof(char *) * (i + 1));
+	if (!u_env)
+		error_out("malloc", 0);
+	current = *env;
+	i = 0;
+	while (current)
+	{
+		if (!ft_strncmp(current->var, "SHLVL", 5))
+			current->value = ft_itoa(ft_atoi(current->value) + 1);
+		u_env[i] = ft_strjoin_b(current->var, current->value, 2);
+		current = current->next;
+		i++;
+	}
+	u_env[i] = NULL;
+	return (u_env);
 }

@@ -37,6 +37,12 @@
 
 extern int     g_status;
 
+typedef struct s_mem
+{
+	void			*ptr;
+	struct s_mem	*next;
+}	t_mem;
+
 typedef struct s_env
 {
 	char			*var;
@@ -131,19 +137,21 @@ int		ft_lstsize(t_cmd *lst);
 t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
 t_cmd	*ft_lstlast_t(t_cmd *lst);
 void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
-char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd);
-void	execute_command(t_cmd *tavern, char **env);
+char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd);
+void	execute_command(t_cmd *tavern, t_env **envr);
 void	exec_first_cmd(t_cmd *tavern, char **env);
 void	exec_last_cmd(t_cmd *tavern, char **env);
 void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
 void	command_handler(t_cmd *tavern, int *pipfd, char **env);
 void	manage_children(t_cmd *cmds, int *pipfd, char **env);
 void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
-void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr);
+void	single_cmd_exec(t_cmd *tavern, t_env **envr);
 char	*ft_strdup_m(char *s1);
 void	*ft_memcpy_m(void *dst, void *src, size_t n);
 void	handle_sigint(int sig);
-
+char	**update_env(t_env **envr);
+char	**env_to_char(t_env **env);
+// void	reset_fd(t_cmd **tavern);
 // builting
 
 int		if_builting(t_cmd **tavern, t_env **env, char **pwd);
@@ -174,7 +182,10 @@ char	*ft_strndup(char *s, int n);
 void	ft_exit(t_cmd *tavern);
 void	ft_unset(t_cmd *tavern, t_env **envr);
 void	set_env(t_env **env);
-void	update_shlvl(t_env **envr, int v);
+void	swap(t_env *a, t_env *b);
+t_env	*export_sort(t_env *head_ref);
+t_env	*copy_list(t_env *head);
+t_env	*copy_node(t_env *node);
 
 // here_document
 
@@ -235,7 +246,7 @@ t_env		*lstnew(void);
 int			white_space(char c);
 int			token(char fc, char sc);
 void		add_list(t_cmd **list, t_cmd *new);
-t_cmd		*create_list(t_fd **fd);
+t_cmd		*create_list(void);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
@@ -258,7 +269,7 @@ char		*fill_token_(char *b, int len, int *i, char c);
 char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b);
-void 		minishell(char **env, t_env **envr, char *b, t_fd **fd);
+void 		minishell(t_env **envr, char *b);
 // int			len_var(char *value, t_env *env);
 
 #endif

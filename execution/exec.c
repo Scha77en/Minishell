@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
+char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 {
 	int		pipfd[2];
 	pid_t	pid1 = -1;
@@ -20,16 +20,6 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 	int		for_next = 0;
 
 	// v = 0;
-	if (!ft_strncmp((*tavern)->cmd[0], "exit", 5))
-	{
-		update_shlvl(envr, -1);
-	}
-	if (!ft_strncmp((*tavern)->cmd[0], "./minishell", 12) ||
-			!ft_strncmp((*tavern)->cmd[0], "minishell", 10))
-	{
-		update_shlvl(envr, 1);
-		
-	}
 	if ((*tavern)->next == NULL)
 	{
 		if (if_builting(tavern, envr, &pwd))
@@ -38,7 +28,7 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				single_cmd_exec((*tavern), env, envr);
+				single_cmd_exec((*tavern), envr);
 		}
 	}
 	else
@@ -65,8 +55,9 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 				}
 				if (if_builting(tavern, envr, &pwd))
 					exit(0);
-				execute_command((*tavern), env);
+				execute_command((*tavern), envr);
 			}
+			// reset_fd(tavern);
 			if (for_next)
 				close(for_next);
 			if ((*tavern)->next)
@@ -93,52 +84,75 @@ char	*execute_cmds(t_cmd **tavern, char **env, t_env **envr, char *pwd)
 	return (pwd);
 }
 
+void	reset_fd(t_cmd **tavern)
+{
+	if ((*tavern)->fd->in != 0)
+	{
+		close((*tavern)->fd->in);
+		(*tavern)->fd->in = 0;
+	}
+	if ((*tavern)->fd->out != 1)
+	{
+		close((*tavern)->fd->out);
+		(*tavern)->fd->out = 1;
+	}
+}
+
 int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 {
-	if (ft_strcmp((*tavern)->cmd[0], "echo") == 0)
+	if (ft_strncmp((*tavern)->cmd[0], "echo", 5) == 0)
 		return (echo_builted((*tavern)), 1);
-	if (ft_strcmp((*tavern)->cmd[0], "cd") == 0)
+	if (ft_strncmp((*tavern)->cmd[0], "cd", 3) == 0)
 		return (cd_builted(tavern, env, pwd), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "pwd") == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "pwd", 4) == 0)
 		return (print_working_directory(tavern, pwd), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "export") == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "export", 8) == 0)
 		return (ft_export((*tavern), env), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "unset") == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "unset", 7) == 0)
 		return (ft_unset((*tavern), env), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "env") == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "env", 4) == 0)
 		return (ft_env(env, 0), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "exit") == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "exit", 6) == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strcmp((*tavern)->cmd[0], "$?") == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "$?", 3) == 0)
 		return (printf("%d\n", g_status), 1);
 
 	return (0);
 }
 
-void	execute_command(t_cmd *tavern, char **env)
+void	execute_command(t_cmd *tavern, t_env **envr)
 {
 	char	**path;
+	char	**u_env;
 	int		ret;
 	int		i;
 
+	u_env = update_env(envr);
 	check_redirections(tavern);
 	if (access(tavern->cmd[0], F_OK) == 0)
 	{
-		ret = execve(tavern->cmd[0], tavern->cmd, env);
+		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
 		if (ret == -1)
 		{
-			error_out("execve", 0);
-			exit(126);
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			exit(127);
 		}
 	}
 	else
 	{
-		path = find_path(env);
+		path = find_path(u_env);
+		if (!path)
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": no such file or directory\n", 29);
+			exit(127);
+		}
 		i = -1;
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
-		ret = execve(path[i], tavern->cmd, env);
+		ret = execve(path[i], tavern->cmd, u_env);
 		if (ret == -1)
 		{
 			ft_putstr_fd(tavern->cmd[0], 2);
@@ -148,32 +162,41 @@ void	execute_command(t_cmd *tavern, char **env)
 	}
 }
 
-void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
+void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 {
 	char	**path;
 	int		ret;
 	int		i;
+	char	**u_env;
 
-	(void)envr;
+	u_env = update_env(envr);
 	ret = 0;
 	check_redirections(tavern);
 	if (access(tavern->cmd[0], F_OK) == 0)
 	{
-		ret = execve(tavern->cmd[0], tavern->cmd, env);
+		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
 		if (ret == -1)
 		{
-			error_out("execve", 0);
-			exit(126);
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			exit(127);
 		}
 	}
 	else
 	{
-		path = find_path(env);
+		path = find_path(u_env);
+		if (!path)
+		{
+			write(2, "minishell: ", 11);
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": no such file or directory\n", 29);
+			exit(127);
+		}
 		i = -1;
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
-		ret = execve(path[i], tavern->cmd, env);
+		ret = execve(path[i], tavern->cmd, u_env);
 		if (ret == -1)
 		{
 			ft_putstr_fd(tavern->cmd[0], 2);
@@ -182,9 +205,6 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 		}
 	}
 }
-
-
-
 
 
 // fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e; !--DONE--! => solved but created a new problem, cat | cat | ls; --DONE--
@@ -208,21 +228,19 @@ void	single_cmd_exec(t_cmd *tavern, char **env, t_env **envr)
 
 // only the 0,1,2 should be remaining after every command, the rest should be closed; --DONE--
 
-
-/***************************************************************************************************************************************************************************************************/
-
-
 // 1- handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
 
 // 2- when exporting a variable without a value (which means without '=' sign), it should not be added in the env, but it will be available when executing export;
-
-// 3- set the garbage collector;
-
-// 4- sort the envirement when you print it with export only;
-
 // 5- handle when the PATH is unseted; the result should be fixed;
-
 // 6- error_out must write the msg in the fd_out.
+/***************************************************************************************************************************************************************************************************/
+
+
+// 1- set the garbage collector;
+
+// 2- sort the envirement when you print it with export only;
+
+// 3- close fd;
 
 
 // 7-

@@ -30,7 +30,7 @@ void	print_list(t_cmd *f_list)
 		f_list = f_list->next;
 	}
 }
-void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
+void 	parcer(t_tokens *list, t_cmd **f_list)
 {
 	t_cmd	*tmp;
 	int		flg;
@@ -40,7 +40,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
 	while (list->type != NLINE)
 	{
 	i = -1;
-	add_list(f_list, create_list(fd));
+	add_list(f_list, create_list());
 	tmp = ft_lstlast_p(*f_list);
 	flg = -1;
 		while (list && list->type != NLINE && list->type != PIPE)
@@ -98,7 +98,7 @@ void	free_f_list(t_cmd **f_list)
 	}
 	*f_list = NULL;
 }
-void minishell(char **env, t_env **envr, char *b, t_fd **fd)
+void minishell(t_env **envr, char *b)
 {
 	t_tokens	*list;
 	t_cmd		*f_list;
@@ -110,7 +110,6 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 		b = readline("minishell$ ");
 		if (b == NULL)
 		{
-			update_shlvl(envr, -1);
 			printf("exit\n");
 			break;
 		}
@@ -125,17 +124,19 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list, fd);//?hna katbaddal list ba9i maareftch 3lach....?
+				parcer(list, &f_list);//?hna katbaddal list ba9i maareftch 3lach....?
 			if (f_list && f_list->cmd[0] != NULL)
 			{
-				pwd = execute_cmds(&f_list, env, envr, pwd);
+				pwd = execute_cmds(&f_list, envr, pwd);
 				if (f_list && f_list->fd->out != 1)
 				{
+					puts("closing out");
 					close(f_list->fd->out);
 					f_list->fd->out = 1;
 				}
 				if(f_list && f_list->fd->in != 0)
 				{
+					puts("closing in");
 					close(f_list->fd->in);
 					f_list->fd->in = 0;
 				}
@@ -164,7 +165,7 @@ void	free_env(t_env **envr)
 
 int main(int ac, char **av, char **env)
 {
-	t_fd		*fd;
+	// t_fd		*fd;
 	t_env		*envr;
 	char		*b;
 
@@ -174,9 +175,9 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
-	fd = malloc(sizeof(t_fd));
-	fd->in = 0;
-	fd->out = 1;
+	// fd = malloc(sizeof(t_fd));
+	// fd->in = 0;
+	// fd->out = 1;
 	if (!env)
         set_env(&envr);
     else
@@ -185,7 +186,7 @@ int main(int ac, char **av, char **env)
 	}
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	minishell(env, &envr, b, &fd);
+	minishell(&envr, b);
 	// free_env(&envr);
 	// free(fd);
 	return (0);
