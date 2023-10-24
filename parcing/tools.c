@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/24 14:16:32 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:21:51 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,6 @@ char	*fill_word(char *b, int *i, int c)
 	if (c == 34 || c == 39)
 		s++;
 	a = len_of_filled(b, s, c, a);
-	printf("%d\n", a);
 	f = fill_it(b, s, c, a, i);
-	printf("fill-%s\n", f);
 	return (f);
 }
