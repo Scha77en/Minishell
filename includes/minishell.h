@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/10/24 11:47:19 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:34:52 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,9 +251,6 @@ int			cheak(char *b, int *i, int c);
 void		add_node(t_tokens **list, t_tokens *new);
 char		*check_if_valid_herdoc(char *str, int *i);
 char		*fill_word(char *b, int *i, int c);
-char		*fill_token(char *b, int *i, char c);
-char		*fill_token_(char *b, int len, int *i, char c);
-char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b);
 void 		minishell(char **env, t_env **envr, char *b, t_fd **fd);

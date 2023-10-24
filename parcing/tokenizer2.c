@@ -6,11 +6,35 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/24 12:51:46 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:33:33 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+
+
+
+
+char	*fill_var(char *b, int n, int s)
+{
+	int		i;
+	char	*var;
+
+	i = 0;
+	var = malloc(sizeof(char) * (n - s));
+	if (!var)
+		return (NULL);
+	var[(n - s)] = '\0';
+	n = s +1;
+	while (b[n] && (ft_isalpha(b[n]) || b[n] == '_'))
+	{
+		var[i++] = b[n++];
+	}
+	return (var);
+}
+
+
 
 t_tokens	*create_node(void)
 {

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/21 18:17:16 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 18:27:38 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,7 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 		{
 			add_history(b);
 			if ((list = tokenizer(b)) == NULL)
-			{
-				printf("in\n");
 				g_status = 258;
-			}
 			else if ((g_status = syntax_error(list)) == 258)
 			{
 				free_tokens(&list);
@@ -144,8 +141,6 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 				}
 			}
 			free(b);
-			// free_f_list(&f_list);
-			// free_tokens(&list);
 		}
 	}
 }
@@ -171,7 +166,6 @@ int main(int ac, char **av, char **env)
 	t_env		*envr;
 	char		*b;
 
-	// atexit(f);
 	b = NULL;
 	g_status = 0;
 	(void)ac;
@@ -183,13 +177,9 @@ int main(int ac, char **av, char **env)
 	if (!env)
         set_env(&envr);
     else
-	{
         envr = envirement(env);
-	}
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	minishell(env, &envr, b, &fd);
-	// free_env(&envr);
-	// free(fd);
 	return (0);
 }

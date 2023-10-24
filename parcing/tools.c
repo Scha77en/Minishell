@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/24 14:21:51 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:03:53 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int is_token_(int c, int q)
 {
 	if (c == q)
 		return (0);
-	if (c == '<' || c == '>' || c == '|' || c == 34 || c == 39)
+	if (c == '<' || c == '>' || c == 34 || c == 39)
 		return (1);
 	return(0);
 }
@@ -60,6 +60,8 @@ int len_of_filled(char *b, int s, int c, int a)
 		}
 		else
 			s++;
+		if (b[s] == ' ' && c == 0)
+			break ;
 	}
 	return (a);
 }
@@ -93,7 +95,7 @@ char *fill_it(char *b, int s, int c, int a, int *i)
 			i = 0;
 			while(ft_itoa(g_status)[i])
 				filled[a++] = ft_itoa(g_status)[i++];
-					s += 2;
+			s += 2;
 			// f_expand(&filled, ft_itoa(g_status), &a);
 		}
 		else if (b[s] == '$' && c != 39)
@@ -118,7 +120,11 @@ char *fill_it(char *b, int s, int c, int a, int *i)
 			filled[a++] = b[s++];
 		else
 			s++;
+		if (b[s] == ' ' && c == 0)
+			break ;
 	}
+	if (b[s] == c && c != 0)
+		s++;
 	*i = s;
 	return (filled);
 	
@@ -127,11 +133,9 @@ char *fill_it(char *b, int s, int c, int a, int *i)
 char	*fill_word(char *b, int *i, int c)
 {
 	char	*f;
-	// char	*var;
 	int		a;
 	int		s;
 
-	// var = NULL;
 	a = 0;
 	if (cheak(b, i, c) == 1 && (c == 34 || c == 39))
 	{

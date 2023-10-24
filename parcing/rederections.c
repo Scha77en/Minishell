@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/21 18:05:34 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 18:25:51 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ char	*get_data_r(t_tokens **file)
 	int		i;
 	char	*line;
 	char	*data;
-	char	*var;
-	int		l;
 
+	i = 0;
 	data = malloc(1);
 	if (!data)
 		return (NULL);
@@ -48,18 +47,17 @@ char	*get_data_r(t_tokens **file)
 		write(1, "herdoc> ", 8);
 		line = get_next_line(0);
 		if (!ft_strlen(line))
-			break ;
-		i = find_exp(line);
-		if (i > 0)
 		{
-			l = i -1;
-			var = check_if_valid_herdoc(line, &i);
-			if (ft_strlen(var) && (*file)->type == WORD)
-				line = update_line(line, var, l);
-		}
-		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
+			puts("len\n");
 			break ;
-		data = ft_strjoin(data, line);
+		}
+		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
+			line = ft_strjoin(fill_word(line, &i, 0), "\n");
+		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
+		{
+			break ;
+		}
+			data = ft_strjoin(data, line);
 	}
 	return (free(line), data);
 }
@@ -82,7 +80,6 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	(*t_lst)->tokens = word;
 	if (current->type == OUT)
 	{
-		printf("[3]%d\n", (*tmp)->fd->out);
 		if ((*tmp)->fd->out != 1)
 		{
 			printf("close\n");
@@ -92,7 +89,6 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	}
 	else
 	{
-		printf("[4]%d\n", (*tmp)->fd->out);
 		if ((*tmp)->fd->out != 1)
 			close((*tmp)->fd->out);
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);

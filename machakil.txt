@@ -248,3 +248,6 @@ expected :
 result :
         $                    (empty)
 
+
+
+$USER $USER
