@@ -240,14 +240,13 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 
 // after sorting the export, there is a problem in unsetting it members. --DONE--
 
+// close fd; --DONE--
 
 /***************************************************************************************************************************************************************************************************/
 
 
-
 // 1- set the garbage collector;
 
-// 3- close fd;
 
 
 // 7-

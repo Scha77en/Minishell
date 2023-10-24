@@ -129,7 +129,7 @@ typedef struct s_num
 
 void	*my_malloc(size_t size, int v);
 void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
-void	clean_mem(t_mem **mem);
+void	clean_mem(t_mem *mem);
 
 // Minishell execution testing functions
 

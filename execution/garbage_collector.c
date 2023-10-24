@@ -2,21 +2,30 @@
 
 void	*my_malloc(size_t size, int v)
 {
-	t_mem	**mem;
+	t_mem	*mem;
 	t_mem	*new_mem;
 	char	*ptr;
 
-	if (v >= 0)
+	ptr = malloc(size);
+	if (v >= 0 && ptr)
 	{
-		mem = malloc(sizeof(t_mem *));
+		if (mem == NULL)
+		{
+			mem = malloc(sizeof(t_mem));
+		}
 		new_mem = malloc(sizeof(t_mem));
-		ptr = malloc(size);
-		if (!ptr)
-			error_out("malloc", 1);
-		new_mem->ptr = ptr;
-		new_mem->next = NULL;
-		ft_lstadd_back_mem(mem, new_mem);
-		return (new_mem->ptr);
+		if (new_mem)
+		{
+			new_mem->ptr = ptr;
+			new_mem->next = NULL;
+			ft_lstadd_back_mem(&mem, new_mem);
+			return (ptr);
+		}
+		else
+		{
+			free(ptr);
+			return (NULL);
+		}
 	}
 	else
 	{
@@ -41,14 +50,14 @@ void	ft_lstadd_back_mem(t_mem **lst, t_mem *new)
 	new->next = NULL;
 }
 
-void	clean_mem(t_mem **mem)
+void	clean_mem(t_mem *mem)
 {
 	t_mem	*tmp;
 
-	while (*mem)
+	while (mem)
 	{
-		tmp = *mem;
-		*mem = (*mem)->next;
+		tmp = mem;
+		mem = mem->next;
 		free(tmp->ptr);
 		free(tmp);
 	}
