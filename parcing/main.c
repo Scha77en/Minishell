@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 16:08:10 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:17:16 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
 	while (list->type != NLINE)
 	{
 	i = -1;
-	add_list(f_list, create_list());
-	(*f_list)->fd = *fd;
+	add_list(f_list, create_list(fd));
 	tmp = ft_lstlast_p(*f_list);
 	flg = -1;
 		while (list && list->type != NLINE && list->type != PIPE)
@@ -117,16 +116,20 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 		if (ft_strlen(b))
 		{
 			add_history(b);
-			list = tokenizer(b);
-			if ((g_status = syntax_error(list)) == 258)
+			if ((list = tokenizer(b)) == NULL)
+			{
+				printf("in\n");
+				g_status = 258;
+			}
+			else if ((g_status = syntax_error(list)) == 258)
 			{
 				free_tokens(&list);
 				list = NULL;
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list, fd);//?hna katbaddal list ba9i maareftch 3lach....?
-			if (f_list && f_list->cmd[0] != NULL)
+				parcer(list, &f_list, fd);
+			if (f_list)
 			{
 				pwd = execute_cmds(&f_list, env, envr, pwd);
 				if (f_list && f_list->fd->out != 1)

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 19:07:42 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:05:34 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ char	*get_data_r(t_tokens **file)
 		}
 		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
 			break ;
-		printf("s %s\n", (*file)->tokens);
 		data = ft_strjoin(data, line);
 	}
 	return (free(line), data);
@@ -125,14 +124,12 @@ void	rederections(t_tokens **list, t_cmd **tmp)
 		t_lst->tokens = word;
 		if (current->type == IN)
 		{
-			printf("[1]%d\n", (*tmp)->fd->in);
 			if ((*tmp)->fd->in != 0)
 				close((*tmp)->fd->in);
 			(*tmp)->fd->in = open(t_lst->tokens, O_RDONLY);
 		}
 		else
 		{
-			printf("[2]%d\n", (*tmp)->fd->in);
 			if ((*tmp)->fd->in != 0)
 				close((*tmp)->fd->in);
 			data = get_data_r(&t_lst);

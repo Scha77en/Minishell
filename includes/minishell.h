@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/30 13:18:35 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/10/24 11:47:19 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ t_env		*lstnew(void);
 int			white_space(char c);
 int			token(char fc, char sc);
 void		add_list(t_cmd **list, t_cmd *new);
-t_cmd		*create_list(void);
+t_cmd		*create_list(t_fd **fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
@@ -250,7 +250,7 @@ char		*update_line(char *line, char *var, int l);
 int			cheak(char *b, int *i, int c);
 void		add_node(t_tokens **list, t_tokens *new);
 char		*check_if_valid_herdoc(char *str, int *i);
-char		*fill_word(char *b, int *i);
+char		*fill_word(char *b, int *i, int c);
 char		*fill_token(char *b, int *i, char c);
 char		*fill_token_(char *b, int len, int *i, char c);
 char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);

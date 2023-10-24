@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/30 20:43:25 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/10/21 18:15:17 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_exit((*tavern)), 1);
 	else if (ft_strcmp((*tavern)->cmd[0], "$?") == 0)
 		return (printf("%d\n", g_status), 1);
-
 	return (0);
 }
 

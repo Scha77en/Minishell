@@ -6,20 +6,20 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/19 18:45:23 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/21 16:04:13 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_cmd *create_list()
+t_cmd *create_list(t_fd **fd)
 {
 	t_cmd *node;
 
 	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (NULL);
-	node->fd = malloc(sizeof(t_fd));
+	node->fd = *fd;
 	node->cmd = NULL;
 	node->next = NULL;
 	return (node);
@@ -95,7 +95,6 @@ void fill(t_tokens **list, t_cmd **tmp, int *i)
 				(*list) = (*list)->next;
 			}
 			(*tmp)->cmd[++(*i)] = word;
-			// free(tmpe);
 		}
 	if ((*list)->type == IN || (*list)->type == OUT
 		|| (*list)->type == HEREDOC || (*list)->type == APPEND)

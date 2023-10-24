@@ -139,6 +139,13 @@ minishell$ <<""|""
 minishell$ <<""|ls
 > 
 minishell$ < a|ls
+
+
+ls |  ls
+
+
+cat << "" | ls | wc -l
+""    
                                                                                     ////0    minishell$ < a|wc
                                                                                     ////0    minishell$ 
 

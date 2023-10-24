@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 15:12:37 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 18:14:50 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 12:14:37 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char	*_fill_token(char *var, int len, int lv, int *i, char *b, int c)
 	n = 0;
 	if (var != NULL)
 		len += (ft_strlen(var) - lv) - (*i +1);
+	printf("%d\n", len);
 	filed = malloc(sizeof(char ) * len);
 	if (!filed)
 		return (NULL);
@@ -36,12 +37,12 @@ char	*_fill_token(char *var, int len, int lv, int *i, char *b, int c)
 			len += lv +1;
 		}
 		else
-			filed[n++] = b[len++];
+			filed[n++] = b[++len];
 	}
 	filed[n] = '\0';
 	*i = len+1;
-	if (ft_strcmp(filed, "$?") == 0)
-		filed = ft_itoa(g_status);
+	// if (filed[0] && ft_strcmp(filed, "$?") == 0)
+	// 	filed = ft_itoa(g_status);
     return (filed);
 }
 
@@ -61,17 +62,17 @@ char	*fill_token(char *b, int *i, char c)
 	return (filed);
 }
 
-char	*fill_var(char *b, int n, int len)
+char	*fill_var(char *b, int n, int s)
 {
 	int		i;
 	char	*var;
 
 	i = 0;
-	var = malloc(sizeof(char) * (n - len));
+	var = malloc(sizeof(char) * (n - s));
 	if (!var)
 		return (NULL);
-	var[(n - len)] = '\0';
-	n = len +1;
+	var[(n - s)] = '\0';
+	n = s +1;
 	while (b[n] && (ft_isalpha(b[n]) || b[n] == '_'))
 	{
 		var[i++] = b[n++];

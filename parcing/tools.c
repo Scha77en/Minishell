@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 17:02:26 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:16:32 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,73 +19,131 @@ int	white_space(char c)
 		return (1);
 	return (0);
 }
-int len_word(char *b, int *i, char **var)
+int is_token_(int c, int q)
 {
-	int l;
-
-	l = 0;
-	while (b[(*i)] && b[(*i)] != '>' && b[(*i)] != '<' && b[(*i)] != 39
-		&& b[(*i)] != '|' && b[(*i)] != 34 && !white_space(b[(*i)]))
-	{
-		if (b[(*i)] == '$')
-		{
-			if (b[++(*i)] == '?')
-			{
-				*var = ft_itoa(g_status);
-				l += ft_strlen(ft_itoa(g_status));
-			}
-			else
-				*var = check_if_valid(b, i);
-			if (*var != NULL)
-				l += ft_strlen(getenv(*var));
-		}
-		else
-		{
-			l++;
-			(*i)++;
-		}
-	}
-	return (l);
+	if (c == q)
+		return (0);
+	if (c == '<' || c == '>' || c == '|' || c == 34 || c == 39)
+		return (1);
+	return(0);
 }
-char *fill_wrd(char *var, int s, char *b, int l)
+int len_of_filled(char *b, int s, int c, int a)
 {
-	char	*f;
-	int		k;
+	int n;
+	char *var;
 
-	k  = 0;
-	f = malloc(sizeof(char) * l +1);
-	if (!f)
-		return (NULL);
-	f[l] = '\0';
-	while (l > 0)
+	n = 0;
+	while(b[s] && !is_token_(b[s], c))
 	{
-		if (b[s] == '$' && (getenv(var) != NULL || ft_isdigit(var[0])))
+		if (b[s] == '$' && b[s+1] == '?'  && c != 39)
 		{
-			fill_expand(f, &k, var);
+			a += ft_strlen(ft_itoa(g_status));
+			s += 2;
+		}
+		else if (b[s] == '$' && c != 39)
+		{
+			n = s;
+			while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
+				n++;
+			var = fill_var(b, n, s);
 			s += ft_strlen(var) + 1;
-			l -= ft_strlen(getenv(var));
+			if (getenv(var))
+			{
+				var = getenv(var);
+				a += ft_strlen(var);
+			}
 		}
-		else if (b[s] == '$' && getenv(var) == NULL)
-			return (free(f), NULL);
-		else
+		else if (b[s] != c)
 		{
-			f[k++] = b[s++];
-			l--;
+			s++;
+			a++;
 		}
+		else
+			s++;
 	}
-	return (f);
+	return (a);
+}
+void f_expand(char **filled, char *expand, int *a)
+{
+	int i;
+
+	i = 0;
+	while(expand[i])
+		*filled[(*a)++] = expand[i++];
 }
 
-char	*fill_word(char *b, int *i)
+char *fill_it(char *b, int s, int c, int a, int *i)
+{
+	char *filled;
+	char *var;
+	int n;
+
+	filled = malloc(sizeof(char) * a +1);
+	var = NULL;
+	if (!filled)
+		return (NULL);
+	filled[a] = '\0';
+	a = 0;
+	while(b[s] && !is_token_(b[s], c))
+	{
+		if (b[s] == '$' && b[s+1] == '?'  && c != 39)
+		{
+			int i;
+
+			i = 0;
+			while(ft_itoa(g_status)[i])
+				filled[a++] = ft_itoa(g_status)[i++];
+					s += 2;
+			// f_expand(&filled, ft_itoa(g_status), &a);
+		}
+		else if (b[s] == '$' && c != 39)
+		{
+			n = s;
+			while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
+				n++;
+			var = fill_var(b, n, s);
+			s += ft_strlen(var) + 1;
+			if (getenv(var))
+			{
+				var = getenv(var);
+				int i;
+
+				i = 0;
+				while(var[i])
+					filled[a++] = var[i++];
+				// f_expand(&filled, var, &a);
+			}
+		}
+		else if (b[s] != c)
+			filled[a++] = b[s++];
+		else
+			s++;
+	}
+	*i = s;
+	return (filled);
+	
+}
+
+char	*fill_word(char *b, int *i, int c)
 {
 	char	*f;
-	char	*var;
-	int		l;
+	// char	*var;
+	int		a;
 	int		s;
 
-	var = NULL;
+	// var = NULL;
+	a = 0;
+	if (cheak(b, i, c) == 1 && (c == 34 || c == 39))
+	{
+		printf("[%c] :syntax error\n", b[(*i)++]);
+		return (NULL);
+	}
 	s = (*i);
-	l = len_word(b, i, &var);
-	f = fill_wrd(var, s, b, l);
+	if (c == 34 || c == 39)
+		s++;
+	a = len_of_filled(b, s, c, a);
+	printf("%d\n", a);
+	f = fill_it(b, s, c, a, i);
+	printf("fill-%s\n", f);
 	return (f);
 }
