@@ -21,7 +21,10 @@ void	ft_export(t_cmd *tavern, t_env **env)
 	i = 1;
 	v = 0;
 	if (tavern->cmd[i] == NULL)
-		ft_env(env, 1);
+	{
+		ft_env(&tavern, env, 1);
+		puts("Has Entered");
+	}
 	else
 	{
 		while (tavern->cmd[i] != NULL)
@@ -38,7 +41,11 @@ void	ft_export(t_cmd *tavern, t_env **env)
 					ft_add_env(env, split, v);
 			}
 			else
-				printf("Minishell: export: `%s': not a valid identifier\n", tavern->cmd[i]);
+			{
+				write(2, "minishell: export: `", 20);
+				ft_putstr_fd(tavern->cmd[i], 2);
+				write(2, "': not a valid identifier\n", 26);
+			}
 			i++;
 		}
 	}

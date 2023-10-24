@@ -127,9 +127,9 @@ typedef struct s_num
 
 // garbage collector
 
-// void	*my_malloc(size_t size, t_mem **mem);
-// void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
-// void	clean_mem(t_mem **mem);
+void	*my_malloc(size_t size, int v);
+void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
+void	clean_mem(t_mem **mem);
 
 // Minishell execution testing functions
 
@@ -163,7 +163,7 @@ void	oldpwd_update(t_env **env, char *curwd, int v);
 void	oldpwd_search_update(t_env **env, char *cwd);
 t_env	*ft_envnew(char *var, char *value);
 void	ft_memdel(void *ptr);
-void	ft_env(t_env **env, int v);
+void	ft_env(t_cmd **tavern, t_env **env, int v);
 char	*ft_getenv(t_env **env, char *var);
 void	pwd_update(t_env **env);
 void	echo_builted(t_cmd *tavern);
@@ -182,10 +182,9 @@ char	*ft_strndup(char *s, int n);
 void	ft_exit(t_cmd *tavern);
 void	ft_unset(t_cmd *tavern, t_env **envr);
 void	set_env(t_env **env);
-void	swap(t_env *a, t_env *b);
-t_env	*export_sort(t_env *head_ref);
-t_env	*copy_list(t_env *head);
-t_env	*copy_node(t_env *node);
+void	sort_env(t_env *env);
+t_env   *copy_env_list(t_env **env);
+void    add_env(t_env **env, char *var, char *value, int v);
 
 // here_document
 

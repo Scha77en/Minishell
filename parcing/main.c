@@ -130,13 +130,11 @@ void minishell(t_env **envr, char *b)
 				pwd = execute_cmds(&f_list, envr, pwd);
 				if (f_list && f_list->fd->out != 1)
 				{
-					puts("closing out");
 					close(f_list->fd->out);
 					f_list->fd->out = 1;
 				}
 				if(f_list && f_list->fd->in != 0)
 				{
-					puts("closing in");
 					close(f_list->fd->in);
 					f_list->fd->in = 0;
 				}

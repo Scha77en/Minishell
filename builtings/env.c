@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	ft_env(t_env **env, int v)
+void	ft_env(t_cmd **tavern, t_env **env, int v)
 {
 	t_env	*current;
 	char	*path;
@@ -23,31 +23,47 @@ void	ft_env(t_env **env, int v)
 		path = ft_getenv(env, "PATH");
 		if (!path)
 		{
-			write(2, "minishell: env: No such file or directory\n", 43);
+			write(2, "minishell: env: No such file or directory\n", 42);
 			return ;
 		}
 		while (current)
 		{
 			if (current->id == 0)
-				printf("%s=%s\n", current->var, current->value);
+			{
+				ft_putstr_fd(current->var, (*tavern)->fd->out);
+				write((*tavern)->fd->out, "=", 1);
+				ft_putstr_fd(current->value, (*tavern)->fd->out);
+				write((*tavern)->fd->out, "\n", 1);
+			}
 			current = current->next;
 		}
 	}
 	else if (v == 1)
 	{
-		// current = export_sort(*env);
-		current = export_sort(*env);
+		current = copy_env_list(env);
+		sort_env(current);
 		while (current)
 		{
 			if (current->id == 0)
-				printf("declare -x %s=\"%s\"\n", current->var, current->value);
+			{
+				write((*tavern)->fd->out, "declare -x ", 11);
+				ft_putstr_fd(current->var, (*tavern)->fd->out);
+				write((*tavern)->fd->out, "=\"", 2);
+				ft_putstr_fd(current->value, (*tavern)->fd->out);
+				write((*tavern)->fd->out, "\"\n", 2);
+			}
 			else if (current->id == 2)
-				printf("declare -x %s\n", current->var);
+			{
+				write((*tavern)->fd->out, "declare -x ", 11);
+				ft_putstr_fd(current->var, (*tavern)->fd->out);
+				write((*tavern)->fd->out, "\n", 1);
+			}
 			current = current->next;
 		}
-		printf("\n");
+		write((*tavern)->fd->out, "\n", 1);
 	}
 }
+
 
 void	set_env(t_env **env)
 {

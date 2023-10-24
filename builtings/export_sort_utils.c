@@ -1,68 +1,68 @@
 #include "../includes/minishell.h"
 
-t_env	*copy_node(t_env *node)
+t_env   *copy_env_list(t_env **env)
 {
-    t_env *temp;
+    t_env   *head;
+	t_env   *curr;
 
-	temp = (t_env*)malloc(sizeof(t_env));
-    temp->var = strdup(node->var);
-    temp->value = strdup(node->value);
-    temp->id = node->id;
-    temp->next = NULL;
-    return (temp);
+	head = NULL;
+	curr = *env;
+	while (curr)
+	{
+        add_env(&head, curr->var, curr->value, curr->id);
+		curr = curr->next;
+	}
+	return (head);
 }
 
-t_env	*copy_list(t_env *head)
+void    sort_env(t_env *env)
 {
+    t_env	*current;
+	t_env	*front;
+	char	*temp;
+    int     v;
 
-    t_env *head_copy;
-    t_env *ptr;
-
-    if (head == NULL)
+	current = env;
+	while (current)
 	{
-        return (NULL);
+		front = current->next;
+		while (front)
+		{
+			if (ft_strcmp(current->var, front->var) > 0)
+			{
+				temp = current->var;
+				current->var = front->var;
+				front->var = temp;
+                temp = current->value;
+                current->value = front->value;
+                front->value = temp;
+                v = current->id;
+                current->id = front->id;
+                front->id = v;
+			}
+			front = front->next;
+		}
+		current = current->next;
 	}
-	head_copy = copy_node(head);
-	ptr = head_copy;
-    while (head->next != NULL)
-    {
-        head = head->next;
-        ptr->next = copy_node(head);
-        ptr = ptr->next;
-    }
-
-    return (head_copy);
 }
 
-t_env	*export_sort(t_env *head_ref)
+void    add_env(t_env **env, char *var, char *value, int v)
 {
-	t_env		*head_copy;
-    int			swapped;
-    t_env		*ptr1;
-    t_env		*ptr2 = NULL;
-    t_env		*lptr = NULL;
+    t_env   *new;
+    t_env   *current;
 
-	head_copy = copy_list(head_ref);
-    if (head_copy == NULL)
-	{
-        return (NULL);
-	}
-	swapped = 1;
-    while (swapped)
+    new = malloc(sizeof(t_env));
+    new->var = ft_strdup(var);
+    new->value = ft_strdup(value);
+    new->id = v;
+    new->next = NULL;
+    if (!(*env))
+        *env = new;
+    else
     {
-        swapped = 0;
-        ptr1 = head_copy;
-        while (ptr1->next != lptr)
-        {
-            ptr2 = ptr1->next;
-            if (strcmp(ptr1->var, ptr2->var) > 0)
-            {
-                swap(ptr1, ptr2);
-                swapped = 1;
-            }
-            ptr1 = ptr1->next;
-        }
-        lptr = ptr1;
+        current = *env;
+        while (current->next)
+            current = current->next;
+        current->next = new;
     }
-	return (lptr);
 }

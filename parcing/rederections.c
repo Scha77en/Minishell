@@ -83,17 +83,14 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	(*t_lst)->tokens = word;
 	if (current->type == OUT)
 	{
-		printf("[3]%d\n", (*tmp)->fd->out);
 		if ((*tmp)->fd->out != 1)
 		{
-			printf("close\n");
 			close((*tmp)->fd->out);
 		}
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	}
 	else
 	{
-		printf("[4]%d\n", (*tmp)->fd->out);
 		if ((*tmp)->fd->out != 1)
 			close((*tmp)->fd->out);
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
@@ -125,14 +122,12 @@ void	rederections(t_tokens **list, t_cmd **tmp)
 		t_lst->tokens = word;
 		if (current->type == IN)
 		{
-			printf("[1]%d\n", (*tmp)->fd->in);
 			if ((*tmp)->fd->in != 0)
 				close((*tmp)->fd->in);
 			(*tmp)->fd->in = open(t_lst->tokens, O_RDONLY);
 		}
 		else
 		{
-			printf("[2]%d\n", (*tmp)->fd->in);
 			if ((*tmp)->fd->in != 0)
 				close((*tmp)->fd->in);
 			data = get_data_r(&t_lst);

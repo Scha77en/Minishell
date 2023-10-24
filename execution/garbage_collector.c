@@ -1,18 +1,28 @@
 #include "../includes/minishell.h"
 
-void	*my_malloc(size_t size)
+void	*my_malloc(size_t size, int v)
 {
 	t_mem	**mem;
 	t_mem	*new_mem;
+	char	*ptr;
 
-	*new_mem = malloc(sizeof(t_mem));
-	if (!new_mem)
-		error_out("malloc", 1);
-	new_mem->ptr = malloc(size);
-	if (!new_mem->ptr)
-		error_out("malloc", 1);
-	ft_lstadd_back_mem(mem, new_mem);
-	return (new_mem->ptr);
+	if (v >= 0)
+	{
+		mem = malloc(sizeof(t_mem *));
+		new_mem = malloc(sizeof(t_mem));
+		ptr = malloc(size);
+		if (!ptr)
+			error_out("malloc", 1);
+		new_mem->ptr = ptr;
+		new_mem->next = NULL;
+		ft_lstadd_back_mem(mem, new_mem);
+		return (new_mem->ptr);
+	}
+	else
+	{
+		clean_mem(mem);
+		return (NULL);
+	}
 }
 
 void	ft_lstadd_back_mem(t_mem **lst, t_mem *new)
@@ -35,32 +45,29 @@ void	clean_mem(t_mem **mem)
 {
 	t_mem	*tmp;
 
-	while(*mem)
+	while (*mem)
 	{
 		tmp = *mem;
 		*mem = (*mem)->next;
 		free(tmp->ptr);
 		free(tmp);
 	}
-	mem = NULL;
 }
 
-// void	leaks(void)
-// {
-// 	system("leak a.out");
-// }
+void	leaks(void)
+{
+	system("leak a.out");
+}
 
-// int main(void)
-// {
-// 	// atexit(leaks);
-// 	t_mem	*mem;
-// 	t_cmd	*tavern;
-// 	char	**word;
+int main(void)
+{
+	atexit(leaks);
+	t_cmd	*tavern;
+	char	**word;
 
-// 	mem = NULL;
-// 	tavern = my_malloc(sizeof(t_cmd), &mem);
-// 	tavern->cmd = my_malloc(sizeof(char *) * 2, &mem);
-// 	word = my_malloc(sizeof(char *) * 2, &mem);
-// 	// while(1);
-// 	// clean_mem(&mem);
-// }
+	tavern = my_malloc(sizeof(t_cmd), 0);
+	tavern->cmd = my_malloc(sizeof(char *) * 2, 0);
+	word = my_malloc(sizeof(char *) * 2, 0);
+	// while(1);
+	my_malloc(sizeof(char *) * 2, -1);
+}

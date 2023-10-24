@@ -111,7 +111,7 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 	else if (ft_strncmp((*tavern)->cmd[0], "unset", 7) == 0)
 		return (ft_unset((*tavern), env), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "env", 4) == 0)
-		return (ft_env(env, 0), 1);
+		return (ft_env(tavern, env, 0), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "exit", 6) == 0)
 		return (ft_exit((*tavern)), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "$?", 3) == 0)
@@ -228,17 +228,24 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 
 // only the 0,1,2 should be remaining after every command, the rest should be closed; --DONE--
 
-// 1- handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount;
+// handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount; --DONE--
 
-// 2- when exporting a variable without a value (which means without '=' sign), it should not be added in the env, but it will be available when executing export;
-// 5- handle when the PATH is unseted; the result should be fixed;
-// 6- error_out must write the msg in the fd_out.
+// when exporting a variable without a value (which means without '=' sign), it should not be added in the env, but it will be available when executing export; --DONE--
+
+// handle when the PATH is unseted; the result should be fixed; --DONE--
+
+// error_out must write the msg in the fd_error. --DONE--
+
+// sort the envirement when you print it with export only; --DONE--
+
+// after sorting the export, there is a problem in unsetting it members. --DONE--
+
+
 /***************************************************************************************************************************************************************************************************/
 
 
-// 1- set the garbage collector;
 
-// 2- sort the envirement when you print it with export only;
+// 1- set the garbage collector;
 
 // 3- close fd;
 
@@ -260,22 +267,3 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 
 // while true; do lsof -c minishell; done
 // while true; do leaks minishell; done
-
-
-// $export test
-// $env
-//  	<--envirement without test
-// $export
-//		<--envirement with test no '='
-
-// $export test= or test+=
-// $env
-//		<--envirement with test=
-// $export
-//		<--envirement with test=
-
-// $export test=123 or test+=123
-// $env
-//		<--envirement with test=123
-// $export
-//		<--envirement with test=123
