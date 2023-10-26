@@ -85,6 +85,7 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	{
 		if ((*tmp)->fd->out != 1)
 		{
+			puts("closing fd_out");
 			close((*tmp)->fd->out);
 		}
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
@@ -92,7 +93,10 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	else
 	{
 		if ((*tmp)->fd->out != 1)
+		{
+			puts("closing fd_out append");
 			close((*tmp)->fd->out);
+		}
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
 	}
 	if ((*tmp)->fd->out == -1)
@@ -123,13 +127,19 @@ void	rederections(t_tokens **list, t_cmd **tmp)
 		if (current->type == IN)
 		{
 			if ((*tmp)->fd->in != 0)
+			{
+				puts("closing fd_in");
 				close((*tmp)->fd->in);
+			}
 			(*tmp)->fd->in = open(t_lst->tokens, O_RDONLY);
 		}
 		else
 		{
 			if ((*tmp)->fd->in != 0)
+			{
+				puts("closing fd_in herdoc");
 				close((*tmp)->fd->in);
+			}
 			data = get_data_r(&t_lst);
 			if (is_word(t_lst->type) && is_word(t_lst->next->type))
 				t_lst = t_lst->next;

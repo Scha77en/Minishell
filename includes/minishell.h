@@ -130,6 +130,8 @@ typedef struct s_num
 void	*my_malloc(size_t size, int v);
 void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
 void	clean_mem(t_mem *mem);
+void clear_garbeg(t_mem *head);
+void	*garbage(int size, int len, int status);
 
 // Minishell execution testing functions
 
@@ -151,6 +153,7 @@ void	*ft_memcpy_m(void *dst, void *src, size_t n);
 void	handle_sigint(int sig);
 char	**update_env(t_env **envr);
 char	**env_to_char(t_env **env);
+int		path_backslash(char *path);
 // void	reset_fd(t_cmd **tavern);
 // builting
 
@@ -245,7 +248,7 @@ t_env		*lstnew(void);
 int			white_space(char c);
 int			token(char fc, char sc);
 void		add_list(t_cmd **list, t_cmd *new);
-t_cmd		*create_list(void);
+t_cmd		*create_list(t_fd **fd);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
@@ -268,7 +271,7 @@ char		*fill_token_(char *b, int len, int *i, char c);
 char		*_fill_token(char *var, int len, int lv, int *i, char *b, int c);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b);
-void 		minishell(t_env **envr, char *b);
+void 		minishell(t_env **envr, char *b, t_fd **fd);
 // int			len_var(char *value, t_env *env);
 
 #endif

@@ -30,7 +30,7 @@ void	print_list(t_cmd *f_list)
 		f_list = f_list->next;
 	}
 }
-void 	parcer(t_tokens *list, t_cmd **f_list)
+void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
 {
 	t_cmd	*tmp;
 	int		flg;
@@ -40,7 +40,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list)
 	while (list->type != NLINE)
 	{
 	i = -1;
-	add_list(f_list, create_list());
+	add_list(f_list, create_list(fd));
 	tmp = ft_lstlast_p(*f_list);
 	flg = -1;
 		while (list && list->type != NLINE && list->type != PIPE)
@@ -98,7 +98,7 @@ void	free_f_list(t_cmd **f_list)
 	}
 	*f_list = NULL;
 }
-void minishell(t_env **envr, char *b)
+void minishell(t_env **envr, char *b, t_fd **fd)
 {
 	t_tokens	*list;
 	t_cmd		*f_list;
@@ -124,19 +124,39 @@ void minishell(t_env **envr, char *b)
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list);//?hna katbaddal list ba9i maareftch 3lach....?
+				parcer(list, &f_list, fd);//?hna katbaddal list ba9i maareftch 3lach....?
 			if (f_list && f_list->cmd[0] != NULL)
 			{
 				pwd = execute_cmds(&f_list, envr, pwd);
-				if (f_list && f_list->fd->out != 1)
+				while (f_list)
 				{
-					close(f_list->fd->out);
-					f_list->fd->out = 1;
-				}
-				if(f_list && f_list->fd->in != 0)
-				{
-					close(f_list->fd->in);
-					f_list->fd->in = 0;
+					if (f_list)
+					{
+						printf("--------------BEFORE----------------\n");
+						printf ("f_list->fd->out : %d\n", f_list->fd->out);
+						printf ("f_list->fd->in : %d\n", f_list->fd->in);
+					}
+					else
+						printf("f_list is NULL\n");
+					if (f_list && f_list->fd->out != 1)
+					{
+						puts("main : closing fd_out");
+						close(f_list->fd->out);
+						f_list->fd->out = 1;
+					}
+					if(f_list && f_list->fd->in != 0)
+					{
+						puts("main : closing fd_in");
+						close(f_list->fd->in);
+						f_list->fd->in = 0;
+					}
+					if (f_list)
+					{
+						printf("--------------AFTER----------------\n");
+						printf ("f_list->fd->out : %d\n", f_list->fd->out);
+						printf ("f_list->fd->in : %d\n", f_list->fd->in);
+					}
+					f_list = f_list->next;
 				}
 			}
 			free(b);
@@ -163,7 +183,7 @@ void	free_env(t_env **envr)
 
 int main(int ac, char **av, char **env)
 {
-	// t_fd		*fd;
+	t_fd		*fd;
 	t_env		*envr;
 	char		*b;
 
@@ -173,9 +193,9 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
-	// fd = malloc(sizeof(t_fd));
-	// fd->in = 0;
-	// fd->out = 1;
+	fd = malloc(sizeof(t_fd));
+	fd->in = 0;
+	fd->out = 1;
 	if (!env)
         set_env(&envr);
     else
@@ -184,7 +204,7 @@ int main(int ac, char **av, char **env)
 	}
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	minishell(&envr, b);
+	minishell(&envr, b, &fd);
 	// free_env(&envr);
 	// free(fd);
 	return (0);

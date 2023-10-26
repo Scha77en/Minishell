@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-t_cmd *create_list(void)
+t_cmd *create_list(t_fd **fd)
 {
 	t_cmd *node;
 
@@ -20,10 +20,10 @@ t_cmd *create_list(void)
 	if (!node)
 		return (NULL);
 
-	node->fd = malloc(sizeof(t_fd));
-	node->fd->in = 0;
-	node->fd->out = 1;
-	// node->fd = *fd;
+	// node->fd = malloc(sizeof(t_fd));
+	// node->fd->in = 0;
+	// node->fd->out = 1;
+	node->fd = *fd;
 	node->cmd = NULL;
 	node->next = NULL;
 	return (node);

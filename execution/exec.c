@@ -16,36 +16,45 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 {
 	int		pipfd[2];
 	pid_t	pid1 = -1;
+	t_cmd	*current;
+	int		status;
    	// pid_t terminatedPid;
 	int		for_next = 0;
 
-	// v = 0;
+	status = 0;
+	current = *tavern;
 	if ((*tavern)->next == NULL)
 	{
-		if (if_builting(tavern, envr, &pwd))
+		if (if_builting(&current, envr, &pwd))
 				;
 		else
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				single_cmd_exec((*tavern), envr);
+				single_cmd_exec(current, envr);
 		}
 	}
 	else
 	{
-		while ((*tavern))
+		while (current)
 		{
-			if ((*tavern)->next && pipe(pipfd) == -1)
+			printf("fd->in => [%d]\n", current->fd->in);
+			printf("fd->out => [%d]\n", current->fd->out);
+			printf("for_next => [%d]\n", for_next);
+			printf("pipfd[0] => [%d]\n", pipfd[0]);
+			printf("pipfd[1] => [%d]\n", pipfd[1]);
+			if (current->next && pipe(pipfd) == -1)
 				error_out("pipe", 0);
 			pid1 = fork();
 			if (pid1 == 0)
 			{
-				if ((*tavern)->next)
+				if (current->next)
 				{
 					if (dup2(pipfd[1], STDOUT_FILENO) < 0)
 						error_out("dup2 ", 0);
 					close(pipfd[1]);
 					close(pipfd[0]);
+					current->fd->out = STDOUT_FILENO;
 				}
 				if (for_next)
 				{
@@ -53,34 +62,42 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 						error_out("dup2", 0);
 					close(for_next);
 				}
-				if (if_builting(tavern, envr, &pwd))
+				if (if_builting(&current, envr, &pwd))
 					exit(0);
-				execute_command((*tavern), envr);
+				execute_command(current, envr);
 			}
 			// reset_fd(tavern);
 			if (for_next)
 				close(for_next);
-			if ((*tavern)->next)
+			if (current->next)
 			{
 				close(pipfd[1]);
 				for_next = pipfd[0];
 			}
-			*tavern = (*tavern)->next;
+			current = current->next;
 		}
 	}
-	while (wait(NULL) > 0)
+	// while (wait(NULL) > 0)
+	// 	;
+	waitpid(pid1, &status, 0);
+	if (WIFEXITED(status))
 	{
- 		// terminatedPid = wait(&g_status);
- 		if (WIFEXITED(g_status)) {
-			// Child process exited normally
- 	    	g_status = WEXITSTATUS(g_status);
- 		}
-		else
-		{
-			// Child process exited abnormally
-			g_status = WTERMSIG(g_status);
-		}
+		g_status = WEXITSTATUS(status);
+		printf("child exited with status of %d\n", g_status);
 	}
+	else
+		printf("child did not exit successfully\n");
+ 		// terminatedPid = wait(&g_status);
+ 		// if (WIFEXITED(g_status)) {
+		// 	// Child process exited normally
+ 	    // 	g_status = WEXITSTATUS(g_status);
+ 		// }
+		// else
+		// {
+		// 	// Child process exited abnormally
+		// 	g_status = WTERMSIG(g_status);
+		// }
+
 	return (pwd);
 }
 
@@ -129,7 +146,7 @@ void	execute_command(t_cmd *tavern, t_env **envr)
 
 	u_env = update_env(envr);
 	check_redirections(tavern);
-	if (access(tavern->cmd[0], F_OK) == 0)
+	if (ft_strncmp(tavern->cmd[0], "/", 1) == 0 && access(tavern->cmd[0], F_OK) == 0)
 	{
 		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
 		if (ret == -1)
@@ -152,6 +169,20 @@ void	execute_command(t_cmd *tavern, t_env **envr)
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
+		if (i == -1)
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			exit(127);
+		}
+		ret = path_backslash(path[i]);
+		if (ret == -1)
+		{
+			write(2, "minishell: ", 11);
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": no such file or directory\n", 29);
+			exit(127);
+		}
 		ret = execve(path[i], tavern->cmd, u_env);
 		if (ret == -1)
 		{
@@ -169,11 +200,14 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 	int		i;
 	char	**u_env;
 
+	puts("[1]");
 	u_env = update_env(envr);
 	ret = 0;
 	check_redirections(tavern);
-	if (access(tavern->cmd[0], F_OK) == 0)
+	puts("[2]");
+	if (ft_strncmp(tavern->cmd[0], "/", 1) == 0 && access(tavern->cmd[0], F_OK) == 0)
 	{
+		puts("here");
 		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
 		if (ret == -1)
 		{
@@ -181,6 +215,7 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 			write(2, ": command not found\n", 20);
 			exit(127);
 		}
+		return ;
 	}
 	else
 	{
@@ -196,6 +231,21 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
+		if (i == -1)
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			exit(127);
+		}
+		puts("[3]");
+		ret = path_backslash(path[i]);
+		if (ret == -1)
+		{
+			write(2, "minishell: ", 11);
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": no such file or directory\n", 29);
+			exit(127);
+		}
 		ret = execve(path[i], tavern->cmd, u_env);
 		if (ret == -1)
 		{
@@ -204,6 +254,24 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 			exit(127);
 		}
 	}
+}
+
+int	path_backslash(char *path)
+{
+	int		i;
+
+	i = 0;
+	while (path[i])
+	{
+		if (path[i] == '/')
+		{
+			i++;
+			if (path[i] == '/')
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 
@@ -240,13 +308,18 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 
 // after sorting the export, there is a problem in unsetting it members. --DONE--
 
-// close fd; --DONE--
+// close fd, when piping; --DONE--
+
+// exit status; --DONE--
+
 
 /***************************************************************************************************************************************************************************************************/
 
 
 // 1- set the garbage collector;
 
+
+// 2- change the path when going to the school;
 
 
 // 7-
