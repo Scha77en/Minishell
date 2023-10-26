@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 16:24:20 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/25 16:07:58 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 int	cheak(char *b, int *i, int c)
 {
 	int s;
-
+	int v;
 	s = *i;
-	while (b[++s])
+	v = 0;
+	s = 0;
+	while (b[s])
 	{
-		if (b[s] == c)
-			return (0);
+		if (b[s++] == c)
+			v++;
 	}
-	return (1);
+	return (v % 2);
 }
 
 int	token(char fc, char sc)

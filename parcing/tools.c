@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/24 17:03:53 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/26 15:57:05 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	white_space(char c)
 }
 int is_token_(int c, int q)
 {
-	if (c == q)
+	if (q != 0 && c != q)
 		return (0);
 	if (c == '<' || c == '>' || c == 34 || c == 39)
 		return (1);
@@ -60,7 +60,7 @@ int len_of_filled(char *b, int s, int c, int a)
 		}
 		else
 			s++;
-		if (b[s] == ' ' && c == 0)
+		if ((b[s] == ' ' || b[s-1] == ' ') && c == 0)
 			break ;
 	}
 	return (a);

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/24 18:27:38 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:23:48 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	print_list(t_cmd *f_list)
 		i = 0;
 		while (f_list->cmd[i])
 		{
-			printf("cmd : %s\n", f_list->cmd[i++]);
+			// printf("cmd : %s\n", f_list->cmd[i++]);
+			printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
 		}
 		// printf("fd_in : %d | fd_out : %d\n", f_list->fd_in, f_list->fd_out);
 		printf("-------------\n");
@@ -177,8 +178,10 @@ int main(int ac, char **av, char **env)
 	if (!env)
         set_env(&envr);
     else
+	{
         envr = envirement(env);
 	signal(SIGINT, handle_sigint);
+	}
 	signal(SIGQUIT, SIG_IGN);
 	minishell(env, &envr, b, &fd);
 	return (0);
