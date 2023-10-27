@@ -124,44 +124,22 @@ void minishell(t_env **envr, char *b, t_fd **fd)
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list, fd);//?hna katbaddal list ba9i maareftch 3lach....?
+				parcer(list, &f_list, fd);
 			if (f_list && f_list->cmd[0] != NULL)
 			{
 				pwd = execute_cmds(&f_list, envr, pwd);
-				while (f_list)
+				if (f_list && f_list->fd->out != 1)
 				{
-					if (f_list)
-					{
-						printf("--------------BEFORE----------------\n");
-						printf ("f_list->fd->out : %d\n", f_list->fd->out);
-						printf ("f_list->fd->in : %d\n", f_list->fd->in);
-					}
-					else
-						printf("f_list is NULL\n");
-					if (f_list && f_list->fd->out != 1)
-					{
-						puts("main : closing fd_out");
-						close(f_list->fd->out);
-						f_list->fd->out = 1;
-					}
-					if(f_list && f_list->fd->in != 0)
-					{
-						puts("main : closing fd_in");
-						close(f_list->fd->in);
-						f_list->fd->in = 0;
-					}
-					if (f_list)
-					{
-						printf("--------------AFTER----------------\n");
-						printf ("f_list->fd->out : %d\n", f_list->fd->out);
-						printf ("f_list->fd->in : %d\n", f_list->fd->in);
-					}
-					f_list = f_list->next;
+					close(f_list->fd->out);
+					f_list->fd->out = 1;
+				}
+				if(f_list && f_list->fd->in != 0)
+				{
+					close(f_list->fd->in);
+					f_list->fd->in = 0;
 				}
 			}
 			free(b);
-			// free_f_list(&f_list);
-			// free_tokens(&list);
 		}
 	}
 }

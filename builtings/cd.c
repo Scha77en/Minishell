@@ -16,11 +16,14 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 {
 	char	curwd[PATH_MAX];
 
-	if ((*tavern)->cmd[1] == NULL || ft_strncmp((*tavern)->cmd[1], "~", 1) == 0)
+	if ((*tavern)->cmd[1] == NULL)
 	{
 		oldpwd_update(env, NULL, 0);
 		if (chdir(ft_getenv(env, "HOME")) != 0)
+		{
 			error_out("chdir", 0);
+			return ;
+		}
 		redefine_pwd(pwd, ft_getenv(env, "HOME"));
 		pwd_update(env);
 	}

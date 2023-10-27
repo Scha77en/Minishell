@@ -17,13 +17,19 @@ void	check_redirections(t_cmd *tavern)
 	if (tavern->fd->in != 0)
 	{
 		if (dup2(tavern->fd->in, STDIN_FILENO) < 0)
+		{
 			error_out("dup2", 0);
+			exit(1);
+		}
 		close(tavern->fd->in);
 	}
 	if (tavern->fd->out != 1)
 	{
 		if (dup2(tavern->fd->out, STDOUT_FILENO) < 0)
+		{
 			error_out("dup2", 0);
+			exit(1);
+		}
 		close(tavern->fd->out);
 	}
 }
