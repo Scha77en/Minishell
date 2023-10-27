@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 16:08:10 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:23:48 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	print_list(t_cmd *f_list)
 		i = 0;
 		while (f_list->cmd[i])
 		{
-			printf("cmd : %s\n", f_list->cmd[i++]);
+			// printf("cmd : %s\n", f_list->cmd[i++]);
+			printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
 		}
 		// printf("fd_in : %d | fd_out : %d\n", f_list->fd_in, f_list->fd_out);
 		printf("-------------\n");
@@ -116,8 +117,9 @@ void minishell(t_env **envr, char *b, t_fd **fd)
 		if (ft_strlen(b))
 		{
 			add_history(b);
-			list = tokenizer(b);
-			if ((g_status = syntax_error(list)) == 258)
+			if ((list = tokenizer(b)) == NULL)
+				g_status = 258;
+			else if ((g_status = syntax_error(list)) == 258)
 			{
 				free_tokens(&list);
 				list = NULL;
@@ -165,7 +167,6 @@ int main(int ac, char **av, char **env)
 	t_env		*envr;
 	char		*b;
 
-	// atexit(f);
 	b = NULL;
 	g_status = 0;
 	(void)ac;
@@ -179,8 +180,8 @@ int main(int ac, char **av, char **env)
     else
 	{
         envr = envirement(env);
-	}
 	signal(SIGINT, handle_sigint);
+	}
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b, &fd);
 	// free_env(&envr);

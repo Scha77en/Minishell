@@ -6,11 +6,35 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 15:20:18 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:01:16 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+
+
+
+
+char	*fill_var(char *b, int n, int s)
+{
+	int		i;
+	char	*var;
+
+	i = 0;
+	var = malloc(sizeof(char) * (n - s));
+	if (!var)
+		return (NULL);
+	var[(n - s)] = '\0';
+	n = s +1;
+	while (b[n] && (ft_isalpha(b[n]) || b[n] == '_'))
+	{
+		var[i++] = b[n++];
+	}
+	return (var);
+}
+
+
 
 t_tokens	*create_node(void)
 {
@@ -69,16 +93,20 @@ t_tokens *fill_node(t_tokens *node, char *b, int *i)
 		node->tokens = t_oken("<", i, b, -1);
 	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
 	{
-		if ((node->tokens = fill_token(b, i, 34)) == NULL)
+		// if (b[*i + 1] == 34)
+		// 	(*i) += 2;
+		if ((node->tokens = fill_word(b, i, 34)) == NULL)
 			return (NULL);
 	}
 	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
 	{
-		if ((node->tokens = fill_token(b, i, 39)) == NULL)
+		// if (b[*i + 1] == 39)
+		// 	(*i) += 2;
+		if ((node->tokens = fill_word(b, i, 39)) == NULL)
 			return (NULL); 
 	}
 	else
-		node->tokens = fill_word(b, i);
+		node->tokens = fill_word(b, i, 0);
 	return (node);
 }
 

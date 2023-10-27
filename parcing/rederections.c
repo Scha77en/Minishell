@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 19:07:42 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:04:07 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,25 @@ char	*get_data_r(t_tokens **file)
 	int		i;
 	char	*line;
 	char	*data;
-	char	*var;
-	int		l;
 
 	data = malloc(1);
+	data[0] = '\0';
 	if (!data)
 		return (NULL);
-	data[0] = '\0';
 	while (1)
 	{
+		i = 0;
 		write(1, "herdoc> ", 8);
 		line = get_next_line(0);
 		if (!ft_strlen(line))
 			break ;
-		i = find_exp(line);
-		if (i > 0)
-		{
-			l = i -1;
-			var = check_if_valid_herdoc(line, &i);
-			if (ft_strlen(var) && (*file)->type == WORD)
-				line = update_line(line, var, l);
-		}
+		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
+			line = fill_word(line, &i, 0);
+		// printf("[%s]", (*file)->tokens);
 		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
+		{
 			break ;
-		printf("s %s\n", (*file)->tokens);
+		}
 		data = ft_strjoin(data, line);
 	}
 	return (free(line), data);

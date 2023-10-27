@@ -139,6 +139,13 @@ minishell$ <<""|""
 minishell$ <<""|ls
 > 
 minishell$ < a|ls
+
+
+ls |  ls
+
+
+cat << "" | ls | wc -l
+""    
                                                                                     ////0    minishell$ < a|wc
                                                                                     ////0    minishell$ 
 
@@ -255,3 +262,6 @@ ls: cannot access '': No such file or directory
 cat << "" | ""ls | wc -l
 > 
 13
+
+
+$USER $USER
