@@ -130,7 +130,7 @@ typedef struct s_num
 void	*my_malloc(size_t size, int v);
 void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
 void	clean_mem(t_mem *mem);
-void clear_garbeg(t_mem *head);
+void	clear_garbeg(t_mem *head);
 void	*garbage(int size, int len, int status);
 
 // Minishell execution testing functions
@@ -154,7 +154,7 @@ void	handle_sigint(int sig);
 char	**update_env(t_env **envr);
 char	**env_to_char(t_env **env);
 int		path_backslash(char *path);
-// void	reset_fd(t_cmd **tavern);
+void	reset_fd(t_cmd *tavern);
 // builting
 
 int		if_builting(t_cmd **tavern, t_env **env, char **pwd);

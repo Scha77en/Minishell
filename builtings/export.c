@@ -21,10 +21,7 @@ void	ft_export(t_cmd *tavern, t_env **env)
 	i = 1;
 	v = 0;
 	if (tavern->cmd[i] == NULL)
-	{
 		ft_env(&tavern, env, 1);
-		puts("Has Entered");
-	}
 	else
 	{
 		while (tavern->cmd[i] != NULL)

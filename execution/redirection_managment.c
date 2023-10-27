@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	check_redirections(t_cmd *tavern)
+int	check_redirections(t_cmd *tavern)
 {
 	if (tavern->fd->in != 0)
 	{
@@ -22,6 +22,7 @@ void	check_redirections(t_cmd *tavern)
 			exit(1);
 		}
 		close(tavern->fd->in);
+		return (1);
 	}
 	if (tavern->fd->out != 1)
 	{
@@ -31,5 +32,7 @@ void	check_redirections(t_cmd *tavern)
 			exit(1);
 		}
 		close(tavern->fd->out);
+		return (1);
 	}
+	return (0);
 }

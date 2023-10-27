@@ -56,7 +56,7 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 					}
 					close(pipfd[1]);
 					close(pipfd[0]);
-					current->fd->out = STDOUT_FILENO;
+					current->fd->out = STDOUT_FILENO; 
 				}
 				if (for_next)
 				{
@@ -87,38 +87,39 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 	return (pwd);
 }
 
-void	reset_fd(t_cmd **tavern)
+void	reset_fd(t_cmd *tavern)
 {
-	if ((*tavern)->fd->in != 0)
+	if (tavern->fd->in != 0)
 	{
-		close((*tavern)->fd->in);
-		(*tavern)->fd->in = 0;
+		close(tavern->fd->in);
+		tavern->fd->in = 0;
 	}
-	if ((*tavern)->fd->out != 1)
+	if (tavern->fd->out != 1)
 	{
-		close((*tavern)->fd->out);
-		(*tavern)->fd->out = 1;
+		close(tavern->fd->out);
+		tavern->fd->out = 1;
 	}
 }
 
 int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 {
-	if (ft_strncmp((*tavern)->cmd[0], "echo", 4) == 0)
+	if (ft_strncmp((*tavern)->cmd[0], "echo", 5) == 0)
 		return (echo_builted((*tavern)), 1);
-	if (ft_strncmp((*tavern)->cmd[0], "cd", 2) == 0)
+	if (ft_strncmp((*tavern)->cmd[0], "cd", 3) == 0)
 		return (cd_builted(tavern, env, pwd), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "pwd", 3) == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "pwd", 4) == 0)
 		return (print_working_directory(tavern, pwd), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "export", 6) == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "export", 8) == 0)
 		return (ft_export((*tavern), env), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "unset", 5) == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "unset", 7) == 0)
 		return (ft_unset((*tavern), env), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "env", 3) == 0)
-		return (ft_env(env, 0), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "exit" ,4) == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "env", 4) == 0)
+		return (ft_env(tavern, env, 0), 1);
+	else if (ft_strncmp((*tavern)->cmd[0], "exit", 6) == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "$?", 2) == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "$?", 3) == 0)
 		return (printf("%d\n", g_status), 1);
+
 	return (0);
 }
 
