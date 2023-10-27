@@ -79,10 +79,7 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	if (current->type == OUT)
 	{
 		if ((*tmp)->fd->out != 1)
-		{
-			printf("close\n");
 			close((*tmp)->fd->out);
-		}
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	}
 	else

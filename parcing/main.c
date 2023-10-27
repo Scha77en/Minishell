@@ -31,7 +31,7 @@ void	print_list(t_cmd *f_list)
 		f_list = f_list->next;
 	}
 }
-void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
+void 	parcer(t_tokens *list, t_cmd **f_list)
 {
 	t_cmd	*tmp;
 	int		flg;
@@ -41,7 +41,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_fd **fd)
 	while (list->type != NLINE)
 	{
 	i = -1;
-	add_list(f_list, create_list(fd));
+	add_list(f_list, create_list());
 	tmp = ft_lstlast_p(*f_list);
 	flg = -1;
 		while (list && list->type != NLINE && list->type != PIPE)
@@ -99,7 +99,7 @@ void	free_f_list(t_cmd **f_list)
 	}
 	*f_list = NULL;
 }
-void minishell(char **env, t_env **envr, char *b, t_fd **fd)
+void minishell(t_env **envr, char *b)
 {
 	t_tokens	*list;
 	t_cmd		*f_list;
@@ -126,19 +126,23 @@ void minishell(char **env, t_env **envr, char *b, t_fd **fd)
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list, fd);
-			if (f_list)
+				parcer(list, &f_list);
+			if (f_list && f_list->cmd[0] != NULL)
 			{
-				pwd = execute_cmds(&f_list, env, envr, pwd);
-				if (f_list && f_list->fd->out != 1)
+				pwd = execute_cmds(&f_list, envr, pwd);
+				while (f_list)
 				{
-					close(f_list->fd->out);
-					f_list->fd->out = 1;
-				}
-				if(f_list && f_list->fd->in != 0)
-				{
-					close(f_list->fd->in);
-					f_list->fd->in = 0;
+					if (f_list && f_list->fd->out != 1)
+					{
+						close(f_list->fd->out);
+						f_list->fd->out = 1;
+					}
+					if(f_list && f_list->fd->in != 0)
+					{
+						close(f_list->fd->in);
+						f_list->fd->in = 0;
+					}
+					f_list = f_list->next;
 				}
 			}
 			free(b);
@@ -163,7 +167,7 @@ void	free_env(t_env **envr)
 
 int main(int ac, char **av, char **env)
 {
-	t_fd		*fd;
+	// t_fd		*fd;
 	t_env		*envr;
 	char		*b;
 
@@ -172,9 +176,9 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
-	fd = malloc(sizeof(t_fd));
-	fd->in = 0;
-	fd->out = 1;
+	// fd = malloc(sizeof(t_fd));
+	// fd->in = 0;
+	// fd->out = 1;
 	if (!env)
         set_env(&envr);
     else
@@ -183,6 +187,8 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	}
 	signal(SIGQUIT, SIG_IGN);
-	minishell(env, &envr, b, &fd);
+	minishell(&envr, b);
+	// free_env(&envr);
+	// free(fd);
 	return (0);
 }

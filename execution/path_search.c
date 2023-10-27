@@ -18,6 +18,8 @@ char	**find_path(char **env)
 	char	**path;
 
 	k = get_env_path(env);
+	if (k == -1)
+		return (NULL);
 	path = ft_split_m(env[k], ':');
 	return (path);
 }
@@ -32,7 +34,7 @@ int	get_env_path(char **env)
 	while (ft_strncmp_m(path, env[i], 5) != 0)
 	{
 		if (!env[i])
-			perror("The Command Path Does Not Exist!");
+			return (-1);
 		i++;
 	}
 	return (i);
@@ -44,10 +46,7 @@ int	ft_strncmp_m(char *s1, char *s2, int n)
 
 	i = 0;
 	if (s1 == NULL || s2 == NULL)
-	{
-		puts("Error: Null Pointer Exception!");
-		return (0);
-	}
+		return (-1);
 	while (i < n && (s1[i] || s2[i]))
 	{
 		if (s1[i] != s2[i])

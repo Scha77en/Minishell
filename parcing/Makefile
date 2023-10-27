@@ -4,7 +4,7 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 		../execution/joining.c ../execution/path_search.c ../execution/command_search.c\
 		../execution/here_doc.c ../execution/redirection_managment.c ../execution/error_handling.c\
 		../builtings/cd.c ../builtings/pwd.c ../builtings/unset.c ../builtings/env.c ../builtings/echo.c ../builtings/export_utils.c\
-		../builtings/export.c ../builtings/exit.c ../execution/signals.c
+		../builtings/export.c ../builtings/exit.c ../builtings/export_sort_utils.c ../execution/signals.c
 
 READLINE = $(shell brew --prefix readline)
 

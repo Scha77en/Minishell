@@ -34,6 +34,8 @@ char	*ft_strjoin_b(char *s1, char *s2, int v)
 		ptr[i++] = ' ';
 	if (v == 1)
 		ptr[i++] = '/';
+	if (v == 2)
+		ptr[i++] = '=';
 	while (s2[j])
 	{
 		ptr[i] = s2[j];

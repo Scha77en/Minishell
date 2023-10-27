@@ -131,3 +131,36 @@ void	*ft_memcpy_m(void *dst, void *src, size_t n)
 	}
 	return (dst);
 }
+
+int		status;
+
+int main(void)
+{
+	pid_t pid;
+	int stat;
+
+	status = 0;
+	pid = fork();
+
+	if (pid == 0)
+	{
+		while (1)
+		printf("child\n");
+		exit(2);
+	}
+	else
+	{
+		if (waitpid(pid, &status, 0) == -1)
+			perror("waitpid");
+		else
+		{
+			if (WIFEXITED(status))
+			{
+				stat = WEXITSTATUS(status);
+				printf("child exited with status of %d\n", stat);
+			}
+			else
+				printf("child did not exit successfully\n");
+		}
+	}
+}

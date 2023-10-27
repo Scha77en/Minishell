@@ -15,28 +15,34 @@
 void	ft_export(t_cmd *tavern, t_env **env)
 {
 	int		i;
+	int		v;
 	char	**split;
 
 	i = 1;
+	v = 0;
 	if (tavern->cmd[i] == NULL)
-		ft_env(env, 1);
+		ft_env(&tavern, env, 1);
 	else
 	{
 		while (tavern->cmd[i] != NULL)
 		{
-			if(check_validity(tavern->cmd[i]))
+			if(check_validity(tavern->cmd[i], &v))
 			{
 				split = split_export(tavern->cmd[i]);
 				if (split[1] == NULL)
-					ft_add_env(env, split);
+					ft_add_env(env, split, v);
 
 				else if(plus_sign(split[0], 0) > 0)
 					ft_join_value(env, split);
 				else
-					ft_add_env(env, split);
+					ft_add_env(env, split, v);
 			}
 			else
-				printf("Minishell: export: `%s': not a valid identifier\n", tavern->cmd[i]);
+			{
+				write(2, "minishell: export: `", 20);
+				ft_putstr_fd(tavern->cmd[i], 2);
+				write(2, "': not a valid identifier\n", 26);
+			}
 			i++;
 		}
 	}
@@ -44,7 +50,7 @@ void	ft_export(t_cmd *tavern, t_env **env)
 
 // it must skip one \ and return an error when more than one \ is found in the var;
 
-int	check_validity(char *str)
+int	check_validity(char *str, int *v)
 {
 	int	i;
 
@@ -60,6 +66,7 @@ int	check_validity(char *str)
 		if ((ft_isdigit(str[i]) == 0 && alpha_undscore(str[i])) || back_slash(str))
 			return (0);
 	}
+	*v = 2;
 	return (1);
 }
 
@@ -139,10 +146,10 @@ void	ft_join_value(t_env **env, char **split)
 		if (current == NULL)
 			break ;
 	}
-	ft_add_env(env, split);
+	ft_add_env(env, split, 0);
 }
 
-void	ft_add_env(t_env **env, char **split)
+void	ft_add_env(t_env **env, char **split, int v)
 {
 	t_env	*current;
 	t_env	*new;
@@ -150,6 +157,7 @@ void	ft_add_env(t_env **env, char **split)
 	if (!env)
 	{
 		*env = ft_envnew(split[0], split[1]);
+		(*env)->id = v;
 		return ;
 	}
 	current = *env;
@@ -162,6 +170,7 @@ void	ft_add_env(t_env **env, char **split)
 				current->value = ft_strdup("");
 			else
 				current->value = ft_strdup(split[1]);
+			current->id = v;
 			return ;
 		}
 		current = current->next;
@@ -172,6 +181,7 @@ void	ft_add_env(t_env **env, char **split)
 	else
 		new->var = ft_strdup(split[0]);
 	new->value = ft_strdup(split[1]);
+	new->id = v;
 	new->next = NULL;
 	ft_lstaddback(env, new);
 }

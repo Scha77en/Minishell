@@ -21,6 +21,8 @@ t_cmd	*ft_lstnew_m(char *content)
 		return (0);
 	node1 -> fd = (t_fd *)malloc(sizeof(t_fd));
 	node1 -> cmd = &content;
+    node1->fd->in = 0;
+    node1->fd->out = 1;
 	node1->next = NULL;
 	// node1 -> previous = NULL;
 	return (node1);
