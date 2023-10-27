@@ -248,7 +248,7 @@ t_env		*lstnew(void);
 int			white_space(char c);
 int			token(char fc, char sc);
 void		add_list(t_cmd **list, t_cmd *new);
-t_cmd		*create_list(t_fd **fd);
+t_cmd		*create_list(void);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
@@ -268,7 +268,7 @@ char		*check_if_valid_herdoc(char *str, int *i);
 char		*fill_word(char *b, int *i, int c);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b);
-void 		minishell(t_env **envr, char *b, t_fd **fd);
+void 		minishell(t_env **envr, char *b);
 // int			len_var(char *value, t_env *env);
 
 #endif
