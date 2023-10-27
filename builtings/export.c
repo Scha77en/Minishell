@@ -23,7 +23,6 @@ void	ft_export(t_cmd *tavern, t_env **env)
 	if (tavern->cmd[i] == NULL)
 	{
 		ft_env(&tavern, env, 1);
-		puts("Has Entered");
 	}
 	else
 	{

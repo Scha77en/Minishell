@@ -51,12 +51,12 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 				{
 					if (dup2(pipfd[1], STDOUT_FILENO) < 0)
 					{
+						puts("error");
 						error_out("dup2 ", 0);
 						exit(1);
 					}
 					close(pipfd[1]);
 					close(pipfd[0]);
-					current->fd->out = STDOUT_FILENO;
 				}
 				if (for_next)
 				{

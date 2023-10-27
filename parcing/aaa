@@ -1,0 +1,17 @@
+aa
+aaa
+env.c
+exp
+expand.c
+_fill_token.c
+fill_token.c
+get_next_line.c
+list.c
+main.c
+Makefile
+minishell
+rederections.c
+test.c
+tokenizer2.c
+tokenizer.c
+tools.c
