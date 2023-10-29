@@ -272,3 +272,14 @@ $USER $USER
 
 
 !!!!!!!!!!!PATH         
+
+
+No such file or directory    and   : command not found
+
+
+
+
+$?$?$
+
+
+$env

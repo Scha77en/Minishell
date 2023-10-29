@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/25 16:07:58 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/29 15:54:09 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	syntax_error(t_tokens *list)
 	{
 		if (((is_token(list->type) && !is_word(list->next->type)
 				&& list->next->type != WHITESPACE)) || list->type == SLH)
-			return (printf("syntax error : %s\n", list->tokens), 258);
+			return (printf("minishell$: syntax error near unexpected token `%s'\n", list->tokens), 258);
 		else
 			list = list->next;
 	}
