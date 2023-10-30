@@ -81,9 +81,11 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 			current = current->next;
 		}
 	}
-	waitpid(pid1, &status, 0);
-	if (WIFEXITED(status))
-		g_status = WEXITSTATUS(status);
+	while(wait(&status) > 0)
+	{
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
+	}
 	return (pwd);
 }
 
@@ -145,24 +147,11 @@ void	execute_command(t_cmd *tavern, t_env **envr)
 	else
 	{
 		path = find_path(u_env);
-		if (!path)
-		{
-			ft_putstr_fd(tavern->cmd[0], 2);
-			write(2, ": No such file or directory\n", 29);
-			exit(127);
-		}
 		i = -1;
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
-		if (i == -1)
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(tavern->cmd[0], 2);
-			write(2, ": No such file or directory\n", 29);
-			exit(127);
-		}
-		ret = path_backslash(path[i]);
+		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
 		{
 			write(2, "minishell: ", 11);
@@ -204,25 +193,11 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 	else
 	{
 		path = find_path(u_env);
-		if (!path)
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(tavern->cmd[0], 2);
-			write(2, ": No such file or directory\n", 29);
-			exit(127);
-		}
 		i = -1;
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
-		if (i == -1)
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(tavern->cmd[0], 2);
-			write(2, ": No such file or directory\n", 29);
-			exit(127);
-		}
-		ret = path_backslash(path[i]);
+		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
 		{
 			write(2, "minishell: ", 11);
@@ -245,14 +220,12 @@ int	path_backslash(char *path)
 	int		i;
 
 	i = 0;
+	if (!path)
+		return (-1);
 	while (path[i])
 	{
 		if (path[i] == '/')
-		{
-			i++;
-			if (path[i] == '/')
-				return (-1);
-		}
+			return (-1);
 		i++;
 	}
 	return (0);
@@ -302,8 +275,19 @@ int	path_backslash(char *path)
 
 // 1- set the garbage collector;
 
+// 2-
+// minishell$ cat -e < a
+// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
+// $ 	dup2: Bad file descriptor
+
+
+// 3- cat < a >> aa
+// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
+// $ 	dup2: Bad file descriptor
 
 // 2- change the path when going to the school;
+
+
 
 
 // 7-

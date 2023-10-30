@@ -35,7 +35,7 @@ char	*ft_itoa(int n)
 
 	len = ft_len(n);
 	nb = n;
-	ptr = (char *)malloc(len + 1);
+	ptr = (char *)my_malloc(len + 1, 1, 1);
 	if (!ptr)
 		return (NULL);
 	if (nb == 0)

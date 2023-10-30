@@ -39,7 +39,7 @@ static char	*get_word(const char *str, int start, int finish)
 	int		i;
 
 	i = 0;
-	word = malloc((finish - start + 1) * sizeof(char));
+	word = my_malloc((finish - start + 1), 1, 1);
 	if (!word)
 		return (NULL);
 	while (start < finish)
@@ -66,7 +66,7 @@ char	**ft_split_m(char *s, char c)
 	int		g_start;
 	char	**ptr;
 
-	ptr = malloc((rows_num(s, c) + 1) * sizeof(char *));
+	ptr = my_malloc((rows_num(s, c) + 1), 1, 1);
 	if (!s || !ptr)
 		return (0);
 	g_end = -1;

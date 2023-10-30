@@ -21,18 +21,27 @@ void	print_working_directory(t_cmd **tavern, char **pwd)
 		write((*tavern)->fd->out, current_directory, ft_strlen(current_directory));
 	}
 	else
+	{
 		write((*tavern)->fd->out, *pwd, ft_strlen(*pwd));
+	}
 	write((*tavern)->fd->out, "\n", 1);
 }
 
-void	redefine_pwd(char **pwd, char *define)
+void	redefine_pwd(char **pwd, char *define, t_env **env, int v)
 {
-	if (!ft_strcmp(define, "..") || !ft_strcmp(define, "."))
+	if (v == 1)
+	{
+		v = 0;
+		while (define[v])
+			v++;
+		if (define[v - 1] == '/')
+			define[v - 1] = '\0';
 		*pwd = ft_strjoin_b(*pwd, ft_strdup(define), 1);
+	}
 	else
 	{
 		if (*pwd)
 			free(*pwd);
-		*pwd = ft_strdup(define);
+		*pwd = ft_strdup(ft_getenv(env, "PWD"));
 	}
 }

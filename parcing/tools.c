@@ -23,7 +23,7 @@ int is_token_(int c, int q)
 {
 	if (q != 0 && c != q)
 		return (0);
-	if (c == '<' || c == '>' || c == 34 || c == 39)
+	if (c == '<' || c == '>' || c == 34 || c == 39 || c == '|')
 		return (1);
 	return(0);
 }
@@ -80,7 +80,7 @@ char *fill_it(char *b, int s, int c, int a, int *i)
 	char *var;
 	int n;
 
-	filled = malloc(sizeof(char) * a +1);
+	filled = my_malloc((a + 1), 1, 1);
 	var = NULL;
 	if (!filled)
 		return (NULL);

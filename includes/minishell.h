@@ -127,11 +127,11 @@ typedef struct s_num
 
 // garbage collector
 
-void	*my_malloc(size_t size, int v);
-void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
-void	clean_mem(t_mem *mem);
-void	clear_garbeg(t_mem *head);
-void	*garbage(int size, int len, int status);
+void	*my_malloc(int size, int len, int status);
+// void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
+void	clean_mem(t_mem *head);
+// void	clear_garbeg(t_mem *head);
+// void	*garbage(int size, int len, int status);
 
 // Minishell execution testing functions
 
@@ -155,11 +155,13 @@ char	**update_env(t_env **envr);
 char	**env_to_char(t_env **env);
 int		path_backslash(char *path);
 void	reset_fd(t_cmd *tavern);
+void    herdoc_sigint(int sig);
+
 // builting
 
 int		if_builting(t_cmd **tavern, t_env **env, char **pwd);
 void	print_working_directory(t_cmd **tavern, char **pwd);
-void	redefine_pwd(char **pwd, char *define);
+void	redefine_pwd(char **pwd, char *define, t_env **env, int v);
 void	ft_add_env_pwd(t_env **env, char *var, char *value);
 void	cd_builted(t_cmd **tavern, t_env **env, char **pwd);
 void	oldpwd_update(t_env **env, char *curwd, int v);

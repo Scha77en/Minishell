@@ -26,6 +26,7 @@ int find_exp(char *s)
     }
     return(0);
 }
+
 char *compare(char *var, t_env *env)
 {
     while(env)
@@ -39,6 +40,7 @@ char *compare(char *var, t_env *env)
     }
     return (NULL);
 }
+
 char *check_if_valid(char *str, int *i)
 {
     int s;
@@ -52,7 +54,7 @@ char *check_if_valid(char *str, int *i)
         (*i)++;
         n++;
     }
-    var = malloc(sizeof(char) * (n +1));
+    var = my_malloc((n + 1), 1, 1);
     if (!var)
         return (NULL);
     n = 0;
@@ -63,6 +65,7 @@ char *check_if_valid(char *str, int *i)
     var[n] = '\0';
     return (var);
 }
+
 char *check_if_valid_herdoc(char *str, int *i)
 {
     int s;
@@ -80,7 +83,7 @@ char *check_if_valid_herdoc(char *str, int *i)
         (*i)++;
         n++;
     }
-    var = malloc(sizeof(char) * (n +1));
+    var = my_malloc((n +1), 1, 1);
     if (!var)
         return (NULL);
     var[n] = '\0';
@@ -103,6 +106,7 @@ char *check_if_valid_herdoc(char *str, int *i)
     var = getenv(var);
     return (var);
 }
+
 void fill_expand(char *f, int *k, char *value)
 {
     if (!ft_isdigit(value[0]))
@@ -113,6 +117,7 @@ void fill_expand(char *f, int *k, char *value)
     while(value[i])
         f[(*k)++] = value[i++];
 }
+
 char *update_line(char *line, char *var, int l)
 {
 	char *r;
@@ -122,7 +127,7 @@ char *update_line(char *line, char *var, int l)
 	i = 0;
 	k = 0;
 	l = ft_strlen(var) + l;
-	r = malloc(sizeof(char) * (l + 1));
+	r = my_malloc((l + 1), 1, 1);
     if (!r)
     {
         return (NULL);

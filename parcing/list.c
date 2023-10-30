@@ -16,11 +16,11 @@ t_cmd *create_list(void)
 {
 	t_cmd *node;
 
-	node = malloc(sizeof(t_cmd));
+	node = my_malloc(sizeof(t_cmd), 1, 1);
 	if (!node)
 		return (NULL);
 
-	node->fd = malloc(sizeof(t_fd));
+	node->fd = my_malloc(sizeof(t_fd), 1, 1);
 	node->fd->in = 0;
 	node->fd->out = 1;
 	// node->fd = *fd;

@@ -16,10 +16,10 @@ t_cmd	*ft_lstnew_m(char *content)
 {
 	t_cmd	*node1;
 
-	node1 = (t_cmd *)malloc(sizeof(t_cmd));
+	node1 = (t_cmd *)my_malloc(sizeof(t_cmd), 1, 1);
 	if (!node1)
 		return (0);
-	node1 -> fd = (t_fd *)malloc(sizeof(t_fd));
+	node1 -> fd = (t_fd *)my_malloc(sizeof(t_fd), 1, 1);
 	node1 -> cmd = &content;
     node1->fd->in = 0;
     node1->fd->out = 1;
