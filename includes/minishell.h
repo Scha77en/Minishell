@@ -203,7 +203,7 @@ void	waiting_und_closing(pid_t pid1, int *pipfd);
 
 // other redirections
 
-int	check_redirections(t_cmd *tavern);
+void	check_redirections(t_cmd *tavern);
 void	manage_redirection(t_cmd *tavern, int *pipfd, char **env);
 void	handle_input(t_cmd *tavern, int *pipfd, char **env);
 void	handle_output(t_cmd *tavern, int *pipfd, char **env);

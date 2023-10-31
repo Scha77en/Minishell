@@ -288,6 +288,10 @@ int	path_backslash(char *path)
 // 2- change the path when going to the school;
 
 
+// minishell$ cat << "$USER"
+// out > $USER, not the expanded value of $USER;
+// same thing for single quotes '$USER';
+// no quotes $USER, it should be expanded, $USER VALUE out;
 
 
 // 7-
