@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 17:47:02 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:45:41 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **e
 		if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
 			(*t_lst) = (*t_lst)->next;
 		(*tmp)->fd->in = writing_data(data);
-		printf("[%d]\n", (*tmp)->fd->in);
 	}
 	if ((*tmp)->fd->in == -1)
 	{

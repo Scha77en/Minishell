@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 16:58:21 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:37:08 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,13 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 	char	*f;
 	int		a;
 	int		s;
+	int 	v;
 
 	a = 0;
-	if (cheak(b, i, c) == 1 && (c == 34 || c == 39))
+	v = 0;
+	if (b[(*i) - 1] && b[(*i) - 1] == 34)
+		v++;
+	if (!v && cheak(b, i, c) == 1 && (c == 34 || c == 39))
 	{
 		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)++]);
 		return (NULL);
@@ -144,5 +148,7 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 		s++;
 	a = len_of_filled(b, s, c, a, envr);
 	f = fill_it(b, s, c, a, i, envr);
+	if (v && b[*i] == 34)
+		(*i)++;
 	return (f);
 }

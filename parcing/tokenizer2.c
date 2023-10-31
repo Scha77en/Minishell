@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 18:42:18 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:27:37 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ char *t_oken(char *str, int *i, char *b, int type)
 	if (type == HEREDOC || type == APPEND)
 		r++;
 	*i = r;
+	while(b[r] == ' ')
+		r++;
+	if (b[r] == 34)
+		*i = r+1;
 	return (ft_strdup(str));
 }
 t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
