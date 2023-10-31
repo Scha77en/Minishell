@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/29 17:42:36 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:47:02 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,11 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
 	}
 	if ((*tmp)->fd->out == -1)
-		perror("fd_out");
+	{
+		(*tmp)->fd->out = 1;
+		g_status = 1;
+			// (*t_lst) = (*t_lst)->next;
+	}
 }
 
 void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr)
@@ -126,7 +130,11 @@ void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **e
 		(*tmp)->fd->in = writing_data(data);
 	}
 	if ((*tmp)->fd->in == -1)
-		perror("fd_in");
+	{
+		(*tmp)->fd->in = 0;
+		g_status = 1;
+			// (*t_lst) = (*t_lst)->next;
+	}
 }
 
 void	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)

@@ -6,13 +6,13 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 13:18:29 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/10/28 14:14:56 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:20:11 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	check_redirections(t_cmd *tavern)
+int	check_redirections(t_cmd *tavern)
 {
 	if (tavern->fd->in != 0)
 	{
@@ -32,4 +32,5 @@ void	check_redirections(t_cmd *tavern)
 		}
 		close(tavern->fd->out);
 	}
+	return (0);
 }

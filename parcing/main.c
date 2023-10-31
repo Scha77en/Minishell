@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/28 14:45:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:56:28 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,21 @@ void	print_list(t_cmd *f_list)
 		f_list = f_list->next;
 	}
 }
+void first_one(t_tokens *list, t_cmd **tmp)
+{
+	int		n_cmd;
+
+	n_cmd = n_of_cmd(list);
+	(*tmp)->cmd = my_malloc((n_cmd + 1), 1, 1);
+	if (!(*tmp)->cmd)
+		return ;
+	(*tmp)->cmd[n_cmd] = NULL;
+}
+
 void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 {
 	t_cmd	*tmp;
 	int		flg;
-	int		n_cmd;
 	int		i;
 
 	while (list->type != NLINE)
@@ -47,13 +57,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 		while (list && list->type != NLINE && list->type != PIPE)
 		{
 			if (!++flg)
-			{
-				n_cmd = n_of_cmd(list);
-				tmp->cmd = my_malloc((n_cmd + 1), 1, 1);
-				if (!tmp->cmd)
-					return ;
-				tmp->cmd[n_cmd] = NULL;
-			}
+				first_one(list, &tmp);
 			fill(&list, &tmp, &i, envr);
 			list = list->next;
 		}
@@ -130,20 +134,21 @@ void minishell(t_env **envr, char *b)
 			if (f_list && f_list->cmd[0] != NULL)
 			{
 				pwd = execute_cmds(&f_list, envr, pwd);
-				while (f_list)
+				
+			while (f_list)
+			{
+				if (f_list && f_list->fd->out != 1)
 				{
-					if (f_list && f_list->fd->out != 1)
-					{
-						close(f_list->fd->out);
-						f_list->fd->out = 1;
-					}
-					if(f_list && f_list->fd->in != 0)
-					{
-						close(f_list->fd->in);
-						f_list->fd->in = 0;
-					}
-					f_list = f_list->next;
+					close(f_list->fd->out);
+					f_list->fd->out = 1;
 				}
+				if(f_list && f_list->fd->in != 0)
+				{
+					close(f_list->fd->in);
+					f_list->fd->in = 0;
+				}
+				f_list = f_list->next;
+			}
 			}
 			// my_malloc(0, 0, 1);
 			free(b);

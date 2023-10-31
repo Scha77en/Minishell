@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/28 14:45:52 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:42:18 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,13 @@ t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
 		node->tokens = t_oken("<", i, b, -1);
 	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
 	{
-		// if (b[*i + 1] == 34)
-		// 	(*i) += 2;
 		if ((node->tokens = fill_word(b, i, 34, envr)) == NULL)
 			return (NULL);
 	}
 	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
 	{
-		// if (b[*i + 1] == 39)
-		// 	(*i) += 2;
 		if ((node->tokens = fill_word(b, i, 39, envr)) == NULL)
-			return (NULL); 
+			return (NULL);
 	}
 	else
 		node->tokens = fill_word(b, i, 0, envr);

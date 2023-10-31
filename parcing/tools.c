@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/29 18:21:22 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:58:21 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,32 @@ void fill_exit_s(char **filled, int *s, int *a)
 	*s += 2;
 }
 
+void fill_expan(char *b, int *s, t_env **envr, int *a, char **filled)
+{
+	char *var;
+	int n;
+		
+	n = *s;
+	var = NULL;
+	while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
+		n++;
+	var = fill_var(b, n, *s);
+	*s += ft_strlen(var) + 1;
+	if (ft_getenv(envr, var))
+	{
+		var = ft_getenv(envr, var);
+		int i;
+		i = 0;
+		while(var[i])
+			(*filled)[(*a)++] = var[i++];
+	}
+}
+
 char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
 {
 	char *filled;
-	char *var;
-	int n;
 
 	filled = my_malloc((a + 1), 1, 1);
-	var = NULL;
 	if (!filled)
 		return (NULL);
 	filled[a] = '\0';
@@ -92,22 +110,7 @@ char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
 		if (b[s] == '$' && b[s+1] == '?'  && c != 39 && b[s+1])
 			fill_exit_s(&filled, &s, &a);
 		else if (b[s] == '$' && c != 39 && b[s+1])
-		{
-			n = s;
-			while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
-				n++;
-			var = fill_var(b, n, s);
-			s += ft_strlen(var) + 1;
-			if (ft_getenv(envr, var))
-			{
-				var = ft_getenv(envr, var);
-				int i;
-
-				i = 0;
-				while(var[i])
-					filled[a++] = var[i++];
-			}
-		}
+			fill_expan(b, &s, envr, &a, &filled);
 		else if (b[s] != c)
 			filled[a++] = b[s++];
 		else
