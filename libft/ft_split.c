@@ -88,7 +88,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	b = nwords((char *)s, c);
-	str = (char **)malloc((b + 1) * sizeof(char *));
+	str = (char **)my_malloc((b + 1), 1, 1);
 	if (!str)
 		return (NULL);
 	return (ft_setword(str, s, b, c));

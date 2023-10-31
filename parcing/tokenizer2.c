@@ -22,7 +22,7 @@ char	*fill_var(char *b, int n, int s)
 	char	*var;
 
 	i = 0;
-	var = malloc(sizeof(char) * (n - s));
+	var = my_malloc((n - s), 1, 1);
 	if (!var)
 		return (NULL);
 	var[(n - s)] = '\0';
@@ -40,7 +40,7 @@ t_tokens	*create_node(void)
 {
 	t_tokens	*node;
 
-	node = malloc(sizeof(t_tokens));
+	node = my_malloc(sizeof(t_tokens), 1, 1);
 	if (!node)
 		return (NULL);
 	node->tokens = NULL;

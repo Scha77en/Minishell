@@ -70,16 +70,16 @@
 // 	system("leak a.out");
 // }
 
-void clear_garbeg(t_mem *head)
+void clean_mem(t_mem *head)
 {
 	if (!head)
 		return ;
-	clear_garbeg(head->next);
+	clean_mem(head->next);
 	free(head->ptr);
 	free(head);
 }
 
-void	*garbage(int size, int len, int status)
+void	*my_malloc(int size, int len, int status)
 {
 	static t_mem	*head;
 	void			*ptr;
@@ -88,19 +88,19 @@ void	*garbage(int size, int len, int status)
 	ptr = NULL;
 	if (status == 1)
 	{
-		ptr = malloc(size * len);
+		ptr = ft_calloc(size, len);
 	}
 	if (!ptr || status == 0)
 	{
-		clear_garbeg(head);
-		exit(1);
+		clean_mem(head);
+		// exit(1);
 	}
 	tmp = malloc(sizeof(t_mem));
 	if (!tmp)
 	{
 		free(ptr);
-		clear_garbeg(head);
-		exit(1);
+		clean_mem(head);
+		// exit(1);
 	}
 	tmp->ptr = ptr;
 	tmp->next = head;
@@ -108,14 +108,14 @@ void	*garbage(int size, int len, int status)
 	return (ptr);
 }
 
-int main(void)
-{
-	// atexit(leaks);
-	t_cmd	*tavern;
-	char	**word;
+// int main(void)
+// {
+// 	// atexit(leaks);
+// 	t_cmd	*tavern;
+// 	char	**word;
 
-	tavern = garbage(sizeof(t_cmd), 1, 1);
-	tavern->cmd = garbage(sizeof(char *), 2, 0);
-	word = garbage(sizeof(char *) ,2, 0);
-	garbage(sizeof(char *) , 2, 0);
-}
+// 	tavern = garbage(sizeof(t_cmd), 1, 1);
+// 	tavern->cmd = garbage(sizeof(char *), 2, 0);
+// 	word = garbage(sizeof(char *) ,2, 0);
+// 	garbage(sizeof(char *) , 2, 0);
+// }

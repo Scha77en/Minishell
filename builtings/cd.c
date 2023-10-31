@@ -24,7 +24,7 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 			error_out("chdir", 0);
 			return ;
 		}
-		redefine_pwd(pwd, ft_getenv(env, "HOME"));
+		redefine_pwd(pwd, ft_getenv(env, "HOME"), env, 0);
 		pwd_update(env);
 	}
 	else if (ft_strcmp((*tavern)->cmd[1], "-") == 0)
@@ -42,15 +42,13 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 			}
 			return ;
 		}
-		redefine_pwd(pwd, ft_getenv(env, "OLDPWD"));
 		oldpwd_update(env, curwd, 1);
 		pwd_update(env);
+		redefine_pwd(pwd, ft_getenv(env, "OLDPWD"), env, 0);
 	}
 	else
 	{
 		oldpwd_update(env, NULL, 0);
-		pwd_update(env);
-		redefine_pwd(pwd, (*tavern)->cmd[1]);
 		if (chdir((*tavern)->cmd[1]) != 0)
 		{
 			write((*tavern)->fd->out, "cd: error retrieving current directory\n", 40);
@@ -60,7 +58,11 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		{
 			write((*tavern)->fd->out, "cd: error retrieving current directory: ", 41);
 			write((*tavern)->fd->out, "getcwd : cannot access parent directories: No such file or directory\n", 70);
+			redefine_pwd(pwd, (*tavern)->cmd[1], env, 1);
+			return ;
 		}
+		pwd_update(env);
+		redefine_pwd(pwd, (*tavern)->cmd[1], env, 0);
 	}
 }
 

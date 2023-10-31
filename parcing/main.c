@@ -49,7 +49,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 			if (!++flg)
 			{
 				n_cmd = n_of_cmd(list);
-				tmp->cmd = malloc(sizeof(char *) * (n_cmd + 1));
+				tmp->cmd = my_malloc((n_cmd + 1), 1, 1);
 				if (!tmp->cmd)
 					return ;
 				tmp->cmd[n_cmd] = NULL;
@@ -145,6 +145,7 @@ void minishell(t_env **envr, char *b)
 					f_list = f_list->next;
 				}
 			}
+			// my_malloc(0, 0, 1);
 			free(b);
 		}
 	}
@@ -184,11 +185,11 @@ int main(int ac, char **av, char **env)
     else
 	{
         envr = envirement(env);
-	signal(SIGINT, handle_sigint);
 	}
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b);
-	// free_env(&envr);
+	free_env(&envr);
 	// free(fd);
 	return (0);
 }

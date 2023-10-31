@@ -81,7 +81,7 @@ char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
 	char *var;
 	int n;
 
-	filled = malloc(sizeof(char) * a +1);
+	filled = my_malloc((a + 1), 1, 1);
 	var = NULL;
 	if (!filled)
 		return (NULL);

@@ -37,17 +37,21 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	char	*line;
 	char	*data;
 
-	data = malloc(1);
+	data = my_malloc(1, 1, 1);
 	data[0] = '\0';
 	if (!data)
 		return (NULL);
-	while (1)
+	while(1 && signal(SIGINT, handle_sigint) && g_status != 130)
 	{
 		i = 0;
+		// signal(SIGQUIT, SIG_DFL);
 		write(1, "herdoc> ", 8);
 		line = get_next_line(0);
 		if (!ft_strlen(line))
+		{
+			write(1, "\n", 1);
 			break ;
+		}
 		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
 			line = fill_word(line, &i, 0, envr);
 		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
