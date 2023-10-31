@@ -94,10 +94,11 @@ void fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 			while(is_word((*list)->next->type))
 			{
 				tmpe = ft_strjoin(word, (*list)->next->tokens);
+				free(word);
 				word = tmpe;
 				(*list) = (*list)->next;
 			}
-			(*tmp)->cmd[++(*i)] = word;
+			(*tmp)->cmd[++(*i)] = word;	
 		}
 	if ((*list)->type == IN || (*list)->type == OUT
 		|| (*list)->type == HEREDOC || (*list)->type == APPEND)

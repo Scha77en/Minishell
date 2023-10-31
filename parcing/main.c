@@ -23,15 +23,15 @@ void	print_list(t_cmd *f_list)
 		i = 0;
 		while (f_list->cmd[i])
 		{
-			// printf("cmd : %s\n", f_list->cmd[i++]);
-			printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
+			printf("cmd : %s\n", f_list->cmd[i++]);
+			// printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
 		}
-		// printf("fd_in : %d | fd_out : %d\n", f_list->fd_in, f_list->fd_out);
+		printf("fd_in : %d | fd_out : %d\n", f_list->fd->in, f_list->fd->out);
 		printf("-------------\n");
 		f_list = f_list->next;
 	}
 }
-void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
+void	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 {
 	t_cmd	*tmp;
 	int		flg;
@@ -52,6 +52,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 				tmp->cmd = my_malloc((n_cmd + 1), 1, 1);
 				if (!tmp->cmd)
 					return ;
+				
 			}
 			fill(&list, &tmp, &i, envr);
 			list = list->next;
@@ -59,7 +60,8 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 		if (list->type == PIPE)
 		{
 			list = list->next;
-			tmp = tmp->next;
+			if (g_status == 1)
+				tmp = tmp->next;
 		}
 	}
 }
@@ -89,10 +91,12 @@ void minishell(t_env **envr, char *b)
 	t_tokens	*list;
 	t_cmd		*f_list;
 	static char	*pwd;
+	// int			v;
 
 	pwd = ft_getenv(envr, "PWD");
 	while (1)
 	{
+		// v = 0;
 		b = readline("minishell$ ");
 		if (b == NULL)
 		{
@@ -109,23 +113,23 @@ void minishell(t_env **envr, char *b)
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, envr);
+			while(f_list && f_list->cmd[0] == NULL)
+				f_list = f_list->next;
 			if (f_list && f_list->cmd[0] != NULL)
-			{
 				pwd = execute_cmds(&f_list, envr, pwd);
-				while (f_list)
+			while (f_list)
+			{
+				if (f_list && f_list->fd->out != 1)
 				{
-					if (f_list && f_list->fd->out != 1)
-					{
-						close(f_list->fd->out);
-						f_list->fd->out = 1;
-					}
-					if(f_list && f_list->fd->in != 0)
-					{
-						close(f_list->fd->in);
-						f_list->fd->in = 0;
-					}
-					f_list = f_list->next;
+					close(f_list->fd->out);
+					f_list->fd->out = 1;
 				}
+				if(f_list && f_list->fd->in != 0)
+				{
+					close(f_list->fd->in);
+					f_list->fd->in = 0;
+				}
+				f_list = f_list->next;
 			}
 			free(b);
 		}

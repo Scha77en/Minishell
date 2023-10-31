@@ -91,7 +91,14 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
 	}
 	if ((*tmp)->fd->out == -1)
-		perror("fd_out");
+	{
+		printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
+		(*tmp)->fd->out = 1;
+		while ((*t_lst)->next->type != PIPE && (*t_lst)->next->type != NLINE)
+			(*t_lst) = (*t_lst)->next;
+		(*tmp)->cmd [0]= NULL;
+		g_status = 1;
+	}
 }
 
 void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr)
@@ -123,9 +130,17 @@ void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **e
 		if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
 			(*t_lst) = (*t_lst)->next;
 		(*tmp)->fd->in = writing_data(data);
+		printf("[%d]\n", (*tmp)->fd->in);
 	}
 	if ((*tmp)->fd->in == -1)
-		perror("fd_in");
+	{
+		printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
+		(*tmp)->fd->in = 0;
+		while ((*t_lst)->next->type != PIPE && (*t_lst)->next->type != NLINE)
+			(*t_lst) = (*t_lst)->next;
+		(*tmp)->cmd[0] = NULL;
+		g_status = 1;
+	}
 }
 
 void	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)
@@ -135,9 +150,9 @@ void	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)
 
 	t_lst = *list;
 	current = t_lst;
-	if (t_lst->type == IN || t_lst->type == HEREDOC)
+	if ((t_lst->type == IN || t_lst->type == HEREDOC) && g_status != 1)
 		rederect_in_her(&t_lst, tmp, current, envr);
-	if (t_lst->type == OUT || t_lst->type == APPEND)
+	if ((t_lst->type == OUT || t_lst->type == APPEND) && g_status != 1)
 		rederect_o_a(&t_lst, tmp, current);
 	*list = t_lst;
 }

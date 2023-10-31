@@ -108,21 +108,6 @@ char	*allocate_to_line(t_list *stash);
 void	ft_lstclear(t_list *lst);
 char	*get_data(char **argv);
 
-// a struct to save the parsing arguments;
-
-typedef struct s_data_nodes
-{
-	char				*cmd;
-	int					type;
-	int					id_node;
-	struct s_data_nodes	*next;
-	struct s_data_nodes	*previous;
-}	t_data;
-
-typedef struct s_num
-{
-	int		collection;
-}	t_n;
 
 
 // garbage collector
@@ -221,10 +206,6 @@ char	**ft_split_m(char *s, char c);
 
 // Minishell functions;
 
-void	manage_commands(t_data *data, int *pipfd, char **env);
-void	manage_first_cmd(t_data *current, int *pipfd, char **env);
-void	manage_inbetween_cmd(t_data *current, int *pipfd, char **env);
-void	manage_last_cmd(t_data *current, int *pipfd, char **env);
 char	**ft_split_m(char *s, char c);
 char	**find_path(char **env);
 int		get_env_path(char **env);
@@ -234,8 +215,6 @@ char	*ft_strjoin_m(char *s1, char *s2);
 int		command_search(char **path);
 int		ft_strcmp(char *s1, char *s2);
 void	error_out(char *msg, int v);
-void	type_specifier(t_data **data, char *cmd);
-void	store_cmd_in_nodes(t_data **data, char **ptr);
 t_cmd	*ft_lstlast_p(t_cmd *lst);
 
 // parcing;
@@ -269,6 +248,7 @@ char		*fill_word(char *b, int *i, int c, t_env **envr);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b, t_env **envr);
 void 		minishell(t_env **envr, char *b);
+// int 		parcer(t_tokens *list, t_cmd **f_list, t_env **envr);
 // int			len_var(char *value, t_env *env);
 
 #endif
