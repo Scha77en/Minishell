@@ -20,9 +20,7 @@ char	**split_export(char *split)
 	int		i;
 
 	i = 0;
-	str = malloc(3 * sizeof(char *));
-	if (!str)
-		return (NULL);
+	str = my_malloc(3, sizeof(char *), 1);
 	while (split[i] != '\0' && split[i] != '=')
 		i++;
 	s0 = ft_substr(split, 0, i);
@@ -41,9 +39,7 @@ char	*back_slash_parce(char *str, int flag)
 
 	i = 0;
 	v = 0;
-	new = malloc(slash_size(str) + 1 * sizeof(char));
-	if (!new)
-		exit(EXIT_FAILURE);
+	new = my_malloc((slash_size(str) + 1), sizeof(char), 1);
 	while(str && str[i] != '\0')
 	{
 		if (str[i] == 92 && str[i + 1] == 92)

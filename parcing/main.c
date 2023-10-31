@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/28 14:45:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/26 18:23:48 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 				tmp->cmd = my_malloc((n_cmd + 1), 1, 1);
 				if (!tmp->cmd)
 					return ;
-				tmp->cmd[n_cmd] = NULL;
 			}
 			fill(&list, &tmp, &i, envr);
 			list = list->next;
@@ -65,40 +64,26 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 	}
 }
 
+// void	free_f_list(t_cmd **f_list)
+// {
+// 	t_cmd	*current;
+// 	t_cmd	*lst;
+// 	int		i;
 
-void	free_tokens(t_tokens **tokens)
-{
-	t_tokens	*current;
+// 	lst = *f_list;
+// 	while (lst)
+// 	{
+// 		i = 0;
+// 		current = lst;
+// 		lst = lst->next;
+// 		while (current->cmd[i])
+// 			free(current->cmd[i++]);
+// 		free(current->cmd);
+// 		free(current);
+// 	}
+// 	*f_list = NULL;
+// }
 
-	while (*tokens)
-	{
-		current = *tokens;
-		*tokens = (*tokens)->next;
-		free(current->tokens);
-		free(current);
-	}
-	*tokens = NULL;
-}
-
-void	free_f_list(t_cmd **f_list)
-{
-	t_cmd	*current;
-	t_cmd	*lst;
-	int		i;
-
-	lst = *f_list;
-	while (lst)
-	{
-		i = 0;
-		current = lst;
-		lst = lst->next;
-		while (current->cmd[i])
-			free(current->cmd[i++]);
-		free(current->cmd);
-		free(current);
-	}
-	*f_list = NULL;
-}
 void minishell(t_env **envr, char *b)
 {
 	t_tokens	*list;
@@ -120,10 +105,7 @@ void minishell(t_env **envr, char *b)
 			if ((list = tokenizer(b, envr)) == NULL)
 				g_status = 258;
 			else if ((g_status = syntax_error(list)) == 258)
-			{
-				free_tokens(&list);
 				list = NULL;
-			}
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, envr);
@@ -145,7 +127,6 @@ void minishell(t_env **envr, char *b)
 					f_list = f_list->next;
 				}
 			}
-			// my_malloc(0, 0, 1);
 			free(b);
 		}
 	}
@@ -168,7 +149,6 @@ void	free_env(t_env **envr)
 
 int main(int ac, char **av, char **env)
 {
-	// t_fd		*fd;
 	t_env		*envr;
 	char		*b;
 
@@ -177,9 +157,6 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
-	// fd = malloc(sizeof(t_fd));
-	// fd->in = 0;
-	// fd->out = 1;
 	if (!env)
         set_env(&envr);
     else
@@ -190,6 +167,5 @@ int main(int ac, char **av, char **env)
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b);
 	free_env(&envr);
-	// free(fd);
 	return (0);
 }

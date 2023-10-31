@@ -19,11 +19,11 @@ t_cmd *create_list(void)
 	node = my_malloc(sizeof(t_cmd), 1, 1);
 	if (!node)
 		return (NULL);
-
 	node->fd = my_malloc(sizeof(t_fd), 1, 1);
+	if (!node->fd)
+		return (NULL);
 	node->fd->in = 0;
 	node->fd->out = 1;
-	// node->fd = *fd;
 	node->cmd = NULL;
 	node->next = NULL;
 	return (node);
@@ -94,7 +94,6 @@ void fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 			while(is_word((*list)->next->type))
 			{
 				tmpe = ft_strjoin(word, (*list)->next->tokens);
-				free(word);
 				word = tmpe;
 				(*list) = (*list)->next;
 			}

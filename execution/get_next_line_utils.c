@@ -34,11 +34,11 @@ t_list	*ft_lstnew(char *content, ssize_t readed)
 
 	if (readed == 0 || !content)
 		return (NULL);
-	node1 = (t_list *)malloc(sizeof(t_list));
+	node1 = (t_list *)my_malloc(sizeof(t_list), 1, 1);
 	if (!node1)
-		return (free(content), free(node1), NULL);
+		return (NULL);
 	node1 -> next = NULL;
-	node1->content = malloc(readed + 1);
+	node1->content = my_malloc((readed + 1), 1, 1);
 	if (!node1->content)
 		return (NULL);
 	i = -1;
@@ -94,9 +94,9 @@ char	*allocate_to_line(t_list *stash)
 		}
 		stash = stash->next;
 	}
-	line = malloc(len + 1);
+	line = my_malloc((len + 1), 1, 1);
 	if (!line)
-		return (free(line), NULL);
+		return (NULL);
 	return (line);
 }
 

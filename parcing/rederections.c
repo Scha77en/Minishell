@@ -60,7 +60,7 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 		}
 		data = ft_strjoin(data, line);
 	}
-	return (free(line), data);
+	return (data);
 }
 void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 {
@@ -74,7 +74,6 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	while (is_word((*t_lst)->next->type))
 	{
 		tp = ft_strjoin(word, (*t_lst)->next->tokens);
-		free(word);
 		word = tp;
 		(*t_lst) = (*t_lst)->next;
 	}

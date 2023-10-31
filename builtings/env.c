@@ -117,9 +117,7 @@ char	**env_to_char(t_env **env)
 		current = current->next;
 		i++;
 	}
-	u_env = malloc(sizeof(char *) * (i + 1));
-	if (!u_env)
-		error_out("malloc", 0);
+	u_env = my_malloc((i + 1), sizeof(char *), 1);
 	current = *env;
 	i = 0;
 	while (current)

@@ -217,7 +217,6 @@ size_t	ft_strlen_m(char *s);
 
 // spliting
 
-void	*free_mem(char **ptr, int j);
 char	**ft_split_m(char *s, char c);
 
 // Minishell functions;
@@ -238,7 +237,6 @@ void	error_out(char *msg, int v);
 void	type_specifier(t_data **data, char *cmd);
 void	store_cmd_in_nodes(t_data **data, char **ptr);
 t_cmd	*ft_lstlast_p(t_cmd *lst);
-void	*free_mem(char **ptr, int j);
 
 // parcing;
 

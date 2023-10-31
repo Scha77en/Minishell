@@ -32,18 +32,15 @@ char	*get_read(int fd, char *s)
 	int		nb;
 
 	nb = 1;
-	b = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!b)
-		return (NULL);
+	b = (char *)my_malloc((BUFFER_SIZE + 1), sizeof(char), 1);
 	while (!tchek_nl(s) && nb > 0)
 	{
 		nb = read(fd, b, BUFFER_SIZE);
 		if ((nb < 0) || (nb == 0 && !s) || (nb == 0 && s[0] == '\0'))
-			return (free(b), free(s), NULL);
+			return (NULL);
 		b[nb] = '\0';
 		s = ft_strjoin(s, b);
 	}
-	free(b);
 	return (s);
 }
 
@@ -58,11 +55,11 @@ char	*getlline(char *s)
 	while (s[i] != '\n' && s[i])
 		i++;
 	if (s[i] == '\n')
-		l = (char *)malloc((i +2) * sizeof(char));
+		l = (char *)my_malloc((i +2), sizeof(char), 1);
 	else
-		l = (char *)malloc((i +1) * sizeof(char));
+		l = (char *)my_malloc((i +1), sizeof(char), 1);
 	if (!l)
-		return (free(s), NULL);
+		return (NULL);
 	while (s[a] && a < i +1)
 	{
 		l[a] = s[a];
@@ -84,13 +81,12 @@ char	*get_next(char *s)
 		i++;
 	if (s[i] == '\n')
 		i++;
-	c = (char *)malloc(ft_strlen(s) - i + 1);
+	c = (char *)my_malloc((ft_strlen(s) - i + 1), 1, 1);
 	if (!c)
-		return (free(s), NULL);
+		return (NULL);
 	while (s[i] && a < i)
 		c[a++] = s[i++];
 	c[a] = '\0';
-	free(s);
 	return (c);
 }
 

@@ -199,7 +199,6 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value)
 	}
 	new = malloc(sizeof(t_env));
 	new->var = ft_strdup(var);
-	new->var = ft_strdup(var);
 	new->value = ft_strdup(value);
 	new->next = NULL;
 	ft_lstaddback(env, new);
