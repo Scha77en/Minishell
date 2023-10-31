@@ -48,17 +48,6 @@ static char	*get_word(const char *str, int start, int finish)
 	return (word);
 }
 
-void	*free_mem(char **ptr, int j)
-{
-	while (j >= 0)
-	{
-		free(ptr[j]);
-		j--;
-	}
-	free(ptr);
-	return (0);
-}
-
 char	**ft_split_m(char *s, char c)
 {
 	size_t	g_end;
@@ -80,7 +69,7 @@ char	**ft_split_m(char *s, char c)
 		{
 			ptr[j++] = get_word(s, g_start, g_end);
 			if (!ptr[j - 1])
-				return (free_mem(ptr, (j - 1)), NULL);
+				return (NULL);
 			g_start = -1;
 		}
 	}

@@ -269,31 +269,38 @@ int	path_backslash(char *path)
 
 // exit status; --DONE--
 
+// 7- --DONE--
+// minishell$ $USER
+// Schatten: command not found "expected"
+// execve: Bad address "result"
+
+// 2- --DONE--
+// minishell$ cat -e < a
+// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
+// $ 	dup2: Bad file descriptor
+
+// minishell$ cat < a >> aa
+// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
+// $ 	dup2: Bad file descriptor
+
 
 /***************************************************************************************************************************************************************************************************/
 
 
 // 1- set the garbage collector;
 
-// 2-
-// minishell$ cat -e < a
-// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
-// $ 	dup2: Bad file descriptor
-
-
-// 3- cat < a >> aa
-// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
-// $ 	dup2: Bad file descriptor
 
 // 2- change the path when going to the school;
 
 
 
 
-// 7-
-// minishell$ $USER
-// Schatten: command not found "expected"
-// execve: Bad address "result"
+// minishell$ cat << "$USER"
+// out > $USER, not the expanded value of $USER;
+// same thing for single quotes '$USER';
+// no quotes $USER, it should be expanded, $USER VALUE out;
+
+
 
 // minishell$ $HOME
 // minishell: /home/Schatten: Is a directory "expected"

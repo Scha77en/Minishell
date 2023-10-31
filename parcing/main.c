@@ -23,14 +23,15 @@ void	print_list(t_cmd *f_list)
 		i = 0;
 		while (f_list->cmd[i])
 		{
-			// printf("cmd : %s\n", f_list->cmd[i++]);
-			printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
+			printf("cmd : %s\n", f_list->cmd[i++]);
+			// printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
 		}
-		// printf("fd_in : %d | fd_out : %d\n", f_list->fd_in, f_list->fd_out);
+		printf("fd_in : %d | fd_out : %d\n", f_list->fd->in, f_list->fd->out);
 		printf("-------------\n");
 		f_list = f_list->next;
 	}
 }
+
 void first_one(t_tokens *list, t_cmd **tmp)
 {
 	int		n_cmd;
@@ -64,54 +65,43 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 		if (list->type == PIPE)
 		{
 			list = list->next;
-			tmp = tmp->next;
+			if (g_status == 1)
+				tmp = tmp->next;
 		}
 	}
 }
 
+// void	free_f_list(t_cmd **f_list)
+// {
+// 	t_cmd	*current;
+// 	t_cmd	*lst;
+// 	int		i;
 
-void	free_tokens(t_tokens **tokens)
-{
-	t_tokens	*current;
+// 	lst = *f_list;
+// 	while (lst)
+// 	{
+// 		i = 0;
+// 		current = lst;
+// 		lst = lst->next;
+// 		while (current->cmd[i])
+// 			free(current->cmd[i++]);
+// 		free(current->cmd);
+// 		free(current);
+// 	}
+// 	*f_list = NULL;
+// }
 
-	while (*tokens)
-	{
-		current = *tokens;
-		*tokens = (*tokens)->next;
-		free(current->tokens);
-		free(current);
-	}
-	*tokens = NULL;
-}
-
-void	free_f_list(t_cmd **f_list)
-{
-	t_cmd	*current;
-	t_cmd	*lst;
-	int		i;
-
-	lst = *f_list;
-	while (lst)
-	{
-		i = 0;
-		current = lst;
-		lst = lst->next;
-		while (current->cmd[i])
-			free(current->cmd[i++]);
-		free(current->cmd);
-		free(current);
-	}
-	*f_list = NULL;
-}
 void minishell(t_env **envr, char *b)
 {
 	t_tokens	*list;
 	t_cmd		*f_list;
 	static char	*pwd;
+	// int			v;
 
 	pwd = ft_getenv(envr, "PWD");
 	while (1)
 	{
+		// v = 0;
 		b = readline("minishell$ ");
 		if (b == NULL)
 		{
@@ -124,17 +114,14 @@ void minishell(t_env **envr, char *b)
 			if ((list = tokenizer(b, envr)) == NULL)
 				g_status = 258;
 			else if ((g_status = syntax_error(list)) == 258)
-			{
-				free_tokens(&list);
 				list = NULL;
-			}
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, envr);
+			while(f_list && f_list->cmd[0] == NULL)
+				f_list = f_list->next;
 			if (f_list && f_list->cmd[0] != NULL)
-			{
 				pwd = execute_cmds(&f_list, envr, pwd);
-				
 			while (f_list)
 			{
 				if (f_list && f_list->fd->out != 1)
@@ -149,8 +136,6 @@ void minishell(t_env **envr, char *b)
 				}
 				f_list = f_list->next;
 			}
-			}
-			// my_malloc(0, 0, 1);
 			free(b);
 		}
 	}
@@ -173,7 +158,6 @@ void	free_env(t_env **envr)
 
 int main(int ac, char **av, char **env)
 {
-	// t_fd		*fd;
 	t_env		*envr;
 	char		*b;
 
@@ -182,9 +166,6 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
-	// fd = malloc(sizeof(t_fd));
-	// fd->in = 0;
-	// fd->out = 1;
 	if (!env)
         set_env(&envr);
     else
@@ -195,6 +176,5 @@ int main(int ac, char **av, char **env)
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b);
 	free_env(&envr);
-	// free(fd);
 	return (0);
 }

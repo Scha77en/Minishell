@@ -12,17 +12,6 @@
 
 #include "libft.h"
 
-static	char	**ffree(char **str, int j)
-{
-	while (j >= 0)
-	{
-		free(str[j]);
-		j--;
-	}
-	free(str);
-	return (NULL);
-}
-
 static	int	nwords(char *s, char c)
 {
 	int	i;
@@ -70,7 +59,7 @@ static char	**ft_setword(char **str, const char *s, int b, char c)
 		{
 			str[j] = ft_substr(s, i, a);
 			if (!str[j])
-				return (ffree(str, j));
+				return (NULL);
 			j++;
 		}
 		while (s[i] != c && s[i])

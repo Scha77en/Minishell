@@ -51,7 +51,9 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		oldpwd_update(env, NULL, 0);
 		if (chdir((*tavern)->cmd[1]) != 0)
 		{
-			write((*tavern)->fd->out, "cd: error retrieving current directory\n", 40);
+			write((*tavern)->fd->out, "minishell: cd: ", 15);
+			write((*tavern)->fd->out, (*tavern)->cmd[1], ft_strlen((*tavern)->cmd[1]));
+			write((*tavern)->fd->out, ": No such file or directory\n", 28);
 			return ;
 		}
 		if (!getcwd(curwd, PATH_MAX))
@@ -196,7 +198,6 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value)
 		current = current->next;
 	}
 	new = malloc(sizeof(t_env));
-	new->var = ft_strdup(var);
 	new->var = ft_strdup(var);
 	new->value = ft_strdup(value);
 	new->next = NULL;
