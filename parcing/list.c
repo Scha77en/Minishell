@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/21 16:04:13 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:44:10 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int n_of_cmd(t_tokens *list)
 	return (r);
 }
 
-void fill(t_tokens **list, t_cmd **tmp, int *i)
+void fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 {
 	char *word;
 	char *tmpe;
@@ -102,5 +102,5 @@ void fill(t_tokens **list, t_cmd **tmp, int *i)
 		}
 	if ((*list)->type == IN || (*list)->type == OUT
 		|| (*list)->type == HEREDOC || (*list)->type == APPEND)
-		rederections(list, tmp);
+		rederections(list, tmp, envr);
 }

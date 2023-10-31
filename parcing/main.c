@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/26 18:23:48 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:45:14 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_list(t_cmd *f_list)
 		f_list = f_list->next;
 	}
 }
-void 	parcer(t_tokens *list, t_cmd **f_list)
+void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 {
 	t_cmd	*tmp;
 	int		flg;
@@ -54,7 +54,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list)
 					return ;
 				tmp->cmd[n_cmd] = NULL;
 			}
-			fill(&list, &tmp, &i);
+			fill(&list, &tmp, &i, envr);
 			list = list->next;
 		}
 		if (list->type == PIPE)
@@ -117,7 +117,7 @@ void minishell(t_env **envr, char *b)
 		if (ft_strlen(b))
 		{
 			add_history(b);
-			if ((list = tokenizer(b)) == NULL)
+			if ((list = tokenizer(b, envr)) == NULL)
 				g_status = 258;
 			else if ((g_status = syntax_error(list)) == 258)
 			{
@@ -126,7 +126,7 @@ void minishell(t_env **envr, char *b)
 			}
 			f_list = NULL;
 			if (list)
-				parcer(list, &f_list);
+				parcer(list, &f_list, envr);
 			if (f_list && f_list->cmd[0] != NULL)
 			{
 				pwd = execute_cmds(&f_list, envr, pwd);

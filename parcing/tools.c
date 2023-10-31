@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/26 15:57:05 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/29 18:21:22 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ int is_token_(int c, int q)
 {
 	if (q != 0 && c != q)
 		return (0);
-	if (c == '<' || c == '>' || c == 34 || c == 39)
+	if (c == '<' || c == '>'  || c == '|' || c == 34 || c == 39)
 		return (1);
 	return(0);
 }
-int len_of_filled(char *b, int s, int c, int a)
+int len_of_filled(char *b, int s, int c, int a, t_env **envr)
 {
 	int n;
 	char *var;
@@ -35,21 +35,21 @@ int len_of_filled(char *b, int s, int c, int a)
 	n = 0;
 	while(b[s] && !is_token_(b[s], c))
 	{
-		if (b[s] == '$' && b[s+1] == '?'  && c != 39)
+		if (b[s] == '$' && b[s+1] == '?'  && c != 39  && b[s+1])
 		{
 			a += ft_strlen(ft_itoa(g_status));
 			s += 2;
 		}
-		else if (b[s] == '$' && c != 39)
+		else if (b[s] == '$' && c != 39 && b[s+1])
 		{
 			n = s;
 			while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
 				n++;
 			var = fill_var(b, n, s);
 			s += ft_strlen(var) + 1;
-			if (getenv(var))
+			if (ft_getenv(envr, var))
 			{
-				var = getenv(var);
+				var = ft_getenv(envr, var);
 				a += ft_strlen(var);
 			}
 		}
@@ -65,16 +65,17 @@ int len_of_filled(char *b, int s, int c, int a)
 	}
 	return (a);
 }
-void f_expand(char **filled, char *expand, int *a)
+void fill_exit_s(char **filled, int *s, int *a)
 {
 	int i;
 
 	i = 0;
-	while(expand[i])
-		*filled[(*a)++] = expand[i++];
+	while(ft_itoa(g_status)[i])
+		(*filled)[(*a)++] = ft_itoa(g_status)[i++];
+	*s += 2;
 }
 
-char *fill_it(char *b, int s, int c, int a, int *i)
+char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
 {
 	char *filled;
 	char *var;
@@ -88,32 +89,23 @@ char *fill_it(char *b, int s, int c, int a, int *i)
 	a = 0;
 	while(b[s] && !is_token_(b[s], c))
 	{
-		if (b[s] == '$' && b[s+1] == '?'  && c != 39)
-		{
-			int i;
-
-			i = 0;
-			while(ft_itoa(g_status)[i])
-				filled[a++] = ft_itoa(g_status)[i++];
-			s += 2;
-			// f_expand(&filled, ft_itoa(g_status), &a);
-		}
-		else if (b[s] == '$' && c != 39)
+		if (b[s] == '$' && b[s+1] == '?'  && c != 39 && b[s+1])
+			fill_exit_s(&filled, &s, &a);
+		else if (b[s] == '$' && c != 39 && b[s+1])
 		{
 			n = s;
 			while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
 				n++;
 			var = fill_var(b, n, s);
 			s += ft_strlen(var) + 1;
-			if (getenv(var))
+			if (ft_getenv(envr, var))
 			{
-				var = getenv(var);
+				var = ft_getenv(envr, var);
 				int i;
 
 				i = 0;
 				while(var[i])
 					filled[a++] = var[i++];
-				// f_expand(&filled, var, &a);
 			}
 		}
 		else if (b[s] != c)
@@ -126,11 +118,13 @@ char *fill_it(char *b, int s, int c, int a, int *i)
 	if (b[s] == c && c != 0)
 		s++;
 	*i = s;
+	if (!filled[0] && b[0] == '$')
+		return (NULL);
 	return (filled);
 	
 }
 
-char	*fill_word(char *b, int *i, int c)
+char	*fill_word(char *b, int *i, int c, t_env **envr)
 {
 	char	*f;
 	int		a;
@@ -139,13 +133,13 @@ char	*fill_word(char *b, int *i, int c)
 	a = 0;
 	if (cheak(b, i, c) == 1 && (c == 34 || c == 39))
 	{
-		printf("[%c] :syntax error\n", b[(*i)++]);
+		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)++]);
 		return (NULL);
 	}
 	s = (*i);
 	if (c == 34 || c == 39)
 		s++;
-	a = len_of_filled(b, s, c, a);
-	f = fill_it(b, s, c, a, i);
+	a = len_of_filled(b, s, c, a, envr);
+	f = fill_it(b, s, c, a, i, envr);
 	return (f);
 }

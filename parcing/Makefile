@@ -6,11 +6,9 @@ SRC = main.c tools.c tokenizer.c list.c rederections.c get_next_line.c env.c exp
 		../builtings/cd.c ../builtings/pwd.c ../builtings/unset.c ../builtings/env.c ../builtings/echo.c ../builtings/export_utils.c\
 		../builtings/export.c ../builtings/exit.c ../builtings/export_sort_utils.c ../execution/signals.c
 
-READLINE = $(shell brew --prefix readline)
-
 CC = cc
 
-FLGS = -Wall -Wextra -Werror -g -I$(READLINE)/include#-fsanitize=address,undefined
+FLGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 RM = rm -rf
 
@@ -22,7 +20,7 @@ all : $(NAME)
 	$(CC) $(FLGS) -c $< -o $@
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) ../libft/libft.a -L$(READLINE)/lib -lreadline -o $@
+	$(CC) $(OBJ) ../libft/libft.a -lreadline -o $@
 
 clean :
 	$(RM) $(OBJ)

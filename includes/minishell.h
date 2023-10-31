@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/10/25 16:41:44 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:44:29 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	waiting_und_closing(pid_t pid1, int *pipfd);
 
 // other redirections
 
-void	check_redirections(t_cmd *tavern);
+int	check_redirections(t_cmd *tavern);
 void	manage_redirection(t_cmd *tavern, int *pipfd, char **env);
 void	handle_input(t_cmd *tavern, int *pipfd, char **env);
 void	handle_output(t_cmd *tavern, int *pipfd, char **env);
@@ -252,9 +252,9 @@ t_cmd		*create_list(void);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
-void		fill(t_tokens **list, t_cmd **tmp, int *i);
+void		fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr);
 int			n_of_cmd(t_tokens *list);
-void		rederections(t_tokens **list, t_cmd **tmp);
+void		rederections(t_tokens **list, t_cmd **tmp, t_env **envr);
 t_env		*envirement(char **env);
 int			find_exp(char *s);
 char		*check_if_valid(char *str, int *i);
@@ -265,9 +265,9 @@ char		*update_line(char *line, char *var, int l);
 int			cheak(char *b, int *i, int c);
 void		add_node(t_tokens **list, t_tokens *new);
 char		*check_if_valid_herdoc(char *str, int *i);
-char		*fill_word(char *b, int *i, int c);
+char		*fill_word(char *b, int *i, int c, t_env **envr);
 t_tokens	*create_node(void);
-t_tokens	*tokenizer(char *b);
+t_tokens	*tokenizer(char *b, t_env **envr);
 void 		minishell(t_env **envr, char *b);
 // int			len_var(char *value, t_env *env);
 
