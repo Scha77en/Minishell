@@ -27,7 +27,7 @@ void	ft_unset(t_cmd *tavern, t_env **envr)
 		prev = NULL;
 		while (tmp)
 		{
-			if (!ft_strncmp(target, tmp->var, ft_strlen(target)))
+			if (!ft_strncmp(target, tmp->var, ft_strlen(target) + 1))
 			{
 				if (prev == NULL)
 					*envr = tmp->next;

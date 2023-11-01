@@ -20,6 +20,12 @@
 # include<stdlib.h>
 # include<unistd.h>
 
+typedef struct s_mem
+{
+	void			*ptr;
+	struct s_mem	*next;
+}	t_mem;
+
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
@@ -54,5 +60,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 char	**ft_split(char const *s, char c);
+void	clean_mem(t_mem *head);
+void	*my_malloc(int size, int len, int status);
 
 #endif

@@ -37,12 +37,6 @@
 
 extern int     g_status;
 
-typedef struct s_mem
-{
-	void			*ptr;
-	struct s_mem	*next;
-}	t_mem;
-
 typedef struct s_env
 {
 	char			*var;
