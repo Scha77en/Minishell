@@ -10,9 +10,9 @@ READLINE = $(shell brew --prefix readline)
 
 LIBFT = ./libft/libft.a
 
-CC = cc
+CC = gcc
 
-FLGS = -Wall -Wextra -Werror -I${READLINE}/include #-fsanitize=address
+FLGS = -Wall -Wextra -Werror -I${READLINE}/include #-fsanitize=address -g
 
 RM = rm -rf
 
