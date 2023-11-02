@@ -45,6 +45,8 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	while(1)
 	{
 		i = 0;
+		if (g_status == 130)
+			break ;
 		write(1, "herdoc> ", 8);
 		line = get_next_line(0);
 		if (!ft_strlen(line))
