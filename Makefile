@@ -12,7 +12,7 @@ LIBFT = ./libft/libft.a
 
 CC = gcc
 
-FLGS = -Wall -Wextra -Werror -I${READLINE}/include #-fsanitize=address -g
+FLGS = -Wall -Wextra -Werror -I${READLINE}/include -fsanitize=address -g
 
 RM = rm -rf
 
@@ -25,7 +25,7 @@ all : ${LIBFT} $(NAME)
 	$(CC) $(FLGS) -c $< -o $@
 
 $(NAME) : $(OBJ) includes/minishell.h
-	$(CC) $(OBJ) -o $@ -L${READLINE}/lib -L./libft -lft -lreadline -lhistory
+	$(CC) ${FLGS} $(OBJ) -o $@ -L${READLINE}/lib -L./libft -lft -lreadline -lhistory
 
 clean :
 	$(RM) $(OBJ)
