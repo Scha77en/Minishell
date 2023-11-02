@@ -22,7 +22,7 @@ char	*fill_var(char *b, int n, int s)
 	char	*var;
 
 	i = 0;
-	var = my_malloc((n - s), 1, 1);
+	var = my_malloc((n - s) + 1, 1, 1);
 	if (!var)
 		return (NULL);
 	var[(n - s)] = '\0';
