@@ -137,9 +137,7 @@ void	ft_join_value(t_env **env, char **split)
 		if (!ft_strncmp(current->var, split[0], k - 1))
 		{
 			join = ft_strjoin(current->value, split[1]);
-			free(current->value);
 			current->value = ft_strdup(join);
-			free(join);
 			return ;
 		}
 		current = current->next;
@@ -165,7 +163,6 @@ void	ft_add_env(t_env **env, char **split, int v)
 	{
 		if (ft_strcmp(current->var, split[0]) == 0)
 		{
-			free(current->value);
 			if (split[1] == NULL)
 				current->value = ft_strdup("");
 			else
@@ -175,7 +172,7 @@ void	ft_add_env(t_env **env, char **split, int v)
 		}
 		current = current->next;
 	}
-	new = malloc(sizeof(t_env));
+	new = my_malloc(sizeof(t_env), 1, 1);
 	if (plus_sign(split[0], 1))
 		new->var = ft_strndup(split[0], (plus_sign(split[0], 1)));
 	else
@@ -192,7 +189,7 @@ char	*ft_strndup(char *s, int n)
 	int		i;
 
 	i = 0;
-	str = malloc(n + 1 * sizeof(char));
+	str = my_malloc((n + 1), 1, 1);
 	if (!str)
 		return (NULL);
 	while (s[i] && i < n)

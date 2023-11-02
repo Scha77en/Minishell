@@ -24,8 +24,11 @@ void	print_list(t_cmd *f_list)
 		while (f_list->cmd[i])
 		{
 			printf("cmd : %s\n", f_list->cmd[i++]);
+			if (f_list->cmd == NULL)
+				printf("cmd : NULL\n");
 			// printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
 		}
+		printf("cmd : NULL\n");
 		printf("fd_in : %d | fd_out : %d\n", f_list->fd->in, f_list->fd->out);
 		printf("-------------\n");
 		f_list = f_list->next;
@@ -37,7 +40,7 @@ void first_one(t_tokens *list, t_cmd **tmp)
 	int		n_cmd;
 
 	n_cmd = n_of_cmd(list);
-	(*tmp)->cmd = my_malloc((n_cmd + 1), 1, 1);
+	(*tmp)->cmd = my_malloc((n_cmd + 1), sizeof(char *), 1);
 	if (!(*tmp)->cmd)
 		return ;
 	(*tmp)->cmd[n_cmd] = NULL;
@@ -49,7 +52,7 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 	int		flg;
 	int		i;
 
-	while (list->type != NLINE)
+	while (list && list->type != NLINE)
 	{
 	i = -1;
 	add_list(f_list, create_list());
@@ -59,10 +62,16 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 		{
 			if (!++flg)
 				first_one(list, &tmp);
-			fill(&list, &tmp, &i, envr);
-			list = list->next;
+			flg = fill(&list, &tmp, &i, envr);
+			if (flg == -1)
+			{
+				while(list->type != PIPE && list->type != NLINE)
+					list = list->next;
+			}
+			else
+				list = list->next;
 		}
-		if (list->type == PIPE)
+		if (list && list->type == PIPE)
 		{
 			list = list->next;
 			if (g_status == 1)
@@ -71,37 +80,15 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 	}
 }
 
-// void	free_f_list(t_cmd **f_list)
-// {
-// 	t_cmd	*current;
-// 	t_cmd	*lst;
-// 	int		i;
-
-// 	lst = *f_list;
-// 	while (lst)
-// 	{
-// 		i = 0;
-// 		current = lst;
-// 		lst = lst->next;
-// 		while (current->cmd[i])
-// 			free(current->cmd[i++]);
-// 		free(current->cmd);
-// 		free(current);
-// 	}
-// 	*f_list = NULL;
-// }
-
-void minishell(t_env **envr, char *b)
+void	minishell(t_env **envr, char *b)
 {
 	t_tokens	*list;
 	t_cmd		*f_list;
 	static char	*pwd;
-	// int			v;
 
 	pwd = ft_getenv(envr, "PWD");
 	while (1)
 	{
-		// v = 0;
 		b = readline("minishell$ ");
 		if (b == NULL)
 		{
@@ -118,9 +105,7 @@ void minishell(t_env **envr, char *b)
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, envr);
-			while(f_list && f_list->cmd[0] == NULL)
-				f_list = f_list->next;
-			if (f_list && f_list->cmd[0] != NULL)
+			if (f_list)
 				pwd = execute_cmds(&f_list, envr, pwd);
 			while (f_list)
 			{
@@ -136,24 +121,10 @@ void minishell(t_env **envr, char *b)
 				}
 				f_list = f_list->next;
 			}
-			free(b);
 		}
+		free(b);
 	}
-}
-
-void	free_env(t_env **envr)
-{
-	t_env	*current;
-
-	while (*envr)
-	{
-		current = *envr;
-		*envr = (*envr)->next;
-		free(current->var);
-		free(current->value);
-		free(current);
-	}
-	*envr = NULL;
+	my_malloc(0, 0, 0);
 }
 
 int main(int ac, char **av, char **env)
@@ -175,6 +146,5 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b);
-	free_env(&envr);
 	return (0);
 }

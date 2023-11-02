@@ -13,8 +13,16 @@ void	handle_sigint(int sig)
 void    herdoc_sigint(int sig)
 {
     (void)sig;
-    // write(1, "\n", 1);
-    // g_status = 130;
+    write(1, "\n", 1);
+    g_status = 130;
+    return ;
+}
+
+void    hang_sigint(int sig)
+{
+    (void)sig;
+    write(1, "\n", 1);
+    g_status = 130;
     return ;
 }
 

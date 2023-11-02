@@ -136,14 +136,14 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 
 	a = 0;
 	v = 0;
-	if (b[(*i) - 1] && b[(*i) - 1] == 34)
+	s = (*i);
+	if (s && b[s - 1] && b[s - 1] == 34)
 		v++;
 	if (!v && cheak(b, i, c) == 1 && (c == 34 || c == 39))
 	{
 		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)++]);
 		return (NULL);
 	}
-	s = (*i);
 	if (c == 34 || c == 39)
 		s++;
 	a = len_of_filled(b, s, c, a, envr);

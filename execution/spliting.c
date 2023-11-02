@@ -55,7 +55,7 @@ char	**ft_split_m(char *s, char c)
 	int		g_start;
 	char	**ptr;
 
-	ptr = my_malloc((rows_num(s, c) + 1), 1, 1);
+	ptr = my_malloc((rows_num(s, c) + 1), sizeof(char *), 1);
 	if (!s || !ptr)
 		return (0);
 	g_end = -1;

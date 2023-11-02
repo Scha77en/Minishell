@@ -110,9 +110,7 @@ void	ft_lstclear(t_list *lst)
 	node = lst;
 	while (node)
 	{
-		free(node->content);
 		n_node = node->next;
-		free (node);
 		node = n_node;
 	}
 }

@@ -32,8 +32,6 @@ int	command_search(char **path)
 {
 	int		i;
 
-	if (!path || !path)
-		return (-1);
 	i = -1;
 	while (path[++i])
 	{

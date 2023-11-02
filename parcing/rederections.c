@@ -37,14 +37,14 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	char	*line;
 	char	*data;
 
+	signal(SIGINT, handle_sigint);
 	data = my_malloc(1, 1, 1);
 	data[0] = '\0';
 	if (!data)
 		return (NULL);
-	while(1 && signal(SIGINT, handle_sigint) && g_status != 130)
+	while(1)
 	{
 		i = 0;
-		// signal(SIGQUIT, SIG_DFL);
 		write(1, "herdoc> ", 8);
 		line = get_next_line(0);
 		if (!ft_strlen(line))
@@ -62,7 +62,8 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	}
 	return (data);
 }
-void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
+
+int	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 {
 	char	*tp;
 	char	*word;
@@ -98,10 +99,12 @@ void	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 			(*t_lst) = (*t_lst)->next;
 		(*tmp)->cmd [0]= NULL;
 		g_status = 1;
+		return 0;
 	}
+	return (1);
 }
 
-void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr)
+int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr)
 {
 	char		*word;
 	char		*data;
@@ -139,19 +142,23 @@ void rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **e
 			(*t_lst) = (*t_lst)->next;
 		(*tmp)->cmd[0] = NULL;
 		g_status = 1;
+		return 0;
 	}
+	return (1);
 }
 
-void	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)
+int	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)
 {
+	int r;
 	t_tokens	*t_lst;
 	t_tokens	*current;
 
 	t_lst = *list;
 	current = t_lst;
-	if ((t_lst->type == IN || t_lst->type == HEREDOC) && g_status != 1)
-		rederect_in_her(&t_lst, tmp, current, envr);
-	if ((t_lst->type == OUT || t_lst->type == APPEND) && g_status != 1)
-		rederect_o_a(&t_lst, tmp, current);
-	*list = t_lst;
+	if ((t_lst->type == IN || t_lst->type == HEREDOC))
+		r = rederect_in_her(&t_lst, tmp, current, envr);
+	if ((t_lst->type == OUT || t_lst->type == APPEND))
+		r = rederect_o_a(&t_lst, tmp, current);
+	*list = t_lst->next;
+	return (r);
 }

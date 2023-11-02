@@ -51,7 +51,7 @@ void    add_env(t_env **env, char *var, char *value, int v)
     t_env   *new;
     t_env   *current;
 
-    new = malloc(sizeof(t_env));
+    new = my_malloc(sizeof(t_env), 1, 1);
     new->var = ft_strdup(var);
     new->value = ft_strdup(value);
     new->id = v;

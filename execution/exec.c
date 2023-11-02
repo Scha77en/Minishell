@@ -91,6 +91,8 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 
 int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 {
+	if ((*tavern)->cmd[0] == NULL)
+		return (1);
 	if (ft_strncmp((*tavern)->cmd[0], "echo", 5) == 0)
 		return (echo_builted((*tavern)), 1);
 	if (ft_strncmp((*tavern)->cmd[0], "cd", 3) == 0)
@@ -133,10 +135,18 @@ void	execute_command(t_cmd *tavern, t_env **envr)
 	else
 	{
 		path = find_path(u_env);
+		if (path == NULL)
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			exit(127);
+		}
 		i = -1;
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
+		if (i == -1)
+			path[++i] = '\0';
 		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
 		{
@@ -179,10 +189,18 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 	else
 	{
 		path = find_path(u_env);
+		if (path == NULL)
+		{
+			ft_putstr_fd(tavern->cmd[0], 2);
+			write(2, ": command not found\n", 20);
+			exit(127);
+		}
 		i = -1;
-		while (path[++i])
+		while (path && path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
+		if (i == -1)
+			path[++i] = '\0';
 		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
 		{

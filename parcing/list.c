@@ -83,24 +83,30 @@ int n_of_cmd(t_tokens *list)
 	return (r);
 }
 
-void fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
+int fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 {
 	char *word;
 	char *tmpe;
+	int		v;
 
-		if (is_word((*list)->type))
+	v = *i;
+	if (is_word((*list)->type))
+	{
+		word = (*list)->tokens;
+		while(is_word((*list)->next->type))
 		{
-			word = (*list)->tokens;
-			while(is_word((*list)->next->type))
-			{
-				tmpe = ft_strjoin(word, (*list)->next->tokens);
-				free(word);
-				word = tmpe;
-				(*list) = (*list)->next;
-			}
-			(*tmp)->cmd[++(*i)] = word;	
+			tmpe = ft_strjoin(word, (*list)->next->tokens);
+			word = tmpe;
+			(*list) = (*list)->next;
 		}
+		(*tmp)->cmd[++v] = ft_strdup(word);
+		*i = v;
+	}
 	if ((*list)->type == IN || (*list)->type == OUT
 		|| (*list)->type == HEREDOC || (*list)->type == APPEND)
-		rederections(list, tmp, envr);
+		{
+		if(!rederections(list, tmp, envr))
+			return (-1);
+		}
+	return (1);
 }

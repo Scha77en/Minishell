@@ -149,7 +149,7 @@ t_env	*ft_envnew(char *var, char *value)
 {
 	t_env	*new;
 
-	new = malloc(sizeof(t_env));
+	new = my_malloc(sizeof(t_env), 1, 1);
 	if (!new)
 		return (NULL);
 	new->var = var;
@@ -188,7 +188,6 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value)
 	{
 		if (ft_strcmp(current->var, var) == 0)
 		{
-			free(current->value);
 			if (value == NULL)
 				current->value = ft_strdup("");
 			else
@@ -197,19 +196,10 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value)
 		}
 		current = current->next;
 	}
-	new = malloc(sizeof(t_env));
+	new = my_malloc(sizeof(t_env), 1, 1);
 	new->var = ft_strdup(var);
 	new->value = ft_strdup(value);
 	new->next = NULL;
 	ft_lstaddback(env, new);
 }
 
-void	ft_memdel(void *ptr)
-{
-	if (ptr)
-	{
-		// printf("memdel\n");
-		free(ptr);
-		ptr = NULL;
-	}
-}

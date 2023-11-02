@@ -16,7 +16,7 @@ t_env	*lstnew()
 {
 	t_env	*link;
 
-	if (!(link = malloc(sizeof(t_env))))
+	if (!(link = my_malloc(sizeof(t_env), 1, 1)))
 		return (NULL);
 	link->next = NULL;
 	link->value = NULL;
@@ -82,13 +82,13 @@ t_env	*envirement(char **env)
 		else
 			nv = nv->next;
 		i = -1;
-		nv->var = malloc(sizeof(char) * (var_len(env[n]) + 1));
+		nv->var = my_malloc((var_len(env[n]) + 1), sizeof(char), 1);
 		nv->var[var_len(env[n])] = '\0';
 		while (env[n][++i] != '=')
 			nv->var[i] = env[n][i];
 		s = i + 1;     
 		i = -1;
-		nv->value = malloc(sizeof(char) * (valu_len(env[n], s) + 1));
+		nv->value = my_malloc((valu_len(env[n], s) + 1), sizeof(char), 1);
 		if (!nv->value)
 			return (printf("fiell\n"), NULL);
 		nv->value[valu_len(env[n], s)] = '\0';

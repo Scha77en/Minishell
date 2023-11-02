@@ -135,6 +135,7 @@ char	**env_to_char(t_env **env);
 int		path_backslash(char *path);
 void	reset_fd(t_cmd *tavern);
 void    herdoc_sigint(int sig);
+void    hang_sigint(int sig);
 
 // builting
 
@@ -225,9 +226,9 @@ t_cmd		*create_list(void);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			is_word(int type);
 int			is_token(int type);
-void		fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr);
+int			fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr);
 int			n_of_cmd(t_tokens *list);
-void		rederections(t_tokens **list, t_cmd **tmp, t_env **envr);
+int			rederections(t_tokens **list, t_cmd **tmp, t_env **envr);
 t_env		*envirement(char **env);
 int			find_exp(char *s);
 char		*check_if_valid(char *str, int *i);

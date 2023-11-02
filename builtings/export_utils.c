@@ -53,7 +53,6 @@ char	*back_slash_parce(char *str, int flag)
 			new[v++] = str[i++];
 	}
 	if (flag == 0)
-		free(str);
 	new[v] = '\0';
 	return (new);
 }

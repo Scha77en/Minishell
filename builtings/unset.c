@@ -33,14 +33,10 @@ void	ft_unset(t_cmd *tavern, t_env **envr)
 					*envr = tmp->next;
 				else
 					prev->next = tmp->next;
-				free(tmp->var);
-				free(tmp->value);
-				free(tmp);
 				break ;
 			}
 			prev = tmp;
 			tmp = tmp->next;
 		}
 	}
-	free(target);
 }

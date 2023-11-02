@@ -95,6 +95,7 @@ char	*get_next_line(int fd)
 	static char	*s;
 	char		*l;
 
+	signal(SIGINT, handle_sigint);
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	s = get_read(fd, s);
