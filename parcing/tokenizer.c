@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 19:11:03 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:54:50 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	token(char fc, char sc)
 int	is_word(int type)
 {
 	if (type == WORD || type == SQUAT
-		|| type == DQOUT)
+		|| type == DQOUT || type == DEL)
 		return (1);
 	return (0);
 }
@@ -69,7 +69,7 @@ int	syntax_error(t_tokens *list)
 	{
 		if (((is_token(list->type) && !is_word(list->next->type)
 				&& list->next->type != WHITESPACE)) || list->type == SLH)
-			return (printf("minishell$: syntax error near unexpected token `%s'\n", list->tokens), 258);
+			return (printf("minishell$: syntax error near unexpected token '%s'\n", list->tokens), 258);
 		else
 			list = list->next;
 	}

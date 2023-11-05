@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 17:56:28 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:34:15 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,17 @@
 
 int		g_status;
 
-void	print_list(t_cmd *f_list)
+void	print_list(t_tokens *list)
 {
-	int	i;
 
-	while (f_list)
+	while (list)
 	{
-		i = 0;
-		while (f_list->cmd[i])
+		while (list)
 		{
-			printf("cmd : %s\n", f_list->cmd[i++]);
-			if (f_list->cmd == NULL)
-				printf("cmd : NULL\n");
-			// printf("cmd len %ld \n", ft_strlen(f_list->cmd[i++]));
+			printf("list=%s$\n", list->tokens);
+		list = list->next;
 		}
-		printf("cmd : NULL\n");
-		printf("fd_in : %d | fd_out : %d\n", f_list->fd->in, f_list->fd->out);
-		printf("-------------\n");
-		f_list = f_list->next;
+		break ;
 	}
 }
 
@@ -68,8 +61,8 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 				while(list->type != PIPE && list->type != NLINE)
 					list = list->next;
 			}
-			else
-				list = list->next;
+			else if (!is_token(list->type))
+					list = list->next;
 		}
 		if (list && list->type == PIPE)
 		{

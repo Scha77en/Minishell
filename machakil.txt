@@ -1,5 +1,5 @@
 
-<< "|"  
+
 
 
 
@@ -281,5 +281,35 @@ No such file or directory    and   : command not found
 
 $?$?$
 
+ls > "     " xxx
+
+ls > " "
+[1]    55728 segmentation fault  ./minishell
 
 $env
+bash$ $home
+$
+<< "|"  
+
+minishell$ $home
+$ : command not found
+ls >"   e"
+
+ls > a>s>d>f>g>h
+
+
+
+
+echo "$777"
+$777    you have just take one number to expand
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+TO___DO
+
+
+
+
+
+
+$USER$USE

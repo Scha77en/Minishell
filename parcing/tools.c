@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 19:37:08 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/05 15:58:07 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int len_of_filled(char *b, int s, int c, int a, t_env **envr)
 			a += ft_strlen(ft_itoa(g_status));
 			s += 2;
 		}
+		else if ( b[s] == '$' && ft_isdigit(b[s+1]))
+			s += 2;
 		else if (b[s] == '$' && c != 39 && b[s+1])
 		{
 			n = s;
@@ -94,6 +96,11 @@ void fill_expan(char *b, int *s, t_env **envr, int *a, char **filled)
 		while(var[i])
 			(*filled)[(*a)++] = var[i++];
 	}
+	else
+	{
+		free(*filled);
+		*filled = NULL;
+	}
 }
 
 char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
@@ -109,8 +116,12 @@ char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
 	{
 		if (b[s] == '$' && b[s+1] == '?'  && c != 39 && b[s+1])
 			fill_exit_s(&filled, &s, &a);
+		else if ( b[s] == '$' && ft_isdigit(b[s+1]))
+			s += 2;
 		else if (b[s] == '$' && c != 39 && b[s+1])
+		{
 			fill_expan(b, &s, envr, &a, &filled);
+		}
 		else if (b[s] != c)
 			filled[a++] = b[s++];
 		else
@@ -121,7 +132,7 @@ char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)
 	if (b[s] == c && c != 0)
 		s++;
 	*i = s;
-	if (!filled[0] && b[0] == '$')
+	if (!filled)
 		return (NULL);
 	return (filled);
 	
@@ -132,23 +143,16 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 	char	*f;
 	int		a;
 	int		s;
-	int 	v;
-
 	a = 0;
-	v = 0;
 	s = (*i);
-	if (s && b[s - 1] && b[s - 1] == 34)
-		v++;
-	if (!v && cheak(b, i, c) == 1 && (c == 34 || c == 39))
+	if (cheak(b, i, c) == 1 && (c == 34 || c == 39))
 	{
-		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)++]);
+		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)]);
 		return (NULL);
 	}
 	if (c == 34 || c == 39)
 		s++;
 	a = len_of_filled(b, s, c, a, envr);
 	f = fill_it(b, s, c, a, i, envr);
-	if (v && b[*i] == 34)
-		(*i)++;
 	return (f);
 }

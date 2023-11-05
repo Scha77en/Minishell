@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 19:27:37 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:41:52 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ char	*fill_var(char *b, int n, int s)
 	char	*var;
 
 	i = 0;
-	var = my_malloc((n - s), 1, 1);
+	var = my_malloc((n - s) + 1, 1, 1);
 	if (!var)
 		return (NULL);
-	var[(n - s)] = '\0';
 	n = s +1;
 	while (b[n] && (ft_isalpha(b[n]) || b[n] == '_'))
 	{
 		var[i++] = b[n++];
 	}
+	var[i] = '\0';
 	return (var);
 }
 
@@ -74,11 +74,12 @@ char *t_oken(char *str, int *i, char *b, int type)
 	r++;
 	if (type == HEREDOC || type == APPEND)
 		r++;
-	*i = r;
 	while(b[r] == ' ')
 		r++;
-	if (b[r] == 34)
+	if (b[r] == 34 && b[*i] == 34)
 		*i = r+1;
+	else
+		*i = r;
 	return (ft_strdup(str));
 }
 t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
@@ -97,16 +98,23 @@ t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
 		node->tokens = t_oken("<", i, b, -1);
 	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
 	{
-		if ((node->tokens = fill_word(b, i, 34, envr)) == NULL)
-			return (NULL);
+		if ((node->type = delemeter(b, *i, SQUAT)) == DEL)
+			node->tokens = fill_delemeter(b, i, 34);
+		else
+			node->tokens = fill_word(b, i, 34, envr);
 	}
 	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
 	{
-		if ((node->tokens = fill_word(b, i, 39, envr)) == NULL)
-			return (NULL);
+		node->type = delemeter(b, *i, DQOUT);
+		node->tokens = fill_word(b, i, 39, envr);
 	}
 	else
+	{
+		node->type = delemeter(b, *i, WORD);
 		node->tokens = fill_word(b, i, 0, envr);
+	}
+	if (node->tokens == NULL)
+		return (NULL);
 	return (node);
 }
 
