@@ -18,14 +18,6 @@ void    herdoc_sigint(int sig)
     return ;
 }
 
-void    hang_sigint(int sig)
-{
-    (void)sig;
-    write(1, "\n", 1);
-    g_status = 130;
-    return ;
-}
-
 void	handle_sigquit(int sig)
 {
     (void)sig;
@@ -45,8 +37,3 @@ void	handle_sigquit_child(int sig)
     write(1, "Quit: 3\n", 8);
     exit(0);
 }
-
-// void    updatexitstatus(int status)
-// {
-//     g_status = status;
-// }

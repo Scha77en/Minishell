@@ -28,7 +28,7 @@ void    sort_env(t_env *env)
 		front = current->next;
 		while (front)
 		{
-			if (ft_strcmp(current->var, front->var) > 0)
+			if (ft_strncmp(current->var, front->var, ft_strlen(current->var) + 1) > 0)
 			{
 				temp = current->var;
 				current->var = front->var;

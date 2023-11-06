@@ -30,20 +30,24 @@ char	*ft_strjoin_b(char *s1, char *s2, int v)
 		ptr[i] = s1[i];
 		i++;
 	}
-	if (v == 0)
-		ptr[i++] = ' ';
-	if (v == 1)
-		ptr[i++] = '/';
-	if (v == 2)
-		ptr[i++] = '=';
+	sign_check(&ptr, &i, v);
 	while (s2[j])
 	{
 		ptr[i] = s2[j];
 		i++;
 		j++;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	return (ptr[i] = '\0', ptr);
+}
+
+void	sign_check(char **ptr, size_t *i, int v)
+{
+	if (v == 0)
+		(*ptr)[(*i)++] = ' ';
+	if (v == 1)
+		(*ptr)[(*i)++] = '/';
+	if (v == 2)
+		(*ptr)[(*i)++] = '=';
 }
 
 char	*ft_strjoin_m(char *s1, char *s2)
@@ -87,11 +91,3 @@ size_t	ft_strlen_m(char *s)
 	}
 	return (i);
 }
-
-// void	waiting_und_closing(pid_t pid1, pid_t pid2, int *pipfd)
-// {
-// 	close(pipfd[1]);
-// 	close(pipfd[0]);
-// 	waitpid(pid1, NULL, 0);
-// 	waitpid(pid2, NULL, 0);
-// }

@@ -19,3 +19,18 @@ void	error_out(char *msg, int v)
 	if (v == 1)
 		write(2, msg, ft_strlen(msg));
 }
+
+void	command_not_found(t_cmd *tavern)
+{
+	ft_putstr_fd(tavern->cmd[0], 2);
+	write(2, ": command not found\n", 20);
+	exit(127);
+}
+
+void	no_such_file(t_cmd *tavern)
+{
+	write(2, "minishell: ", 11);
+	ft_putstr_fd(tavern->cmd[0], 2);
+	write(2, ": No such file or directory\n", 29);
+	exit(127);
+}

@@ -27,45 +27,51 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		redefine_pwd(pwd, ft_getenv(env, "HOME"), env, 0);
 		pwd_update(env);
 	}
-	else if (ft_strcmp((*tavern)->cmd[1], "-") == 0)
-	{
-		getcwd(curwd, PATH_MAX);
-		if (chdir(ft_getenv(env, "OLDPWD")) != 0)
-		{
-			if (ft_getenv(env, "OLDPWD") == NULL)
-				write((*tavern)->fd->out, "Minishell: cd: OLDPWD not set\n", 31);
-			else
-			{
-				write ((*tavern)->fd->out, "Minishell: cd: ", 15);
-				write((*tavern)->fd->out, ft_getenv(env, "OLDPWD") ,ft_strlen(ft_getenv(env, "OLDPWD")));
-				write((*tavern)->fd->out, " : No such file or directory\n", 30);
-			}
-			return ;
-		}
-		oldpwd_update(env, curwd, 1);
-		pwd_update(env);
-		redefine_pwd(pwd, ft_getenv(env, "OLDPWD"), env, 0);
-	}
+	else if (ft_strncmp((*tavern)->cmd[1], "-", ft_strlen((*tavern)->cmd[1]) + 1) == 0)
+		cd_dash(tavern, env, pwd, curwd);
 	else
+		cd_path(tavern, env, pwd, curwd);
+}
+
+void	cd_dash(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
+{
+	getcwd(curwd, PATH_MAX);
+	if (chdir(ft_getenv(env, "OLDPWD")) != 0)
 	{
-		oldpwd_update(env, NULL, 0);
-		if (chdir((*tavern)->cmd[1]) != 0)
+		if (ft_getenv(env, "OLDPWD") == NULL)
+			write((*tavern)->fd->out, "Minishell: cd: OLDPWD not set\n", 31);
+		else
 		{
-			write((*tavern)->fd->out, "minishell: cd: ", 15);
-			write((*tavern)->fd->out, (*tavern)->cmd[1], ft_strlen((*tavern)->cmd[1]));
-			write((*tavern)->fd->out, ": No such file or directory\n", 28);
-			return ;
+			write ((*tavern)->fd->out, "Minishell: cd: ", 15);
+			write((*tavern)->fd->out, ft_getenv(env, "OLDPWD") ,ft_strlen(ft_getenv(env, "OLDPWD")));
+			write((*tavern)->fd->out, " : No such file or directory\n", 30);
 		}
-		if (!getcwd(curwd, PATH_MAX))
-		{
-			write((*tavern)->fd->out, "cd: error retrieving current directory: ", 41);
-			write((*tavern)->fd->out, "getcwd : cannot access parent directories: No such file or directory\n", 70);
-			redefine_pwd(pwd, (*tavern)->cmd[1], env, 1);
-			return ;
-		}
-		pwd_update(env);
-		redefine_pwd(pwd, (*tavern)->cmd[1], env, 0);
+		return ;
 	}
+	oldpwd_update(env, curwd, 1);
+	pwd_update(env);
+	redefine_pwd(pwd, ft_getenv(env, "OLDPWD"), env, 0);
+}
+
+void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
+{
+	oldpwd_update(env, NULL, 0);
+	if (chdir((*tavern)->cmd[1]) != 0)
+	{
+		write((*tavern)->fd->out, "minishell: cd: ", 15);
+		write((*tavern)->fd->out, (*tavern)->cmd[1], ft_strlen((*tavern)->cmd[1]));
+		write((*tavern)->fd->out, ": No such file or directory\n", 28);
+		return ;
+	}
+	if (!getcwd(curwd, PATH_MAX))
+	{
+		write((*tavern)->fd->out, "cd: error retrieving current directory: ", 41);
+		write((*tavern)->fd->out, "getcwd : cannot access parent directories: No such file or directory\n", 70);
+		redefine_pwd(pwd, (*tavern)->cmd[1], env, 1);
+		return ;
+	}
+	pwd_update(env);
+	redefine_pwd(pwd, (*tavern)->cmd[1], env, 0);
 }
 
 void	oldpwd_update(t_env **env, char *curwd, int v)
@@ -110,17 +116,14 @@ void	pwd_update(t_env **env)
 void	oldpwd_search_update(t_env **env, char *cwd)
 {
 	t_env	*current;
-	t_env	*new;
 	int		v;
 
-	// printf("oldpwd_search_update\n");
 	v = 0;
 	current = *env;
 	while (current)
 	{
 		if (ft_strncmp_m(current->var, "OLDPWD", 6) == 0)
 		{
-			// printf("deleting oldpwd\n");
 			current->value = ft_strdup(cwd);
 			v = 1;
 		}
@@ -132,17 +135,21 @@ void	oldpwd_search_update(t_env **env, char *cwd)
 		while (current)
 		{
 			if (ft_strncmp_m(current->var, "PWD", 3) == 0)
-			{
-				// printf("adding oldpwd\n");
-				new = ft_envnew(ft_strdup("OLDPWD"), NULL);
-				new->value = ft_strdup(cwd);
-				new->next = current->next;
-				current->next = new;
-				return ;
-			}
+				old_pwd_add(current, cwd);
 			current = current->next;
 		}
 	}
+}
+
+void	old_pwd_add(t_env *current, char *cwd)
+{
+	t_env	*new;
+
+	new = ft_envnew(ft_strdup("OLDPWD"), NULL);
+	new->value = ft_strdup(cwd);
+	new->next = current->next;
+	current->next = new;
+	return ;
 }
 
 t_env	*ft_envnew(char *var, char *value)
@@ -186,7 +193,7 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value)
 	current = *env;
 	while (current)
 	{
-		if (ft_strcmp(current->var, var) == 0)
+		if (ft_strncmp(current->var, var, ft_strlen(current->var) + 1) == 0)
 		{
 			if (value == NULL)
 				current->value = ft_strdup("");
@@ -202,4 +209,3 @@ void	ft_add_env_pwd(t_env **env, char *var, char *value)
 	new->next = NULL;
 	ft_lstaddback(env, new);
 }
-

@@ -54,7 +54,7 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 			write(1, "\n", 1);
 			break ;
 		}
-		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
+		if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
 			line = fill_word(line, &i, 0, envr);
 		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
 		{

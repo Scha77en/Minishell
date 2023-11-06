@@ -24,7 +24,6 @@ t_cmd	*ft_lstnew_m(char *content)
     node1->fd->in = 0;
     node1->fd->out = 1;
 	node1->next = NULL;
-	// node1 -> previous = NULL;
 	return (node1);
 }
 

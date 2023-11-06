@@ -27,22 +27,25 @@ RM = rm -rf
 
 OBJ = $(SRC:%.c=%.o)
 
+	
 all : ${LIBFT} $(NAME)
-
 
 %.o : %.c
 	$(CC) $(FLGS) -c $< -o $@
 
 $(NAME) : $(OBJ) includes/minishell.h libft/libft.a
 	$(CC) ${FLGS} $(OBJ) -o $@ -L${READLINE}/lib -L./libft -lft -lreadline -lhistory
+	@figlet minishell
 
 clean :
 	$(RM) $(OBJ)
 	make clean -C ./libft
+	@figlet cleaned
 
 fclean : clean
 	$(RM) $(NAME)
 	make fclean -C ./libft
+	@figlet "full cleaned"
 
 ${LIBFT} : ${SRC_LIB} libft/libft.h
 	make -C libft

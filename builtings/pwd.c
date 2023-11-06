@@ -39,9 +39,5 @@ void	redefine_pwd(char **pwd, char *define, t_env **env, int v)
 		*pwd = ft_strjoin_b(*pwd, ft_strdup(define), 1);
 	}
 	else
-	{
-		if (*pwd)
-			free(*pwd);
 		*pwd = ft_strdup(ft_getenv(env, "PWD"));
-	}
 }

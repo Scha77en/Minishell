@@ -39,29 +39,32 @@ void	ft_env(t_cmd **tavern, t_env **env, int v)
 		}
 	}
 	else if (v == 1)
+		export_env(tavern, env, current);
+}
+
+void	export_env(t_cmd **tavern, t_env **env, t_env *current)
+{
+	current = copy_env_list(env);
+	sort_env(current);
+	while (current)
 	{
-		current = copy_env_list(env);
-		sort_env(current);
-		while (current)
+		if (current->id == 0)
 		{
-			if (current->id == 0)
-			{
-				write((*tavern)->fd->out, "declare -x ", 11);
-				ft_putstr_fd(current->var, (*tavern)->fd->out);
-				write((*tavern)->fd->out, "=\"", 2);
-				ft_putstr_fd(current->value, (*tavern)->fd->out);
-				write((*tavern)->fd->out, "\"\n", 2);
-			}
-			else if (current->id == 2)
-			{
-				write((*tavern)->fd->out, "declare -x ", 11);
-				ft_putstr_fd(current->var, (*tavern)->fd->out);
-				write((*tavern)->fd->out, "\n", 1);
-			}
-			current = current->next;
+			write((*tavern)->fd->out, "declare -x ", 11);
+			ft_putstr_fd(current->var, (*tavern)->fd->out);
+			write((*tavern)->fd->out, "=\"", 2);
+			ft_putstr_fd(current->value, (*tavern)->fd->out);
+			write((*tavern)->fd->out, "\"\n", 2);
 		}
-		write((*tavern)->fd->out, "\n", 1);
+		else if (current->id == 2)
+		{
+			write((*tavern)->fd->out, "declare -x ", 11);
+			ft_putstr_fd(current->var, (*tavern)->fd->out);
+			write((*tavern)->fd->out, "\n", 1);
+		}
+		current = current->next;
 	}
+	write((*tavern)->fd->out, "\n", 1);
 }
 
 

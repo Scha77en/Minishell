@@ -31,7 +31,6 @@ void	ft_export(t_cmd *tavern, t_env **env)
 				split = split_export(tavern->cmd[i]);
 				if (split[1] == NULL)
 					ft_add_env(env, split, v);
-
 				else if(plus_sign(split[0], 0) > 0)
 					ft_join_value(env, split);
 				else
@@ -161,7 +160,7 @@ void	ft_add_env(t_env **env, char **split, int v)
 	current = *env;
 	while (current)
 	{
-		if (ft_strcmp(current->var, split[0]) == 0)
+		if (ft_strncmp(current->var, split[0], ft_strlen(current->var) + 1) == 0)
 		{
 			if (split[1] == NULL)
 				current->value = ft_strdup("");

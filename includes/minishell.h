@@ -113,21 +113,18 @@ void	clean_mem(t_mem *head);
 // void	clear_garbeg(t_mem *head);
 // void	*garbage(int size, int len, int status);
 
-// Minishell execution testing functions
+// Minishell execution functions
 
 int		ft_lstsize(t_cmd *lst);
 t_cmd	*ft_lstnew_t(char **content, int fd_in, int fd_out);
 t_cmd	*ft_lstlast_t(t_cmd *lst);
 void	ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
 char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd);
+void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1);
+void	pipes_closing(t_cmd **tavern, int pipfd[2], int *for_next);
+void	pipes_handling(t_cmd **tavern, int pipfd[2], int *for_next);
 void	execute_command(t_cmd *tavern, t_env **envr);
-void	exec_first_cmd(t_cmd *tavern, char **env);
-void	exec_last_cmd(t_cmd *tavern, char **env);
-void	manage_first_child(t_cmd *cmds, int *pipfd, char **env);
-void	command_handler(t_cmd *tavern, int *pipfd, char **env);
-void	manage_children(t_cmd *cmds, int *pipfd, char **env);
-void	manage_last_child(t_cmd *cmds, int *pipfd, char **env);
-void	single_cmd_exec(t_cmd *tavern, t_env **envr);
+void	exec_with_path(t_cmd *tavern, char **u_env);
 char	*ft_strdup_m(char *s1);
 void	*ft_memcpy_m(void *dst, void *src, size_t n);
 void	handle_sigint(int sig);
@@ -138,6 +135,10 @@ void	reset_fd(t_cmd *tavern);
 void    herdoc_sigint(int sig);
 void    hang_sigint(int sig);
 
+void	command_not_found(t_cmd *tavern);
+void	no_such_file(t_cmd *tavern);
+
+
 // builting
 
 int		if_builting(t_cmd **tavern, t_env **env, char **pwd);
@@ -145,11 +146,15 @@ void	print_working_directory(t_cmd **tavern, char **pwd);
 void	redefine_pwd(char **pwd, char *define, t_env **env, int v);
 void	ft_add_env_pwd(t_env **env, char *var, char *value);
 void	cd_builted(t_cmd **tavern, t_env **env, char **pwd);
+void	cd_dash(t_cmd **tavern, t_env **env, char **pwd, char *curwd);
+void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd);
 void	oldpwd_update(t_env **env, char *curwd, int v);
+void	old_pwd_add(t_env *current, char *cwd);
 void	oldpwd_search_update(t_env **env, char *cwd);
 t_env	*ft_envnew(char *var, char *value);
 void	ft_memdel(void *ptr);
 void	ft_env(t_cmd **tavern, t_env **env, int v);
+void	export_env(t_cmd **tavern, t_env **env, t_env *current);
 char	*ft_getenv(t_env **env, char *var);
 void	pwd_update(t_env **env);
 void	echo_builted(t_cmd *tavern);
@@ -194,6 +199,7 @@ void	handle_append(t_cmd *tavern, int *pipfd, char **env);
 
 char	*ft_strjoin_b(char *s1, char *s2, int v);
 char	*ft_strjoin_m(char *s1, char *s2);
+void	sign_check(char **ptr, size_t *i, int v);
 size_t	ft_strlen_m(char *s);
 
 // spliting
