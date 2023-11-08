@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/04 20:41:52 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/07 15:18:04 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,32 @@ char *t_oken(char *str, int *i, char *b, int type)
 		*i = r;
 	return (ft_strdup(str));
 }
+void fill_rederections(t_tokens **node, char *b, int *i)
+{
+	if (((*node)->type = token(b[*i], b[*i + 1])) == PIPE)
+		(*node)->tokens = t_oken("|", i, b, -1);
+	else if (((*node)->type = token(b[*i], b[*i + 1])) == HEREDOC)
+		(*node)->tokens = t_oken("<<", i, b, HEREDOC);
+	else if (((*node)->type = token(b[*i], b[*i + 1])) == APPEND)
+		(*node)->tokens = t_oken(">>", i, b, APPEND);
+	else if (((*node)->type = token(b[*i], b[*i + 1])) == OUT)
+		(*node)->tokens = t_oken(">", i, b, -1);
+	else if (((*node)->type = token(b[*i], b[*i + 1])) == IN)
+		(*node)->tokens = t_oken("<", i, b, -1);
+}
+int is_rederections(int type)
+{
+	if (type == PIPE || type == HEREDOC
+	|| type == APPEND || type == OUT || type == IN)
+		return (1);
+	return (0);
+}
 t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
 {
 	if ((node->type = token(b[*i], ' ')) == WHITESPACE)
 		node->tokens = t_oken(" ", i, b, -1);
-	else if ((node->type = token(b[*i], b[*i + 1])) == PIPE)
-		node->tokens = t_oken("|", i, b, -1);
-	else if ((node->type = token(b[*i], b[*i + 1])) == HEREDOC)
-		node->tokens = t_oken("<<", i, b, HEREDOC);
-	else if ((node->type = token(b[*i], b[*i + 1])) == APPEND)
-		node->tokens = t_oken(">>", i, b, APPEND);
-	else if ((node->type = token(b[*i], b[*i + 1])) == OUT)
-		node->tokens = t_oken(">", i, b, -1);
-	else if ((node->type = token(b[*i], b[*i + 1])) == IN)
-		node->tokens = t_oken("<", i, b, -1);
+	else if (is_rederections((node->type = token(b[*i], b[*i + 1]))))
+		fill_rederections(&node, b, i);
 	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
 	{
 		if ((node->type = delemeter(b, *i, SQUAT)) == DEL)

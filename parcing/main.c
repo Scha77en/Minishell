@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/05 15:34:15 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/08 16:47:29 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	minishell(t_env **envr, char *b)
 			f_list = NULL;
 			if (list)
 				parcer(list, &f_list, envr);
+			
 			if (f_list)
 				pwd = execute_cmds(&f_list, envr, pwd);
 			while (f_list)

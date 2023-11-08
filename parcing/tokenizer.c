@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/05 15:54:50 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/08 15:17:08 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,24 @@
 int	cheak(char *b, int *i, int c)
 {
 	int s;
+	int r;
+
 	s = *i;
+	r = 1;
 	while (b[++s])
 	{
 		if (b[s] == c)
-			return (0);
+			r = 0;
 	}
-	return (1);
+	if (r == 1 && (c == 34 || c == 39))
+	{
+		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)]);
+		return (-1);
+	}
+	else if (c == 34 || c == 39)
+		return ((*i) + 1);
+	else
+		return (*i);
 }
 
 int	token(char fc, char sc)
@@ -65,6 +76,8 @@ int	is_token(int type)
 }
 int	syntax_error(t_tokens *list)
 {
+	if (list->type == PIPE)
+		return (printf("minishell$: syntax error near unexpected token '%s'\n", list->tokens), 258);
 	while (list)
 	{
 		if (((is_token(list->type) && !is_word(list->next->type)
