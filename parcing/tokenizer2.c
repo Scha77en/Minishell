@@ -6,15 +6,11 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/07 15:18:04 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:17:30 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-
-
-
 
 char	*fill_var(char *b, int n, int s)
 {
@@ -116,14 +112,14 @@ t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
 			node->tokens = fill_word(b, i, 34, envr);
 	}
 	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
-	{
-		node->type = delemeter(b, *i, DQOUT);
 		node->tokens = fill_word(b, i, 39, envr);
-	}
 	else
 	{
-		node->type = delemeter(b, *i, WORD);
-		node->tokens = fill_word(b, i, 0, envr);
+		if ((node->type = delemeter(b, *i, WORD)) == DEL)
+			node->tokens = fill_delemeter(b, i, 0);
+		else
+			node->tokens = fill_word(b, i, 0, envr);
+		node->type = WORD;
 	}
 	if (node->tokens == NULL)
 		return (NULL);

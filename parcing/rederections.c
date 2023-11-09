@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 19:45:41 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:26:02 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,10 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 			write(1, "\n", 1);
 			break ;
 		}
+		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
+			break ;
 		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
 			line = fill_word(line, &i, 0, envr);
-		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
-		{
-			break ;
-		}
 		data = ft_strjoin(data, line);
 	}
 	return (data);

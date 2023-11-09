@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/08 17:58:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:08:35 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int len_of_filled(char *b, int s, int c, t_env **envr)
 	a = 0;
 	while(b[s] && !is_token_(b[s], c))
 	{
-		if (b[s] == '$' && (b[s+1] == '?' || ft_isdigit(b[s+1]) || !ft_isalnum(b[s+1])))
+		if (b[s] == '$' && (b[s+1] == '?'
+		|| (b[s+1] && (ft_isdigit(b[s+1]) || !ft_isalnum(b[s+1])))))
 			status(b, &s, &a, c);
 		else if (b[s] == '$' && c != 39 && b[s+1])
 			expand(b, &s, &a, envr);
@@ -86,7 +87,7 @@ void fill_exit_s(char **filled, int *s, int *a, char *b)
 	int i;
 
 	i = 0;
-	if (!ft_isalnum(b[(*s) +1]))
+	if (!ft_isalnum(b[(*s) +1]) && b[(*s) + 1] != '?')
 	{
 		(*filled)[(*a)++] = b[(*s)++];
 		return ;
@@ -120,6 +121,8 @@ void fill_expan(char *b, int *s, t_env **envr, int *a, char **filled)
 		while(var[i])
 			(*filled)[(*a)++] = var[i++];
 	}
+	else if (!b[*s] && !(*filled)[0])
+		(*filled) = NULL;
 }
 char *ft_filled(char *b, int *i, int c, char *filled)
 {
@@ -142,6 +145,7 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 	filled = my_malloc((a + 1), 1, 1);
 	if (!filled || (a = 0))
 		return (NULL);
+	filled[a] = '\0';
 	while(b[s] && !is_token_(b[s], c) && !(b[s] == ' ' && c == 0))
 	{
 		if (b[s] == '$' && b[s+1] == '?'  && c != 39 && b[s+1])
@@ -152,9 +156,8 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 			fill_expan(b, &s, envr, &a, &filled);//!5
 		else if (b[s] != c)
 			filled[a++] = b[s++];
-		else 
+		else
 			s++;
 	}
-	filled[a] = '\0';
 	return (*i = s, ft_filled(b, i, c, filled));
 }

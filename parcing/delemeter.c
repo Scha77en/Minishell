@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 17:47:28 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/04 20:42:30 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:23:14 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ int delemeter(char *b, int i, int o_type)
 {
 	if (i >= 2)
 	{
-		while (i)
+		while (i && (token(b[i - 1], b[i]) != PIPE))
 		{
-			if (token(b[i - 1], b[i]) == HEREDOC || token(b[i - 1], b[i]) == IN)
+			if (token(b[i - 1], b[i]) == HEREDOC)
 				return (DEL);
-			if (token(b[i - 1], b[i]) == OUT || token(b[i - 1], b[i]) == APPEND)
-				return (DEL);
+			// if (token(b[i - 1], b[i]) == OUT || token(b[i - 1], b[i]) == APPEND)
+			// 	return (DEL);
 			i--;
 		}
 		return (o_type);
@@ -55,12 +55,13 @@ char *fill__delemeter(char *b, int s, int a, int *i)
 	a = 0;
 	while(b[s] && !is_token_(b[s], 34))
 	{
-       if (b[s] != 34)
+       if (b[s] != 34 && b[s] != 39)
 			filled[a++] = b[s++];
 		else
 			s++; 
     }
-    s++;
+	if (b[s] == 34 || b[s] == 39)
+    	s++;
 	*i = s;
 	if (!filled)
 		return (NULL);
@@ -75,10 +76,11 @@ char *fill_delemeter(char *b,  int *i, int c)
 	s = (*i);
 	if (cheak(b, i, c) == 1)
 	{
-		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)]);
+		printf("minishell$: syntax error near unexpected token '%c'\n", b[(*i)]);
 		return (NULL);
 	}
-	s++;
+	if (c != 0)
+		s++;
 	a = len_of_delemeter(b, s, c, a);
 	f = fill__delemeter(b, s, a, i);
 	return (f);
