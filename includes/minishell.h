@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/04 20:46:27 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/10 16:15:06 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,8 +248,9 @@ char		*fill_delemeter(char *b, int *i, int c);
 char		*fill__delemeter(char *b, int s, int a, int *i);
 int			is_token_(int c, int q);
 int delemeter(char *b, int i, int o_type);
-// int 		parcer(t_tokens *list, t_cmd **f_list, t_env **envr);
-// int			len_var(char *value, t_env *env);
+void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr);
+void first_one(t_tokens *list, t_cmd **tmp);
+
 
 #endif
 

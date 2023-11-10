@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/09 17:26:02 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/10 17:47:47 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,13 @@ int	writing_data(char *data)
 	return (fd);
 }
 
-char	*get_data_r(t_tokens **file, t_env **envr)
+char *get_data_(char *data, t_tokens **file, t_env **envr)
 {
 	int		i;
 	char	*line;
-	char	*data;
 
-	signal(SIGINT, handle_sigint);
-	data = my_malloc(1, 1, 1);
-	data[0] = '\0';
-	if (!data)
-		return (NULL);
+	i = 0;
+	
 	while(1)
 	{
 		i = 0;
@@ -61,6 +57,36 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 		data = ft_strjoin(data, line);
 	}
 	return (data);
+}
+char	*get_data_r(t_tokens **file, t_env **envr)
+{
+	char	*data;
+
+	data = my_malloc(1, 1, 1);
+	data[0] = '\0';
+	if (!data)
+		return (NULL);
+	signal(SIGINT, handle_sigint);
+	return (get_data_(data, file, envr));
+}
+int print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
+{
+	printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
+	if (fd == 0)
+		(*tmp)->fd->in = 0;
+	else
+		(*tmp)->fd->out = 1;
+	while ((*t_lst)->next->type != PIPE && (*t_lst)->next->type != NLINE)
+		(*t_lst) = (*t_lst)->next;
+	(*tmp)->cmd[0] = NULL;
+	g_status = 1;
+	return 0;
+}
+void rederect_append(t_cmd **tmp, t_tokens **t_lst)
+{
+	if ((*tmp)->fd->out != 1)
+		close((*tmp)->fd->out);
+	(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
 }
 
 int	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
@@ -86,22 +112,20 @@ int	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	}
 	else
-	{
-		if ((*tmp)->fd->out != 1)
-			close((*tmp)->fd->out);
-		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
-	}
+		rederect_append(tmp, t_lst);
 	if ((*tmp)->fd->out == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
-		(*tmp)->fd->out = 1;
-		while ((*t_lst)->next->type != PIPE && (*t_lst)->next->type != NLINE)
-			(*t_lst) = (*t_lst)->next;
-		(*tmp)->cmd [0]= NULL;
-		g_status = 1;
-		return 0;
-	}
+		return (print_erorr(tmp, 1, t_lst));
 	return (1);
+}
+
+void rederect_her( t_cmd **tmp, char **data, t_tokens **t_lst, t_env **envr)
+{
+	if ((*tmp)->fd->in != 0)
+		close((*tmp)->fd->in);
+	*data = get_data_r(&(*t_lst), envr);
+	if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
+		(*t_lst) = (*t_lst)->next;
+	(*tmp)->fd->in = writing_data(*data);
 }
 
 int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr)
@@ -126,24 +150,9 @@ int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **en
 		(*tmp)->fd->in = open((*t_lst)->tokens, O_RDONLY);
 	}
 	else
-	{
-		if ((*tmp)->fd->in != 0)
-			close((*tmp)->fd->in);
-		data = get_data_r(&(*t_lst), envr);
-		if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
-			(*t_lst) = (*t_lst)->next;
-		(*tmp)->fd->in = writing_data(data);
-	}
+		rederect_her(tmp, &data, t_lst, envr);
 	if ((*tmp)->fd->in == -1)
-	{
-		printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
-		(*tmp)->fd->in = 0;
-		while ((*t_lst)->next->type != PIPE && (*t_lst)->next->type != NLINE)
-			(*t_lst) = (*t_lst)->next;
-		(*tmp)->cmd[0] = NULL;
-		g_status = 1;
-		return 0;
-	}
+		return(print_erorr(tmp, 0, t_lst));
 	return (1);
 }
 

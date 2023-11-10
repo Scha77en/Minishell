@@ -1,5 +1,5 @@
 NAME = minishell
-SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
+SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/parcer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
 		execution/exec.c execution/get_next_line_m.c execution/get_next_line_utils.c execution/spliting.c\
 		execution/joining.c execution/path_search.c execution/command_search.c\
 		execution/redirection_managment.c execution/error_handling.c\

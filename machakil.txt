@@ -297,6 +297,7 @@ ls >"   e"
 
 ls > a>s>d>f>g>h
 
+$env   SHOULD BE DISPLAY NOTHING //
 
 
 
@@ -310,7 +311,11 @@ TO___DO
 
 
 SHOULD BE HANDLE THE HERDOC   
+                        
+
+herdoc with ^c should display a newline
 
 
-$env   SHOULD BE DISPLAY NOTHING 
+
+
 

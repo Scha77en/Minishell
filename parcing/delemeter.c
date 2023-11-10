@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 17:47:28 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/09 17:23:14 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:39:49 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int delemeter(char *b, int i, int o_type)
 		{
 			if (token(b[i - 1], b[i]) == HEREDOC)
 				return (DEL);
-			// if (token(b[i - 1], b[i]) == OUT || token(b[i - 1], b[i]) == APPEND)
-			// 	return (DEL);
 			i--;
 		}
 		return (o_type);
