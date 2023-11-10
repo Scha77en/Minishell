@@ -6,17 +6,15 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:47:38 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 16:15:29 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:12:24 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-
-void first_one(t_tokens *list, t_cmd **tmp)
+void	first_one(t_tokens *list, t_cmd **tmp)
 {
-	int		n_cmd;
+	int	n_cmd;
 
 	n_cmd = n_of_cmd(list);
 	(*tmp)->cmd = my_malloc((n_cmd + 1), sizeof(char *), 1);
@@ -25,9 +23,9 @@ void first_one(t_tokens *list, t_cmd **tmp)
 	(*tmp)->cmd[n_cmd] = NULL;
 }
 
-void final_list(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
+void	final_list(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 {
-	int		flg;
+	int	flg;
 
 	flg = -1;
 	while ((*list) && (*list)->type != NLINE && (*list)->type != PIPE)
@@ -51,7 +49,7 @@ void final_list(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 	}
 }
 
-void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
+void	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 {
 	t_cmd	*tmp;
 	int		i;

@@ -6,144 +6,114 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/20 19:00:17 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/10 18:13:00 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int find_exp(char *s)
+int len_of_filled(char *b, int s, int c, t_env **envr)
 {
-    int i;
+	int a;
 
-    i = 0;
-    while(s[i])
-    {
-        if(s[i] == '$')
-            return(i+1);
-
-        i++;
-    }
-    return(0);
+	a = 0;
+	while(b[s] && !is_token_(b[s], c))
+	{
+		if (b[s] == '$' && (b[s+1] == '?'
+		|| (b[s+1] && (ft_isdigit(b[s+1]) || !ft_isalnum(b[s+1])))))
+			status(b, &s, &a, c);
+		else if (b[s] == '$' && c != 39 && b[s+1])
+			expand(b, &s, &a, envr);
+		else if (b[s] != c)
+		{
+			s++;
+			a++;
+		}
+		else
+			s++;
+		if ((b[s] == ' ' || b[s-1] == ' ') && c == 0)
+			break ;
+	}
+	return (a);
 }
 
-char *compare(char *var, t_env *env)
+
+void fill_exit_s(char **filled, int *s, int *a, char *b)
 {
-    while(env)
-    {
-        if(ft_strncmp(var, env->var, ft_strlen(var)) == 0)
-        {
-            if(!env->var[ft_strlen(var)])
-                return (env->value);
-        }
-        env = env->next;       
-    }
-    return (NULL);
-}
-
-char *check_if_valid(char *str, int *i)
-{
-    int s;
-    int n;
-    char *var;
-
-    s = (*i);
-    n = 0;
-    while(str[(*i)] && (ft_isalpha(str[(*i)]) || str[(*i)] == '_'))
-    {
-        (*i)++;
-        n++;
-    }
-    var = my_malloc((n + 1), 1, 1);
-    if (!var)
-        return (NULL);
-    n = 0;
-    while(s+1 < *i)
-        var[n++] = str[s++];
-    if (s < *i)
-        var[n++] = str[s++];
-    var[n] = '\0';
-    return (var);
-}
-
-char *check_if_valid_herdoc(char *str, int *i)
-{
-    int s;
-    int n;
-    char *var;
-    s = (*i);
-    n = 0;
-    if (str[(*i)] == '?')
-    {
-        (*i)++;
-        n += ft_strlen(ft_itoa(g_status));
-    }
-    while(str[(*i)] && (ft_isalpha(str[(*i)]) || str[(*i)] == '_'))
-    {
-        (*i)++;
-        n++;
-    }
-    var = my_malloc((n +1), 1, 1);
-    if (!var)
-        return (NULL);
-    var[n] = '\0';
-    n = 0;
-    while(s < *i)
-    {
-        if (str[s] == '?')
-        {
-            var = ft_itoa(g_status);
-            s++;
-            n += ft_strlen(ft_itoa(g_status));
-            while(s < *i && str[s] != '?')
-                var[n++] = str[s++];
-        }//! n9dar nkhdam hnaya b recursion anred had l statemen function 
-        else
-            var[n++] = str[s++];
-    }
-    // if (s < *i)
-    //     var[n++] = str[s++];
-    var = getenv(var);
-    return (var);
-}
-
-void fill_expand(char *f, int *k, char *value)
-{
-    if (!ft_isdigit(value[0]))
-        value = getenv(value);
-    int i;
-
-    i = 0;
-    while(value[i])
-        f[(*k)++] = value[i++];
-}
-
-char *update_line(char *line, char *var, int l)
-{
-	char *r;
 	int i;
-	int k;
 
 	i = 0;
-	k = 0;
-	l = ft_strlen(var) + l;
-	r = my_malloc((l + 1), 1, 1);
-    if (!r)
-    {
-        return (NULL);
-    }
-	r[l] = '\0';
-	while(i < l)
+	if (!ft_isalnum(b[(*s) +1]) && b[(*s) + 1] != '?')
 	{
-		if (line[i] == '$')
-            while(var[k])
-			    r[i++] = var[k++];
-		else
-		{
-			r[i] = line[i];
-			i++;
-		}
+		(*filled)[(*a)++] = b[(*s)++];
+		return ;
 	}
-	return (ft_strjoin(r, "\n"));
+	else if (ft_isdigit(b[(*s) +1]))
+	{
+		*s += 2;
+		return ;
+	}
+	while(ft_itoa(g_status)[i])
+		(*filled)[(*a)++] = ft_itoa(g_status)[i++];
+	*s += 2;
 }
 
+void fill_expan(char *b, int *s, t_env **envr, int *a, char **filled)
+{
+	char *var;
+	int n;
+		
+	n = *s;
+	var = NULL;
+	while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
+		n++;
+	var = fill_var(b, n, *s);
+	*s += ft_strlen(var) + 1;
+	if (ft_getenv(envr, var))
+	{
+		var = ft_getenv(envr, var);
+		int i;
+		i = 0;
+		while(var[i])
+			(*filled)[(*a)++] = var[i++];
+	}
+	else if (!b[*s] && !(*filled)[0])
+		(*filled) = NULL;
+}
+char *ft_filled(char *b, int *i, int c, char *filled)
+{
+	if (b[*i] == c && c != 0)
+		(*i)++;
+	if (!filled)
+		return (NULL);
+	return (filled);
+}
+
+char	*fill_word(char *b, int *i, int c, t_env **envr)
+{
+	char	*filled;
+	int		a;
+	int		s;
+
+	if ((s = cheak(b, i, c)) == -1)
+		return (NULL);
+	a = len_of_filled(b, s, c, envr);
+	filled = my_malloc((a + 1), 1, 1);
+	if (!filled || (a = 0))
+		return (NULL);
+	filled[a] = '\0';
+	while(b[s] && !is_token_(b[s], c) && !(b[s] == ' ' && c == 0))
+	{
+		if (b[s] == '$' && b[s+1] == '?'  && c != 39 && b[s+1])
+			fill_exit_s(&filled, &s, &a, b);
+		else if ( b[s] == '$' && (ft_isdigit(b[s+1]) || !ft_isalnum(b[s+1])))
+			fill_exit_s(&filled, &s, &a, b);
+		else if (b[s] == '$' && c != 39 && b[s+1])
+			fill_expan(b, &s, envr, &a, &filled);//!5
+		else if (b[s] != c)
+			filled[a++] = b[s++];
+		else
+			s++;
+	}
+	return (*i = s, ft_filled(b, i, c, filled));
+}

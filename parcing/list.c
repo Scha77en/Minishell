@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/09 14:21:42 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/10 20:13:40 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ t_cmd	*ft_lstlast_p(t_cmd *lst)
 	return (lst);
 }
 
-
-
 void add_list(t_cmd **list, t_cmd *new)
 {
 	t_cmd *tmp;
@@ -55,14 +53,14 @@ void add_list(t_cmd **list, t_cmd *new)
 	}
 }
 
-int n_of_cmd(t_tokens *list)
+int	n_of_cmd(t_tokens *list)
 {
-	int r;
+	int	r;
 
 	r = 0;
-	while(list->type != PIPE && list->type != NLINE)
+	while (list->type != PIPE && list->type != NLINE)
 	{
-		if(is_word(list->type) && !is_word(list->next->type))
+		if (is_word(list->type) && !is_word(list->next->type))
 			r++;
 		else if (is_word(list->type) && is_word(list->next->type))
 		{
@@ -75,7 +73,7 @@ int n_of_cmd(t_tokens *list)
 		   list = list->next;
 			if (list->type == WHITESPACE)
 				list = list->next;
-			while(is_word(list->next->type))
+			while (is_word(list->next->type))
 				list = list->next;
 		}
 		list = list->next;
@@ -83,17 +81,17 @@ int n_of_cmd(t_tokens *list)
 	return (r);
 }
 
-int fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
+int	fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 {
-	char *word;
-	char *tmpe;
+	char	*word;
+	char	*tmpe;
 	int		v;
 
 	v = *i;
 	if (is_word((*list)->type))
 	{
 		word = (*list)->tokens;
-		while(is_word((*list)->next->type))
+		while (is_word((*list)->next->type))
 		{
 			tmpe = ft_strjoin(word, (*list)->next->tokens);
 			word = tmpe;
@@ -104,9 +102,9 @@ int fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 	}
 	if ((*list)->type == IN || (*list)->type == OUT
 		|| (*list)->type == HEREDOC || (*list)->type == APPEND)
-		{
-		if(!rederections(list, tmp, envr))
-			return (-1);
-		}
+	{
+	if (!rederections(list, tmp, envr))
+		return (-1);
+	}
 	return (1);
 }
