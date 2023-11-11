@@ -315,6 +315,7 @@ SHOULD BE HANDLE THE HERDOC
 
 herdoc with ^c should display a newline
 
+$?    synta
 
 
 

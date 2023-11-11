@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 18:13:00 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/11 19:04:16 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,25 @@ void fill_exit_s(char **filled, int *s, int *a, char *b)
 	*s += 2;
 }
 
-void fill_expan(char *b, int *s, t_env **envr, int *a, char **filled)
+void fill_expan(char *b,t_index *x, t_env **envr, char **filled)
 {
 	char *var;
 	int n;
-		
-	n = *s;
+	int i;
+	n = x->s;
+	i = 0;
 	var = NULL;
 	while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
 		n++;
-	var = fill_var(b, n, *s);
-	*s += ft_strlen(var) + 1;
+	var = fill_var(b, n, x->s);
+	x->s += ft_strlen(var) + 1;
 	if (ft_getenv(envr, var))
 	{
 		var = ft_getenv(envr, var);
-		int i;
-		i = 0;
 		while(var[i])
-			(*filled)[(*a)++] = var[i++];
+			(*filled)[x->a++] = var[i++];
 	}
-	else if (!b[*s] && !(*filled)[0])
+	else if (!b[x->s] && !(*filled)[0])
 		(*filled) = NULL;
 }
 char *ft_filled(char *b, int *i, int c, char *filled)
@@ -92,28 +91,28 @@ char *ft_filled(char *b, int *i, int c, char *filled)
 char	*fill_word(char *b, int *i, int c, t_env **envr)
 {
 	char	*filled;
-	int		a;
-	int		s;
+	t_index x;
 
-	if ((s = cheak(b, i, c)) == -1)
+	if ((x.s = cheak(b, i, c)) == -1)
 		return (NULL);
-	a = len_of_filled(b, s, c, envr);
-	filled = my_malloc((a + 1), 1, 1);
-	if (!filled || (a = 0))
+	x.a = len_of_filled(b, x.s, c, envr);
+	filled = my_malloc((x.a + 1), 1, 1);
+	if (!filled || (x.a = 0))
 		return (NULL);
-	filled[a] = '\0';
-	while(b[s] && !is_token_(b[s], c) && !(b[s] == ' ' && c == 0))
+	filled[x.a] = '\0';
+	while(b[x.s] && !is_token_(b[x.s], c) && !(b[x.s] == ' ' && c == 0))
 	{
-		if (b[s] == '$' && b[s+1] == '?'  && c != 39 && b[s+1])
-			fill_exit_s(&filled, &s, &a, b);
-		else if ( b[s] == '$' && (ft_isdigit(b[s+1]) || !ft_isalnum(b[s+1])))
-			fill_exit_s(&filled, &s, &a, b);
-		else if (b[s] == '$' && c != 39 && b[s+1])
-			fill_expan(b, &s, envr, &a, &filled);//!5
-		else if (b[s] != c)
-			filled[a++] = b[s++];
+		if (b[x.s] == '$' && b[x.s+1] == '?'  && c != 39 && b[x.s+1])
+			fill_exit_s(&filled, &x.s, &x.a, b);
+		else if ( b[x.s] == '$' && (ft_isdigit(b[x.s+1]) || !ft_isalnum(b[x.s+1])))
+			fill_exit_s(&filled, &x.s, &x.a, b);
+		else if (b[x.s] == '$' && c != 39 && b[x.s+1])
+			fill_expan(b, &x, envr, &filled);
+		else if (b[x.s] != c)
+			filled[x.a++] = b[x.s++];
 		else
-			s++;
+			x.s++;
 	}
-	return (*i = s, ft_filled(b, i, c, filled));
+	*i = x.s;
+	return (ft_filled(b, i, c, filled));
 }

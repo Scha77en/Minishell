@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/10 16:15:06 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:56:07 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,13 @@ typedef struct s_list
 	char			*content;
 	struct s_list	*next;
 }	t_list;
+
+typedef struct s_index
+{
+	int a;
+	int s;
+}t_index;
+
 
 // get_next_line() functions;
 
@@ -219,7 +226,6 @@ t_cmd	*ft_lstlast_p(t_cmd *lst);
 char		*get_next_line(int fd);
 // linkedlist of env
 void		ft_lstaddback(t_env **hed, t_env *new);
-t_env		*lstnew(void);
 int			white_space(char c);
 int			token(char fc, char sc);
 void		add_list(t_cmd **list, t_cmd *new);
@@ -231,15 +237,10 @@ int			fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr);
 int			n_of_cmd(t_tokens *list);
 int			rederections(t_tokens **list, t_cmd **tmp, t_env **envr);
 t_env		*envirement(char **env);
-int			find_exp(char *s);
-char		*check_if_valid(char *str, int *i);
-void		fill_expand(char *f, int *k, char *env);
 int			syntax_error(t_tokens *list);
 char		*fill_var(char *b, int n, int len);
-char		*update_line(char *line, char *var, int l);
 int			cheak(char *b, int *i, int c);
 void		add_node(t_tokens **list, t_tokens *new);
-char		*check_if_valid_herdoc(char *str, int *i);
 char		*fill_word(char *b, int *i, int c, t_env **envr);
 t_tokens	*create_node(void);
 t_tokens	*tokenizer(char *b, t_env **envr);
@@ -247,10 +248,19 @@ void 		minishell(t_env **envr, char *b);
 char		*fill_delemeter(char *b, int *i, int c);
 char		*fill__delemeter(char *b, int s, int a, int *i);
 int			is_token_(int c, int q);
-int delemeter(char *b, int i, int o_type);
-void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr);
-void first_one(t_tokens *list, t_cmd **tmp);
-
+int			delemeter(char *b, int i, int o_type);
+void		parcer(t_tokens *list, t_cmd **f_list, t_env **envr);
+void		first_one(t_tokens *list, t_cmd **tmp);
+void		expand(char *b, int *s, int *a, t_env **envr);
+void		status(char *b, int *s, int *a, int c);
+int			rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current);
+int			rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr);
+char		*get_data_r(t_tokens **file, t_env **envr);
+int			print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst);
+t_env		*lstnew();
+int			var_len(char *var);
+int			valu_len(char *s, int i);
+void	ft_lstaddback(t_env **hed, t_env *new);
 
 #endif
 

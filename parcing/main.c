@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 16:14:42 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:09:31 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	minishell(t_env **envr, char *b)
 		{
 			add_history(b);
 			if ((list = tokenizer(b, envr)) == NULL)
-				g_status = 258;
-			else if ((g_status = syntax_error(list)) == 258)
+				g_status = 2;
+			else if ((g_status = syntax_error(list)) == 2)
 				list = NULL;
 			f_list = NULL;
 			if (list)
