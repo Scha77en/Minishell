@@ -6,11 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/11/12 17:49:48 by aouhbi           ###   ########.fr       */
-=======
-/*   Updated: 2023/11/12 17:13:35 by abouregb         ###   ########.fr       */
->>>>>>> c7745eca7d6d6e5a8fd9e6a3904f418527e9e3c1
+/*   Updated: 2023/11/12 17:55:01 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +45,7 @@ int	open_fd(void)
 		perror("open");
 	return (fd);
 }
-char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
+char	*get_data_(t_cmd **tmp, t_tokens **file, t_env **envr)
 {
 	int		status;
 	int		i;

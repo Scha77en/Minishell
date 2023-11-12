@@ -275,15 +275,16 @@ void		status(char *b, int *s, int *a, int c);
 int			rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current);
 int			rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr);
 char		*get_data_r(t_tokens **file, t_env **envr);
+char		*get_data_(t_cmd **tmp, t_tokens **file, t_env **envr)
 int			print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst);
 t_env		*lstnew();
 int			var_len(char *var);
 int			valu_len(char *s, int i);
-char	*t_oken(char *str, int *i, char *b, int type);
-void	ft_lstaddback(t_env **hed, t_env *new);
-int	is_rederections(int type);
-void	fill_rederections(t_tokens **node, char *b, int *i);
-int	len_of_filled(char *b, int s, int c, t_env **envr);
+char		*t_oken(char *str, int *i, char *b, int type);
+void		ft_lstaddback(t_env **hed, t_env *new);
+int			is_rederections(int type);
+void		fill_rederections(t_tokens **node, char *b, int *i);
+int			len_of_filled(char *b, int s, int c, t_env **envr);
 #endif
 
 // it will be improved with time and what we would need;
