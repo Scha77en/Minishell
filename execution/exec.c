@@ -120,7 +120,35 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_exit((*tavern)), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "$?", 3) == 0)
 		return (ft_putnbr_fd(g_status, 2), 1);
+	else if (ft_strncmp((*tavern)->cmd[0], "./", 2) == 0)
+		return (subshell(tavern, env), 1);
 	return (0);
+}
+
+void	subshell(t_cmd **tavern, t_env **env)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+		execute_shell((*tavern), env);
+}
+
+void	execute_shell(t_cmd *tavern, t_env **env)
+{
+	char	**u_env;
+	int		ret;
+
+	u_env = update_env(env);
+	check_redirections(tavern);
+	if (access(tavern->cmd[0], F_OK) == 0)
+	{
+		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
+		if (ret == -1)
+			command_not_found(tavern);
+	}
+	else
+		exec_with_path(tavern, u_env);
 }
 
 void	execute_command(t_cmd *tavern, t_env **envr)
@@ -128,6 +156,7 @@ void	execute_command(t_cmd *tavern, t_env **envr)
 	char	**u_env;
 	int		ret;
 
+	// signal(SIGQUIT, handle_sigquit);
 	u_env = update_env(envr);
 	check_redirections(tavern);
 	if (ft_strncmp(tavern->cmd[0], "/", 1) == 0 && access(tavern->cmd[0], F_OK) == 0)

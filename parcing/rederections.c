@@ -33,34 +33,45 @@ int	writing_data(char *data)
 
 char	*get_data_r(t_tokens **file, t_env **envr)
 {
+	int		status;
 	int		i;
 	char	*line;
 	char	*data;
+	pid_t	pid;
 
-	signal(SIGINT, handle_sigint);
 	data = my_malloc(1, 1, 1);
 	data[0] = '\0';
 	if (!data)
 		return (NULL);
-	while(1)
+	pid = fork();
+	if (pid == 0)
 	{
-		i = 0;
-		if (g_status == 130)
-			break ;
-		write(1, "herdoc> ", 8);
-		line = get_next_line(0);
-		if (!ft_strlen(line))
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, herdoc_sigint);
+		while(1)
 		{
-			write(1, "\n", 1);
-			break ;
+			i = 0;
+			write(1, "herdoc> ", 8);
+			line = get_next_line(0);
+			if (!ft_strlen(line))
+			{
+				write(1, "\n", 1);
+				break ;
+			}
+			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
+				line = fill_word(line, &i, 0, envr);
+			if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
+			{
+				break ;
+			}
+			data = ft_strjoin(data, line);
 		}
-		if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
-			line = fill_word(line, &i, 0, envr);
-		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
-		{
-			break ;
-		}
-		data = ft_strjoin(data, line);
+	
+	}
+	while (wait(&status) > 0)
+	{
+		if (WIFEXITED(status))
+			g_status = WEXITSTATUS(status);
 	}
 	return (data);
 }
@@ -132,6 +143,8 @@ int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **en
 		if ((*tmp)->fd->in != 0)
 			close((*tmp)->fd->in);
 		data = get_data_r(&(*t_lst), envr);
+		if (g_status == 130)
+			return (0);
 		if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
 			(*t_lst) = (*t_lst)->next;
 		(*tmp)->fd->in = writing_data(data);

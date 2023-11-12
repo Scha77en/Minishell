@@ -27,7 +27,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
-
+# include <termios.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
 # include <fcntl.h>
@@ -102,8 +102,7 @@ int		ft_lstchr(t_list *head, char *s, int v);
 char	*allocate_to_line(t_list *stash);
 void	ft_lstclear(t_list *lst);
 char	*get_data(char **argv);
-
-
+void    ignore_sig(int sig);
 
 // garbage collector
 
@@ -137,8 +136,11 @@ void    hang_sigint(int sig);
 
 void	command_not_found(t_cmd *tavern);
 void	no_such_file(t_cmd *tavern);
+void	handle_sigquit_child(int sig);
 
 
+void	subshell(t_cmd **tavern, t_env **env);
+void	execute_shell(t_cmd *tavern, t_env **env);
 // builting
 
 int		if_builting(t_cmd **tavern, t_env **env, char **pwd);
@@ -176,6 +178,8 @@ void	set_env(t_env **env);
 void	sort_env(t_env *env);
 t_env   *copy_env_list(t_env **env);
 void    add_env(t_env **env, char *var, char *value, int v);
+void	env_env(t_cmd **tavern, t_env *current);
+void	too_much_bro(t_cmd *tavern, int v);
 
 // here_document
 

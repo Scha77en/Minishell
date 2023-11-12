@@ -40,12 +40,10 @@ $(NAME) : $(OBJ) includes/minishell.h libft/libft.a
 clean :
 	$(RM) $(OBJ)
 	make clean -C ./libft
-	@figlet cleaned
 
 fclean : clean
 	$(RM) $(NAME)
 	make fclean -C ./libft
-	@figlet "full cleaned"
 
 ${LIBFT} : ${SRC_LIB} libft/libft.h
 	make -C libft

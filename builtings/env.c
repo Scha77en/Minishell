@@ -29,17 +29,20 @@ void	ft_env(t_cmd **tavern, t_env **env, int v)
 		while (current)
 		{
 			if (current->id == 0)
-			{
-				ft_putstr_fd(current->var, (*tavern)->fd->out);
-				write((*tavern)->fd->out, "=", 1);
-				ft_putstr_fd(current->value, (*tavern)->fd->out);
-				write((*tavern)->fd->out, "\n", 1);
-			}
+				env_env(tavern, current);
 			current = current->next;
 		}
 	}
 	else if (v == 1)
 		export_env(tavern, env, current);
+}
+
+void	env_env(t_cmd **tavern, t_env *current)
+{
+	ft_putstr_fd(current->var, (*tavern)->fd->out);
+	write((*tavern)->fd->out, "=", 1);
+	ft_putstr_fd(current->value, (*tavern)->fd->out);
+	write((*tavern)->fd->out, "\n", 1);
 }
 
 void	export_env(t_cmd **tavern, t_env **env, t_env *current)

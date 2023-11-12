@@ -97,10 +97,7 @@ void fill_expan(char *b, int *s, t_env **envr, int *a, char **filled)
 			(*filled)[(*a)++] = var[i++];
 	}
 	else
-	{
-		free(*filled);
 		*filled = NULL;
-	}
 }
 
 char *fill_it(char *b, int s, int c, int a, int *i, t_env **envr)

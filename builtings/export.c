@@ -151,7 +151,7 @@ void	ft_add_env(t_env **env, char **split, int v)
 	t_env	*current;
 	t_env	*new;
 
-	if (!env)
+  			if (!env)
 	{
 		*env = ft_envnew(split[0], split[1]);
 		(*env)->id = v;

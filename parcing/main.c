@@ -58,6 +58,11 @@ void 	parcer(t_tokens *list, t_cmd **f_list, t_env **envr)
 			flg = fill(&list, &tmp, &i, envr);
 			if (flg == -1)
 			{
+				if (g_status == 130)
+				{
+					f_list = NULL;
+					return ;
+				}
 				while(list->type != PIPE && list->type != NLINE)
 					list = list->next;
 			}
@@ -82,7 +87,10 @@ void	minishell(t_env **envr, char *b)
 	pwd = ft_getenv(envr, "PWD");
 	while (1)
 	{
-		b = readline("minishell$ ");
+		if (g_status != 130)
+			b = readline("minishell$ ");
+		else
+			b = readline("");
 		if (b == NULL)
 		{
 			printf("exit\n");
