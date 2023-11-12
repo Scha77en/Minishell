@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 20:14:12 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 15:55:34 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,97 +30,35 @@ char	*fill_var(char *b, int n, int s)
 	return (var);
 }
 
-
-
-t_tokens	*create_node(void)
+void	word_(char *b, int *i, t_env **envr, t_tokens **node)
 {
-	t_tokens	*node;
-
-	node = my_malloc(sizeof(t_tokens), 1, 1);
-	if (!node)
-		return (NULL);
-	node->tokens = NULL;
-	node->next = NULL;
-	return (node);
-}
-
-void	add_node(t_tokens **list, t_tokens *new)
-{
-	t_tokens	*tmp;
-
-	if (!(*list))
-	{
-		*list = new;
-	}
+	(*node)->type = delemeter(b, *i, WORD);
+	if ((*node)->type == DEL)
+		(*node)->tokens = fill_delemeter(b, i, 0);
 	else
-	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
+		(*node)->tokens = fill_word(b, i, 0, envr);
+	(*node)->type = WORD;
 }
-char *t_oken(char *str, int *i, char *b, int type)
-{
-	int r;
 
-	r = *i;
-	while (white_space(b[r+1]))
-			r++;
-	r++;
-	if (type == HEREDOC || type == APPEND)
-		r++;
-	while(b[r] == ' ')
-		r++;
-	if (b[r] == 34 && b[*i] == 34)
-		*i = r+1;
-	else
-		*i = r;
-	return (ft_strdup(str));
-}
-void fill_rederections(t_tokens **node, char *b, int *i)
+t_tokens	*fill_node(t_tokens *node, char *b, int *i, t_env **envr)
 {
-	if (((*node)->type = token(b[*i], b[*i + 1])) == PIPE)
-		(*node)->tokens = t_oken("|", i, b, -1);
-	else if (((*node)->type = token(b[*i], b[*i + 1])) == HEREDOC)
-		(*node)->tokens = t_oken("<<", i, b, HEREDOC);
-	else if (((*node)->type = token(b[*i], b[*i + 1])) == APPEND)
-		(*node)->tokens = t_oken(">>", i, b, APPEND);
-	else if (((*node)->type = token(b[*i], b[*i + 1])) == OUT)
-		(*node)->tokens = t_oken(">", i, b, -1);
-	else if (((*node)->type = token(b[*i], b[*i + 1])) == IN)
-		(*node)->tokens = t_oken("<", i, b, -1);
-}
-int is_rederections(int type)
-{
-	if (type == PIPE || type == HEREDOC
-	|| type == APPEND || type == OUT || type == IN)
-		return (1);
-	return (0);
-}
-t_tokens *fill_node(t_tokens *node, char *b, int *i, t_env **envr)
-{
-	if ((node->type = token(b[*i], ' ')) == WHITESPACE)
+	node->type = token(b[*i], b[*i + 1]);
+	if (node->type == WHITESPACE)
 		node->tokens = t_oken(" ", i, b, -1);
-	else if (is_rederections((node->type = token(b[*i], b[*i + 1]))))
+	else if (is_rederections(node->type))
 		fill_rederections(&node, b, i);
-	else if ((node->type = token(b[*i], b[*i + 1])) == SQUAT)
+	else if (node->type == SQUAT)
 	{
-		if ((node->type = delemeter(b, *i, SQUAT)) == DEL)
+		node->type = delemeter(b, *i, SQUAT);
+		if (node->type == DEL)
 			node->tokens = fill_delemeter(b, i, 34);
 		else
 			node->tokens = fill_word(b, i, 34, envr);
 	}
-	else if ((node->type = token(b[*i], b[*i + 1])) == DQOUT)
+	else if (node->type == DQOUT)
 		node->tokens = fill_word(b, i, 39, envr);
 	else
-	{
-		if ((node->type = delemeter(b, *i, WORD)) == DEL)
-			node->tokens = fill_delemeter(b, i, 0);
-		else
-			node->tokens = fill_word(b, i, 0, envr);
-		node->type = WORD;
-	}
+		word_(b, i, envr, &node);
 	if (node->tokens == NULL)
 		return (NULL);
 	return (node);
@@ -138,7 +76,7 @@ t_tokens	*tokenizer(char *b, t_env **envr)
 	while (b[i])
 	{
 		node = create_node();
-		c_node =  fill_node(node, b, &i, envr);
+		c_node = fill_node(node, b, &i, envr);
 		if (!c_node)
 			return (NULL);
 		add_node(&list, c_node);
@@ -147,4 +85,29 @@ t_tokens	*tokenizer(char *b, t_env **envr)
 	node->type = NLINE;
 	add_node(&list, node);
 	return (list);
+}
+
+int	len_of_filled(char *b, int s, int c, t_env **envr)
+{
+	int	a;
+
+	a = 0;
+	while (b[s] && !is_token_(b[s], c))
+	{
+		if ((b[s] == '$' && b[s + 1])
+			&& (ft_isdigit(b[s + 1]) || !ft_isalnum(b[s + 1])))
+			status(b, &s, &a, c);
+		else if (b[s] == '$' && c != 39 && b[s + 1])
+			expand(b, &s, &a, envr);
+		else if (b[s] != c)
+		{
+			s++;
+			a++;
+		}
+		else
+			s++;
+		if (s && (b[s] == ' ' || b[s - 1] == ' ') && c == 0)
+			break ;
+	}
+	return (a);
 }

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:47:38 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 20:12:24 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 12:57:12 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	final_list(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 		flg = fill(&(*list), tmp, i, envr);
 		if (flg == -1)
 		{
-			while((*list)->type != PIPE && (*list)->type != NLINE)
+			while ((*list)->type != PIPE && (*list)->type != NLINE)
 				(*list) = (*list)->next;
 		}
 		else if (!is_token((*list)->type))
-				(*list) = (*list)->next;
+			(*list) = (*list)->next;
 	}
 	if ((*list) && (*list)->type == PIPE)
 	{

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/10/31 17:12:45 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 14:19:43 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	execute_command(t_cmd *tavern, t_env **envr)
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
 		if (i == -1)
-			path[++i] = '\0';
+			path[++i] = NULL;
 		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
 		{
@@ -200,7 +200,7 @@ void	single_cmd_exec(t_cmd *tavern, t_env **envr)
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
 		i = command_search(path);
 		if (i == -1)
-			path[++i] = '\0';
+			path[++i] = NULL;
 		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
 		{

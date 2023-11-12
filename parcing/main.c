@@ -6,13 +6,42 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/11 17:09:31 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:03:06 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		g_status;
+
+void	check_fd(t_cmd **f_list)
+{
+	while ((*f_list))
+	{
+		if ((*f_list) && (*f_list)->fd->out != 1)
+		{
+			close((*f_list)->fd->out);
+			(*f_list)->fd->out = 1;
+		}
+		if ((*f_list) && (*f_list)->fd->in != 0)
+		{
+			close((*f_list)->fd->in);
+			(*f_list)->fd->in = 0;
+		}
+		(*f_list) = (*f_list)->next;
+	}
+}
+
+t_cmd	*tokenizer_(char *b, t_env **envr, t_tokens	**list)
+{
+	add_history(b);
+	*list = tokenizer(b, envr);
+	if (*list == NULL)
+		g_status = 258;
+	else if (syntax_error(*list) == 1)
+		*list = NULL;
+	return (NULL);
+}
 
 void	minishell(t_env **envr, char *b)
 {
@@ -27,42 +56,23 @@ void	minishell(t_env **envr, char *b)
 		if (b == NULL)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (ft_strlen(b))
 		{
-			add_history(b);
-			if ((list = tokenizer(b, envr)) == NULL)
-				g_status = 2;
-			else if ((g_status = syntax_error(list)) == 2)
-				list = NULL;
+			tokenizer_(b, envr, &list);
 			f_list = NULL;
-			if (list)
-				parcer(list, &f_list, envr);
-			
+			parcer(list, &f_list, envr);
 			if (f_list)
 				pwd = execute_cmds(&f_list, envr, pwd);
-			while (f_list)
-			{
-				if (f_list && f_list->fd->out != 1)
-				{
-					close(f_list->fd->out);
-					f_list->fd->out = 1;
-				}
-				if(f_list && f_list->fd->in != 0)
-				{
-					close(f_list->fd->in);
-					f_list->fd->in = 0;
-				}
-				f_list = f_list->next;
-			}
+			check_fd(&f_list);
 		}
 		free(b);
 	}
 	my_malloc(0, 0, 0);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_env		*envr;
 	char		*b;
@@ -73,11 +83,9 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	g_status = 0;
 	if (!env)
-        set_env(&envr);
-    else
-	{
-        envr = envirement(env);
-	}
+		set_env(&envr);
+	else
+		envr = envirement(env);
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b);

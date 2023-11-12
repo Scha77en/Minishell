@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 20:15:09 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:13:35 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,28 @@ char	*get_data_(char *data, t_tokens **file, t_env **envr)
 {
 	int		i;
 	char	*line;
+	char	*file_;
 
 	i = 0;
-	while(1)
+	while (1)
 	{
 		i = 0;
 		if (g_status == 130)
 			break ;
-		write(1, "herdoc> ", 8);
-		line = get_next_line(0);
-		if (!ft_strlen(line))
+		line = readline("> ");
+		file_ = ft_strjoin((*file)->tokens, "\n");
+		if (ft_strlen(line) && !ft_strncmp(line, file_, ft_strlen(file_) - 1))
 		{
-			write(1, "\n", 1);
-			break ;
+			if (ft_strlen(file_) >= ft_strlen(line))
+				break ;
 		}
-		if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
-			break ;
 		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
 			line = fill_word(line, &i, 0, envr);
-		data = ft_strjoin(data, line);
+		data = ft_strjoin(data, ft_strjoin(line, "\n"));
 	}
 	return (data);
 }
+
 char	*get_data_r(t_tokens **file, t_env **envr)
 {
 	char	*data;
@@ -68,7 +68,8 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	signal(SIGINT, handle_sigint);
 	return (get_data_(data, file, envr));
 }
-int print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
+
+int	print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
 {
 	printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
 	if (fd == 0)
@@ -79,12 +80,12 @@ int print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
 		(*t_lst) = (*t_lst)->next;
 	(*tmp)->cmd[0] = NULL;
 	g_status = 1;
-	return 0;
+	return (0);
 }
 
 int	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)
 {
-	int r;
+	int			r;
 	t_tokens	*t_lst;
 	t_tokens	*current;
 
