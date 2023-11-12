@@ -6,7 +6,11 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/12 17:52:22 by aouhbi           ###   ########.fr       */
+=======
+/*   Updated: 2023/11/12 15:28:56 by abouregb         ###   ########.fr       */
+>>>>>>> c7745eca7d6d6e5a8fd9e6a3904f418527e9e3c1
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +71,17 @@ typedef struct s_cmd
 
 typedef enum e_token
 {
-	WHITESPACE, // " "
-	HEREDOC,  // <<
-	SQUAT,      // '
-	DQOUT,       // "
-	OUT,      // >
-	APPEND,   // >>
-	IN,       // <
-	WORD,      // string
-	PIPE,     // |
+	WHITESPACE,
+	HEREDOC,
+	SQUAT,
+	DQOUT,
+	OUT,
+	APPEND,
+	IN,
+	WORD,
+	PIPE,
 	NLINE,
-	SLH,    // |
+	SLH,
 	DEL ,
 }	t_token;
 
@@ -275,8 +279,11 @@ int			print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst);
 t_env		*lstnew();
 int			var_len(char *var);
 int			valu_len(char *s, int i);
+char	*t_oken(char *str, int *i, char *b, int type);
 void	ft_lstaddback(t_env **hed, t_env *new);
-
+int	is_rederections(int type);
+void	fill_rederections(t_tokens **node, char *b, int *i);
+int	len_of_filled(char *b, int s, int c, t_env **envr);
 #endif
 
 // it will be improved with time and what we would need;

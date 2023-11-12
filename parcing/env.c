@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 20:26:20 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 20:14:34 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 12:08:11 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ char	*_var(char **env, int n, int *s)
 	*s = i + 1;
 	return (var);
 }
-char *_value(char **env, int n, int *s)
+
+char	*_value(char **env, int n, int *s)
 {
-	int i;
-	char *value;
+	int		i;
+	char	*value;
 
 	i = -1;
 	value = my_malloc((valu_len(env[n], *s) + 1), sizeof(char), 1);
@@ -58,7 +59,7 @@ t_env	*envirement(char **env)
 			head = nv;
 		else
 			nv = nv->next;
-		nv->var = _var(env, n, &s);  
+		nv->var = _var(env, n, &s);
 		nv->value = _value(env, n, &s);
 		n++;
 	}

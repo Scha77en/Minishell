@@ -6,17 +6,18 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:56:26 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 20:01:36 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 12:58:18 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*lstnew()
+t_env	*lstnew(void)
 {
 	t_env	*link;
 
-	if (!(link = my_malloc(sizeof(t_env), 1, 1)))
+	link = my_malloc(sizeof(t_env), 1, 1);
+	if (!link)
 		return (NULL);
 	link->next = NULL;
 	link->value = NULL;

@@ -12,7 +12,11 @@
 
 NAME = minishell
 <<<<<<< HEAD
+<<<<<<< HEAD
 SRC = parcing/main.c parcing/tools.c parcing/rederect_herdc.c parcing/delemeter.c parcing/tokenizer.c parcing/enver.c parcing/parcer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
+=======
+SRC = parcing/main.c parcing/tools.c parcing/rederect_herdc.c parcing/delemeter.c parcing/more_rederections.c parcing/tokenizer.c parcing/enver.c parcing/parcer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
+>>>>>>> c7745eca7d6d6e5a8fd9e6a3904f418527e9e3c1
 		execution/exec.c execution/get_next_line_m.c execution/get_next_line_utils.c execution/spliting.c\
 =======
 SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \

@@ -6,17 +6,26 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:26:34 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/11 14:48:33 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:29:18 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void rederect_append(t_cmd **tmp, t_tokens **t_lst)
+void	rederect_append(t_cmd **tmp, t_tokens **t_lst)
 {
 	if ((*tmp)->fd->out != 1)
 		close((*tmp)->fd->out);
-	(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_APPEND, 0777);
+	(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY \
+	| O_APPEND, 0777);
+}
+
+void	rederect_out(t_cmd **tmp, t_tokens **t_lst)
+{
+	if ((*tmp)->fd->out != 1)
+		close((*tmp)->fd->out);
+	(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT \
+		| O_WRONLY | O_TRUNC, 0777);
 }
 
 int	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
@@ -36,11 +45,7 @@ int	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	}
 	(*t_lst)->tokens = word;
 	if (current->type == OUT)
-	{
-		if ((*tmp)->fd->out != 1)
-			close((*tmp)->fd->out);
-		(*tmp)->fd->out = open((*t_lst)->tokens, O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	}
+		rederect_out(tmp, t_lst);
 	else
 		rederect_append(tmp, t_lst);
 	if ((*tmp)->fd->out == -1)
@@ -48,7 +53,7 @@ int	rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current)
 	return (1);
 }
 
-void rederect_her( t_cmd **tmp, char **data, t_tokens **t_lst, t_env **envr)
+void	rederect_her( t_cmd **tmp, char **data, t_tokens **t_lst, t_env **envr)
 {
 	if ((*tmp)->fd->in != 0)
 		close((*tmp)->fd->in);
@@ -58,7 +63,8 @@ void rederect_her( t_cmd **tmp, char **data, t_tokens **t_lst, t_env **envr)
 	(*tmp)->fd->in = writing_data(*data);
 }
 
-int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr)
+int	rederect_in_her(t_tokens **t_lst, t_cmd **tmp,
+t_tokens *current, t_env **envr)
 {
 	char		*word;
 	char		*data;
@@ -82,6 +88,6 @@ int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **en
 	else
 		rederect_her(tmp, &data, t_lst, envr);
 	if ((*tmp)->fd->in == -1)
-		return(print_erorr(tmp, 0, t_lst));
+		return (print_erorr(tmp, 0, t_lst));
 	return (1);
 }

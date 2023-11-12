@@ -6,14 +6,13 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 17:47:28 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 15:39:49 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:20:52 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-
-int delemeter(char *b, int i, int o_type)
+int	delemeter(char *b, int i, int o_type)
 {
 	if (i >= 2)
 	{
@@ -28,48 +27,51 @@ int delemeter(char *b, int i, int o_type)
 	return (o_type);
 }
 
-int len_of_delemeter(char *b, int s, int c, int a)
+int	len_of_delemeter(char *b, int s, int c, int a)
 {
-    while(b[s] && !is_token_(b[s], c))
-    {
-        if (b[s] != c)
-	    {
-	    	s++;
-	    	a++;
-	    }
-        else
-            s++;
-    }
-    return (a);
+	while (b[s] && !is_token_(b[s], c))
+	{
+		if (b[s] != c)
+		{
+			s++;
+			a++;
+		}
+		else
+			s++;
+	}
+	return (a);
 }
-char *fill__delemeter(char *b, int s, int a, int *i)
+
+char	*fill__delemeter(char *b, int s, int a, int *i)
 {
-    char *filled;
+	char	*filled;
 
 	filled = my_malloc((a + 1), 1, 1);
 	if (!filled)
 		return (NULL);
 	filled[a] = '\0';
 	a = 0;
-	while(b[s] && !is_token_(b[s], 34))
+	while (b[s] && !is_token_(b[s], 34))
 	{
-       if (b[s] != 34 && b[s] != 39)
+		if (b[s] != 34 && b[s] != 39)
 			filled[a++] = b[s++];
 		else
 			s++; 
-    }
+	}
 	if (b[s] == 34 || b[s] == 39)
-    	s++;
+		s++;
 	*i = s;
 	if (!filled)
 		return (NULL);
 	return (filled);
 }
-char *fill_delemeter(char *b,  int *i, int c)
+
+char	*fill_delemeter(char *b, int *i, int c)
 {
 	char	*f;
 	int		a;
 	int		s;
+
 	a = 0;
 	s = (*i);
 	if (cheak(b, i, c) == 1)

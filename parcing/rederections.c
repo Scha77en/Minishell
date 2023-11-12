@@ -6,7 +6,11 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/12 17:49:48 by aouhbi           ###   ########.fr       */
+=======
+/*   Updated: 2023/11/12 17:13:35 by abouregb         ###   ########.fr       */
+>>>>>>> c7745eca7d6d6e5a8fd9e6a3904f418527e9e3c1
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,34 +54,24 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 	int		status;
 	int		i;
 	char	*line;
-	char	*data;
-	int		fd;
-	pid_t	pid;
+	char	*file_;
 
-	fd = open_fd();
-	signal(SIGINT, SIG_IGN);
-	data = my_malloc(1, 1, 1);
-	data[0] = '\0';
-	if (!data)
-		return (NULL);
-	pid = fork();
-	if (pid == 0)
+	i = 0;
+	while (1)
 	{
-		signal(SIGINT, herdoc_sigint);
-		while (1)
+		i = 0;
+		if (g_status == 130)
+			break ;
+		line = readline("> ");
+		file_ = ft_strjoin((*file)->tokens, "\n");
+		if (ft_strlen(line) && !ft_strncmp(line, file_, ft_strlen(file_) - 1))
 		{
-			i = 0;
-			line = readline("> ");
-			if (ft_strlen(line) && ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
+			if (ft_strlen(file_) >= ft_strlen(line))
 				break ;
-			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
-				line = fill_word(line, &i, 0, envr);
-			data = ft_strjoin(data, ft_strjoin(line, "\n"));
-			if (line)
-				free(line);
 		}
-		writing_data(data, fd, 1);
-		exit(0);
+		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
+			line = fill_word(line, &i, 0, envr);
+		data = ft_strjoin(data, ft_strjoin(line, "\n"));
 	}
 	while (wait(&status) > 0)
 	{
@@ -88,6 +82,7 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 	signal(SIGINT, handle_sigint);
 	return (data);
 }
+
 char	*get_data_r(t_tokens **file, t_env **envr)
 {
 	char	*data;
@@ -99,7 +94,8 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	signal(SIGINT, handle_sigint);
 	return (get_data_(data, file, envr));
 }
-int print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
+
+int	print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
 {
 	printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
 	if (fd == 0)
@@ -110,12 +106,12 @@ int print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
 		(*t_lst) = (*t_lst)->next;
 	(*tmp)->cmd[0] = NULL;
 	g_status = 1;
-	return 0;
+	return (0);
 }
 
 int	rederections(t_tokens **list, t_cmd **tmp, t_env **envr)
 {
-	int r;
+	int			r;
 	t_tokens	*t_lst;
 	t_tokens	*current;
 

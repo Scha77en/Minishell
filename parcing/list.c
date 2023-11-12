@@ -6,15 +6,15 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 13:11:44 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/10 20:13:40 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:22:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_cmd *create_list(void)
+t_cmd	*create_list(void)
 {
-	t_cmd *node;
+	t_cmd	*node;
 
 	node = my_malloc(sizeof(t_cmd), 1, 1);
 	if (!node)
@@ -38,9 +38,10 @@ t_cmd	*ft_lstlast_p(t_cmd *lst)
 	return (lst);
 }
 
-void add_list(t_cmd **list, t_cmd *new)
+void	add_list(t_cmd **list, t_cmd *new)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
+
 	tmp = NULL;
 	if (!(*list))
 		*list = new;
@@ -64,13 +65,14 @@ int	n_of_cmd(t_tokens *list)
 			r++;
 		else if (is_word(list->type) && is_word(list->next->type))
 		{
-			while(is_word(list->next->type))
+			while (is_word(list->next->type))
 				list = list->next;
 			r++;
 		}
-		else if (list->type == IN || list->type == OUT || list->type == HEREDOC || list->type == APPEND)
+		else if (list->type == IN || list->type == OUT || list->type == HEREDOC
+			|| list->type == APPEND)
 		{
-		   list = list->next;
+			list = list->next;
 			if (list->type == WHITESPACE)
 				list = list->next;
 			while (is_word(list->next->type))
@@ -102,9 +104,7 @@ int	fill(t_tokens **list, t_cmd **tmp, int *i, t_env **envr)
 	}
 	if ((*list)->type == IN || (*list)->type == OUT
 		|| (*list)->type == HEREDOC || (*list)->type == APPEND)
-	{
-	if (!rederections(list, tmp, envr))
-		return (-1);
-	}
+		if (!rederections(list, tmp, envr))
+			return (-1);
 	return (1);
 }

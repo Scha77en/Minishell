@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:55:29 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 17:42:55 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 17:53:16 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,20 @@ int	white_space(char c)
 		return (1);
 	return (0);
 }
-int is_token_(int c, int q)
+
+int	is_token_(int c, int q)
 {
 	if (q != 0 && c != q)
 		return (0);
-	if (c == '<' || c == '>'  || c == '|' || c == 34 || c == 39)
+	if (c == '<' || c == '>' || c == '|' || c == 34 || c == 39)
 		return (1);
-	return(0);
+	return (0);
 }
-void expand(char *b, int *s, int *a, t_env **envr)
+
+void	expand(char *b, int *s, int *a, t_env **envr)
 {
-	int n;
-	char *var;
+	int		n;
+	char	*var;
 
 	n = *s;
 	while (b[n +1] && (ft_isalpha(b[n +1]) || b[n +1] == '_'))
@@ -43,19 +45,19 @@ void expand(char *b, int *s, int *a, t_env **envr)
 		*a += ft_strlen(var);
 	}
 }
-void status(char *b, int *s, int *a, int c)
+
+void	status(char *b, int *s, int *a, int c)
 {
-	if (b[(*s)] == '$' && b[(*s)+1] == '?'  && c != 39  && b[(*s)+1])
+	if (b[(*s)] == '$' && b[(*s) + 1] == '?' && c != 39 && b[(*s) + 1])
 	{
 		*a += ft_strlen(ft_itoa(g_status));
 		*s += 2;
 	}
-	else if ( b[(*s)] == '$' && ft_isdigit(b[(*s)+1]))
+	else if (b[(*s)] == '$' && ft_isdigit(b[(*s) + 1]))
 		*s += 2;
-	else if (!ft_isalnum(b[(*s)+1]))
+	else if (!ft_isalnum(b[(*s) + 1]))
 	{
 		*s += 2;
 		*a += 2;
 	}
 }
-
