@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 09:17:03 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/27 02:31:37 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:08:37 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	export_env(t_cmd **tavern, t_env **env, t_env *current)
 	write((*tavern)->fd->out, "\n", 1);
 }
 
-
 void	set_env(t_env **env)
 {
 	char	cwd[PATH_MAX];
@@ -78,62 +77,27 @@ void	set_env(t_env **env)
 	getcwd(cwd, sizeof(cwd));
 	env = NULL;
 	ft_lstaddback(env, ft_envnew(ft_strdup("PWD"), cwd));
-	ft_lstaddback(env, ft_envnew(ft_strdup("PATH"), ft_strdup("/home/Schatten/.\
-	brew/bin:/home/Schatten/.brew/bin:/usr/local/sbin:/\
-	usr/local/bin:/usr/sbin:/usr/bin:/sbin:\
-	/bin:/usr/local/games:/usr/games")));
+	ft_lstaddback(env, ft_envnew(ft_strdup("PATH"), ft_strdup("/Users/aouhbi/.brew/bin:\
+		/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:\
+		/Library/Apple/usr/bin:/Users/aouhbi/.brew/bin\
+		USER_ZDOTDIR=/Users/aouhbi")));
 	ft_lstaddback(env, ft_envnew(ft_strdup("SHLVL"), ft_strdup("1")));
 	ft_lstaddback(env, ft_envnew(ft_strdup("_"), ft_strdup("/usr/bin/env")));
 }
 
-void swap(t_env *a, t_env *b)
+void	swap(t_env *a, t_env *b)
 {
-    char *temp_var = a->var;
-    char *temp_value = a->value;
-    int temp_id = a->id;
+	char	*temp_var;
+	char	*temp_value;
+	int		temp_id;
 
-    a->var = b->var;
-    a->value = b->value;
-    a->id = b->id;
-
-    b->var = temp_var;
-    b->value = temp_value;
-    b->id = temp_id;
-}
-
-char	**update_env(t_env **envr)
-{
-	char	**current;
-
-	current = env_to_char(envr);
-	return (current);
-}
-
-
-char	**env_to_char(t_env **env)
-{
-	t_env	*current;
-	char	**u_env;
-	int		i;
-
-	current = *env;
-	i = 0;
-	while (current)
-	{
-		current = current->next;
-		i++;
-	}
-	u_env = my_malloc((i + 1), sizeof(char *), 1);
-	current = *env;
-	i = 0;
-	while (current)
-	{
-		if (!ft_strncmp(current->var, "SHLVL", 5))
-			current->value = ft_itoa(ft_atoi(current->value) + 1);
-		u_env[i] = ft_strjoin_b(current->var, current->value, 2);
-		current = current->next;
-		i++;
-	}
-	u_env[i] = NULL;
-	return (u_env);
+	temp_var = a->var;
+	temp_value = a->value;
+	temp_id = a->id;
+	a->var = b->var;
+	a->value = b->value;
+	a->id = b->id;
+	b->var = temp_var;
+	b->value = temp_value;
+	b->id = temp_id;
 }

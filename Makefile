@@ -1,10 +1,22 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/12 10:25:23 by aouhbi            #+#    #+#              #
+#    Updated: 2023/11/12 12:08:07 by aouhbi           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
-		execution/exec.c execution/get_next_line_m.c execution/get_next_line_utils.c execution/spliting.c\
+		execution/exec.c execution/exec_extra.c execution/spliting.c\
 		execution/joining.c execution/path_search.c execution/command_search.c\
 		execution/redirection_managment.c execution/error_handling.c\
-		builtings/cd.c builtings/pwd.c builtings/unset.c builtings/env.c builtings/echo.c builtings/export_utils.c\
-		builtings/export.c builtings/exit.c builtings/export_sort_utils.c execution/signals.c\
+		builtings/cd.c builtings/cd_utils.c builtings/pwd.c builtings/unset.c builtings/env.c builtings/env_utils.c builtings/echo.c builtings/export_utils.c\
+		builtings/export.c builtings/exit.c builtings/export_sort_utils.c builtings/export_utils_two.c execution/signals.c\
 
 SRC_LIB = libft/ft_atoi.c libft/ft_itoa.c libft/ft_putnbr_fd.c libft/ft_strlcpy.c libft/ft_tolower.c\
 			libft/ft_bzero.c libft/ft_memchr.c libft/ft_putstr_fd.c libft/ft_strlen.c libft/ft_toupper.c\
@@ -21,13 +33,12 @@ LIBFT = ./libft/libft.a
 
 CC = gcc
 
-FLGS = -Wall -Wextra -Werror -I${READLINE}/include -fsanitize=address -g
+FLGS = -Wall -Wextra -Werror -I${READLINE}/include -g -fsanitize=address
 
 RM = rm -rf
 
 OBJ = $(SRC:%.c=%.o)
 
-	
 all : ${LIBFT} $(NAME)
 
 %.o : %.c
@@ -35,7 +46,6 @@ all : ${LIBFT} $(NAME)
 
 $(NAME) : $(OBJ) includes/minishell.h libft/libft.a
 	$(CC) ${FLGS} $(OBJ) -o $@ -L${READLINE}/lib -L./libft -lft -lreadline -lhistory
-	@figlet minishell
 
 clean :
 	$(RM) $(OBJ)

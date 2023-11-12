@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/10/31 17:12:45 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 15:25:35 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 	pid_t	pid1;
 	int		status;
 
+	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, sigint_exec);
 	pid1 = -1;
 	status = 0;
 	if ((*tavern)->next == NULL)
 	{
 		if (if_builting(tavern, envr, &pwd))
-				;
+			;
 		else
 		{
 			pid1 = fork();
@@ -32,11 +34,13 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 	}
 	else
 		multiple_cmds(tavern, envr, &pwd, pid1);
-	while(wait(&status) > 0)
+	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
 			g_status = WEXITSTATUS(status);
 	}
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	return (pwd);
 }
 
@@ -69,7 +73,7 @@ void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
 void	pipes_closing(t_cmd **tavern, int pipfd[2], int *for_next)
 {
 	if (*for_next)
-			close(*for_next);
+		close(*for_next);
 	if ((*tavern)->next)
 	{
 		close(pipfd[1]);
@@ -124,91 +128,6 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (subshell(tavern, env), 1);
 	return (0);
 }
-
-void	subshell(t_cmd **tavern, t_env **env)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-		execute_shell((*tavern), env);
-}
-
-void	execute_shell(t_cmd *tavern, t_env **env)
-{
-	char	**u_env;
-	int		ret;
-
-	u_env = update_env(env);
-	check_redirections(tavern);
-	if (access(tavern->cmd[0], F_OK) == 0)
-	{
-		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
-		if (ret == -1)
-			command_not_found(tavern);
-	}
-	else
-		exec_with_path(tavern, u_env);
-}
-
-void	execute_command(t_cmd *tavern, t_env **envr)
-{
-	char	**u_env;
-	int		ret;
-
-	// signal(SIGQUIT, handle_sigquit);
-	u_env = update_env(envr);
-	check_redirections(tavern);
-	if (ft_strncmp(tavern->cmd[0], "/", 1) == 0 && access(tavern->cmd[0], F_OK) == 0)
-	{
-		ret = execve(tavern->cmd[0], tavern->cmd, u_env);
-		if (ret == -1)
-			command_not_found(tavern);
-	}
-	else
-		exec_with_path(tavern, u_env);
-}
-
-void	exec_with_path(t_cmd *tavern, char **u_env)
-{
-	char	**path;
-	int		ret;
-	int		i;
-
-	path = find_path(u_env);
-	if (path == NULL)
-		command_not_found(tavern);
-	ret = 0;
-	i = -1;
-	while (path && path[++i])
-		path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
-	i = command_search(path);
-	if (i == -1)
-		path[++i] = '\0';
-	ret = path_backslash(tavern->cmd[0]);
-	if (ret == -1)
-		no_such_file(tavern);
-	ret = execve(path[i], tavern->cmd, u_env);
-	if (ret == -1)
-		command_not_found(tavern);
-}
-
-int	path_backslash(char *path)
-{
-	int		i;
-
-	i = 0;
-	if (!path)
-		return (-1);
-	while (path[i])
-	{
-		if (path[i] == '/')
-			return (-1);
-		i++;
-	}
-	return (0);
-}
-
 
 // fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e; !--DONE--! => solved but created a new problem, cat | cat | ls; --DONE--
 

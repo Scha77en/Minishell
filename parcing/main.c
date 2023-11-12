@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/05 15:34:15 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 12:12:50 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int		g_status;
 
 void	print_list(t_tokens *list)
 {
-
 	while (list)
 	{
 		while (list)
@@ -87,14 +86,14 @@ void	minishell(t_env **envr, char *b)
 	pwd = ft_getenv(envr, "PWD");
 	while (1)
 	{
-		if (g_status != 130)
-			b = readline("minishell$ ");
-		else
-			b = readline("");
+		// if (g_status != 130)
+		// 	b = readline("minishell$ ");
+		// else
+		b = readline("minishell$ ");
 		if (b == NULL)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (ft_strlen(b))
 		{

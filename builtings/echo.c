@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 02:21:12 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/28 17:20:59 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:06:14 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	echo_builted(t_cmd *tavern)
 	n = 0;
 	while (tavern->cmd[i] && tavern->cmd[i][0] == '-' && tavern->cmd[i][1])
 	{
-		if (ft_strncmp_echo(tavern->cmd[i], "n", ft_strlen(tavern->cmd[i])) == 0)
+		if (ft_strncmp_echo(tavern->cmd[i], "n",
+				ft_strlen(tavern->cmd[i])) == 0)
 		{
 			n = 1;
 			i++;
@@ -43,7 +44,7 @@ void	echo_builted(t_cmd *tavern)
 int	ft_strncmp_echo(char *s1, char *s2, int n)
 {
 	int	i;
-	int v;
+	int	v;
 
 	i = 1;
 	v = 0;

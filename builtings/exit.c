@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 04:03:26 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:09:41 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_exit(t_cmd *tavern)
 	else
 		too_much_bro(tavern, 1);
 }
+
 void	too_much_bro(t_cmd *tavern, int v)
 {
 	if (v == 1)

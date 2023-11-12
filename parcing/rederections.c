@@ -3,16 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   rederections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/10/31 19:45:41 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:30:00 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	writing_data(char *data)
+int	writing_data(char *data, int fd, int v)
+{
+	char	*info;
+
+	info = "....";
+	if (v == 1)
+	{
+		write (fd, data, ft_strlen(data));
+		close(fd);
+		return (0);
+	}
+	else
+	{
+		fd = open(info, O_RDONLY, 0777);
+		if (fd == -1)
+			perror("open");
+		if (unlink(info) == -1)
+			perror("Error deleting file");
+		return (fd);	
+	}
+}
+
+int	open_fd(void)
 {
 	int		fd;
 	char	*info;
@@ -21,24 +43,19 @@ int	writing_data(char *data)
 	fd = open(info, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (fd == -1)
 		perror("open");
-	write (fd, data, ft_strlen(data));
-	close(fd);
-	fd = open(info, O_RDONLY, 0777);
-	if (fd == -1)
-		perror("open");
-	if (unlink(info) == -1)
-		perror("Error deleting file");
 	return (fd);
 }
-
-char	*get_data_r(t_tokens **file, t_env **envr)
+char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 {
 	int		status;
 	int		i;
 	char	*line;
 	char	*data;
+	int		fd;
 	pid_t	pid;
 
+	fd = open_fd();
+	signal(SIGINT, SIG_IGN);
 	data = my_malloc(1, 1, 1);
 	data[0] = '\0';
 	if (!data)
@@ -46,33 +63,29 @@ char	*get_data_r(t_tokens **file, t_env **envr)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, herdoc_sigint);
-		while(1)
+		while (1)
 		{
 			i = 0;
-			write(1, "herdoc> ", 8);
-			line = get_next_line(0);
-			if (!ft_strlen(line))
-			{
-				write(1, "\n", 1);
+			line = readline("> ");
+			if (ft_strlen(line) && ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
 				break ;
-			}
 			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
 				line = fill_word(line, &i, 0, envr);
-			if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
-			{
-				break ;
-			}
-			data = ft_strjoin(data, line);
+			data = ft_strjoin(data, ft_strjoin(line, "\n"));
+			if (line)
+				free(line);
 		}
-	
+		writing_data(data, fd, 1);
+		exit(0);
 	}
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
 			g_status = WEXITSTATUS(status);
 	}
+	(*tmp)->fd->in = writing_data(data, fd, 0);
+	signal(SIGINT, handle_sigint);
 	return (data);
 }
 
@@ -142,12 +155,11 @@ int rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **en
 	{
 		if ((*tmp)->fd->in != 0)
 			close((*tmp)->fd->in);
-		data = get_data_r(&(*t_lst), envr);
+		data = get_data_r(tmp, &(*t_lst), envr);
 		if (g_status == 130)
 			return (0);
 		if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
 			(*t_lst) = (*t_lst)->next;
-		(*tmp)->fd->in = writing_data(data);
 	}
 	if ((*tmp)->fd->in == -1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:33 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/23 03:19:48 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:18:25 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_cmd	*ft_lstnew_m(char *content)
 		return (0);
 	node1 -> fd = (t_fd *)my_malloc(sizeof(t_fd), 1, 1);
 	node1 -> cmd = &content;
-    node1->fd->in = 0;
-    node1->fd->out = 1;
+	node1->fd->in = 0;
+	node1->fd->out = 1;
 	node1->next = NULL;
 	return (node1);
 }
