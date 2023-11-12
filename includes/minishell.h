@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 17:26:22 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 18:59:42 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void		here_doc_management(t_cmd *tavern, int *pipfd, char **env);
 char		*get_data_hr(t_cmd *tavern);
 int			ft_strcmp_herdoc(char *s1, char *s2);
 void		here_doc_cmd(t_cmd *tavern, int *pipfd, char **env, char *data);
-int			writing_data(char *data, int fd, int v);
+int			writing_data(char *data, int pipfd[2]);
 int			open_fd(void);
 char		*generate_file(void);
 void		waiting_und_closing(pid_t pid1, int *pipfd);

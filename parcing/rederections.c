@@ -6,55 +6,31 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 17:30:00 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 19:26:36 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	writing_data(char *data, int fd, int v)
+int	writing_data(char *data, int pipfd[2])
 {
-	char	*info;
-
-	info = "....";
-	if (v == 1)
-	{
-		write (fd, data, ft_strlen(data));
-		close(fd);
-		return (0);
-	}
-	else
-	{
-		fd = open(info, O_RDONLY, 0777);
-		if (fd == -1)
-			perror("open");
-		if (unlink(info) == -1)
-			perror("Error deleting file");
-		return (fd);	
-	}
+	close(pipfd[0]);
+	write (pipfd[1], data, ft_strlen(data));
+	close(pipfd[1]);
+	return (0);
 }
 
-int	open_fd(void)
-{
-	int		fd;
-	char	*info;
-
-	info = "....";
-	fd = open(info, O_CREAT | O_RDWR | O_TRUNC, 0777);
-	if (fd == -1)
-		perror("open");
-	return (fd);
-}
 char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 {
 	int		status;
 	int		i;
 	char	*line;
 	char	*data;
-	int		fd;
+	int		pipfd[2];
 	pid_t	pid;
 
-	fd = open_fd();
+	if (pipe(pipfd) == -1)
+		return (NULL);
 	signal(SIGINT, SIG_IGN);
 	data = my_malloc(1, 1, 1);
 	data[0] = '\0';
@@ -68,6 +44,8 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 		{
 			i = 0;
 			line = readline("> ");
+			if (!line)
+				exit(0);
 			if (ft_strlen(line) && ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
 				break ;
 			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
@@ -76,7 +54,7 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 			if (line)
 				free(line);
 		}
-		writing_data(data, fd, 1);
+		writing_data(data, pipfd);
 		exit(0);
 	}
 	while (wait(&status) > 0)
@@ -84,7 +62,9 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 		if (WIFEXITED(status))
 			g_status = WEXITSTATUS(status);
 	}
-	(*tmp)->fd->in = writing_data(data, fd, 0);
+	close(pipfd[1]);
+	(*tmp)->fd->in = pipfd[0];
+	printf("pipefd[0]=%d\n", pipfd[0]);
 	signal(SIGINT, handle_sigint);
 	return (data);
 }
