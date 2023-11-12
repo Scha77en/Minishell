@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 21:43:52 by abouregb          #+#    #+#             */
-/*   Updated: 2022/11/17 13:05:11 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 11:44:04 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 # define LIBFT_H
 
-# include<stdio.h>
-# include<string.h>
-# include<strings.h>
-# include<stdlib.h>
-# include<unistd.h>
+# include <stdio.h>
+# include <string.h>
+# include <strings.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_mem
 {

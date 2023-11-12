@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 19:11:47 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/30 15:04:44 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:02:53 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*back_slash_parce(char *str, int flag)
 	i = 0;
 	v = 0;
 	new = my_malloc((slash_size(str) + 1), sizeof(char), 1);
-	while(str && str[i] != '\0')
+	while (str && str[i] != '\0')
 	{
 		if (str[i] == 92 && str[i + 1] == 92)
 		{
@@ -53,7 +53,7 @@ char	*back_slash_parce(char *str, int flag)
 			new[v++] = str[i++];
 	}
 	if (flag == 0)
-	new[v] = '\0';
+		new[v] = '\0';
 	return (new);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 06:55:04 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/28 20:15:05 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:12:34 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	print_working_directory(t_cmd **tavern, char **pwd)
 
 	if (getcwd(current_directory, sizeof(current_directory)) != NULL)
 	{
-		write((*tavern)->fd->out, current_directory, ft_strlen(current_directory));
+		write((*tavern)->fd->out, current_directory,
+			ft_strlen(current_directory));
 	}
 	else
 	{
@@ -39,9 +40,5 @@ void	redefine_pwd(char **pwd, char *define, t_env **env, int v)
 		*pwd = ft_strjoin_b(*pwd, ft_strdup(define), 1);
 	}
 	else
-	{
-		if (*pwd)
-			free(*pwd);
 		*pwd = ft_strdup(ft_getenv(env, "PWD"));
-	}
 }

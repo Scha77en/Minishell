@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/26 04:03:26 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 11:09:41 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,29 @@ void	ft_exit(t_cmd *tavern)
 		{
 			if (ft_isdigit(tavern->cmd[1][i]) == 0)
 			{
-				printf("Minishell: exit: %s: numeric argument required\n",
-					tavern->cmd[1]);
-				exit(255);
+				too_much_bro(tavern, 2);
+				return ;
 			}
 			i++;
 		}
 		exit(ft_atoi(tavern->cmd[1]));
 	}
 	else
+		too_much_bro(tavern, 1);
+}
+
+void	too_much_bro(t_cmd *tavern, int v)
+{
+	if (v == 1)
 	{
-		printf("Minishell: exit: too many arguments\n");
-		exit(1);
+		write(2, "minishell: exit: too many arguments\n", 36);
+		g_status = 1;
+	}
+	else if (v == 2)
+	{
+		write(2, "minishell: exit: ", 17);
+		ft_putstr_fd(tavern->cmd[1], 2);
+		write(2, ": numeric argument required\n", 28);
+		exit(2);
 	}
 }
