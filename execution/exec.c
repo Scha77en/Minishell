@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 15:25:35 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 23:39:21 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,26 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 {
 	pid_t	pid1;
 	int		status;
+	t_cmd	*current;
 
 	signal(SIGQUIT, handle_sigquit);
 	signal(SIGINT, sigint_exec);
+	current = *tavern;
 	pid1 = -1;
 	status = 0;
 	if ((*tavern)->next == NULL)
 	{
-		if (if_builting(tavern, envr, &pwd))
+		if (if_builting(&current, envr, &pwd))
 			;
 		else
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				execute_command((*tavern), envr);
+				execute_command(current, envr);
 		}
 	}
 	else
-		multiple_cmds(tavern, envr, &pwd, pid1);
+		multiple_cmds(&current, envr, &pwd, pid1);
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:09:41 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 23:07:41 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,16 @@ void	too_much_bro(t_cmd *tavern, int v)
 {
 	if (v == 1)
 	{
+		write(2, "exit\n", 5);
 		write(2, "minishell: exit: too many arguments\n", 36);
 		g_status = 1;
 	}
 	else if (v == 2)
 	{
-		write(2, "minishell: exit: ", 17);
+		write(2, "exit\n", 5);
+		write(2, "minishell: exit:", 17);
 		ft_putstr_fd(tavern->cmd[1], 2);
 		write(2, ": numeric argument required\n", 28);
-		exit(2);
+		exit(255);
 	}
 }

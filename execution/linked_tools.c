@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:33 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:18:25 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 23:26:38 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	ft_lstadd_back_m(t_data **lst, t_data *new)
 	lnode = ft_lstlast_m(*lst);
 	lnode -> next = new;
 }
+
 
 t_data	*ft_lstlast_m(t_data *lst)
 {

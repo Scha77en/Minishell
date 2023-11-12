@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 12:12:50 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 23:26:50 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,6 @@ void	minishell(t_env **envr, char *b)
 	pwd = ft_getenv(envr, "PWD");
 	while (1)
 	{
-		// if (g_status != 130)
-		// 	b = readline("minishell$ ");
-		// else
 		b = readline("minishell$ ");
 		if (b == NULL)
 		{
@@ -137,7 +134,7 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
-	if (!env)
+	if (!env || !*env)
         set_env(&envr);
     else
 	{

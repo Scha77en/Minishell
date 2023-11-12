@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 19:26:36 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/12 22:19:02 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 			i = 0;
 			line = readline("> ");
 			if (!line)
+			{
+				writing_data(data, pipfd);
 				exit(0);
+			}
 			if (ft_strlen(line) && ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen(line)) == 0)
 				break ;
 			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
@@ -64,7 +67,6 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 	}
 	close(pipfd[1]);
 	(*tmp)->fd->in = pipfd[0];
-	printf("pipefd[0]=%d\n", pipfd[0]);
 	signal(SIGINT, handle_sigint);
 	return (data);
 }
