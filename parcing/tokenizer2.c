@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 15:55:34 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/12 21:51:26 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,13 @@ void	word_(char *b, int *i, t_env **envr, t_tokens **node)
 {
 	(*node)->type = delemeter(b, *i, WORD);
 	if ((*node)->type == DEL)
+	{
 		(*node)->tokens = fill_delemeter(b, i, 0);
+	}
 	else
+	{
 		(*node)->tokens = fill_word(b, i, 0, envr);
+	}
 	(*node)->type = WORD;
 }
 
@@ -77,8 +81,6 @@ t_tokens	*tokenizer(char *b, t_env **envr)
 	{
 		node = create_node();
 		c_node = fill_node(node, b, &i, envr);
-		if (!c_node)
-			return (NULL);
 		add_node(&list, c_node);
 	}
 	node = create_node();

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 17:25:39 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:04:38 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,11 @@ int	is_token(int type)
 
 int	syntax_error(t_tokens *list)
 {
-	if (list->type == PIPE)
+	if (list->type == PIPE || (list->type == WHITESPACE \
+	&& list->next->type == PIPE))
 	{
+		if (list->type == WHITESPACE)
+			list->tokens = "|";
 		g_status = 258;
 		printf("minishell$: syntax error near \
 		unexpected token '%s'\n", list->tokens);
@@ -87,7 +90,8 @@ int	syntax_error(t_tokens *list)
 	while (list)
 	{
 		if (((is_token(list->type) && !is_word(list->next->type)
-					&& list->next->type != WHITESPACE)) || list->type == SLH)
+					&& (list->next->type != WHITESPACE)) || list->type == SLH) \
+				&& (list->type != PIPE && !is_token(list->next->type)))
 		{
 			g_status = 258;
 			printf("minishell$: syntax error near \

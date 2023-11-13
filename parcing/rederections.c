@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 17:55:01 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 14:27:01 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*get_data_(t_cmd **tmp, t_tokens **file, t_env **envr)
 			break ;
 		line = readline("> ");
 		file_ = ft_strjoin((*file)->tokens, "\n");
-		if (ft_strlen(line) && !ft_strncmp(line, file_, ft_strlen(file_) - 1))
+		if (!ft_strncmp(line, file_, ft_strlen(file_) - 1))
 		{
 			if (ft_strlen(file_) >= ft_strlen(line))
 				break ;
