@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 23:07:41 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 11:18:16 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_exit(t_cmd *tavern)
 		printf("exit\n");
 		exit(0);
 	}
-	else if (tavern->cmd[1] != NULL && tavern->cmd[2] == NULL)
+	else if (tavern->cmd[1] != NULL)
 	{
 		while (tavern->cmd[1][i] != '\0')
 		{
@@ -33,7 +33,10 @@ void	ft_exit(t_cmd *tavern)
 			}
 			i++;
 		}
-		exit(ft_atoi(tavern->cmd[1]));
+		if (tavern->cmd[2] == NULL)
+			exit(ft_atoi(tavern->cmd[1]));
+		else
+			too_much_bro(tavern, 1);
 	}
 	else
 		too_much_bro(tavern, 1);
@@ -50,7 +53,7 @@ void	too_much_bro(t_cmd *tavern, int v)
 	else if (v == 2)
 	{
 		write(2, "exit\n", 5);
-		write(2, "minishell: exit:", 17);
+		write(2, "minishell: exit: ", 17);
 		ft_putstr_fd(tavern->cmd[1], 2);
 		write(2, ": numeric argument required\n", 28);
 		exit(255);

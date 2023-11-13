@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 23:26:50 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 11:05:53 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,13 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	g_status = 0;
+	if (ac > 1)
+	{
+		write(2, "minishell: ", 11);
+		write(2, av[1], ft_strlen(av[1]));
+		write(2, ": No such file or directory\n", 28);
+		return (126);
+	}
 	if (!env || !*env)
         set_env(&envr);
     else

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 09:17:03 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 23:38:45 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 13:31:23 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,10 @@
 void	ft_env(t_cmd **tavern, t_env **env, int v)
 {
 	t_env	*current;
-	// char	*path;
 
 	current = *env;
 	if (v == 0)
 	{
-		// path = ft_getenv(env, "PATH");
-		// if (!path)
-		// {
-		// 	write(2, "minishell: env: No such file or directory\n", 42);
-		// 	return ;
-		// }
 		while (current)
 		{
 			if (current->id == 0)

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:13:34 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 12:06:11 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 {
 	char	curwd[PATH_MAX];
 
-	if ((*tavern)->cmd[1] == NULL)
+	if ((*tavern)->cmd[1] == NULL || ft_strncmp((*tavern)->cmd[1], "--", 3) == 0
+		|| ft_strncmp((*tavern)->cmd[1], "~", 2) == 0)
 	{
 		oldpwd_update(env, NULL, 0);
 		if (chdir(ft_getenv(env, "HOME")) != 0)
 		{
 			error_out("chdir", 0);
+			g_status = 1;
 			return ;
 		}
 		redefine_pwd(pwd, ft_getenv(env, "HOME"), env, 0);
@@ -40,13 +42,17 @@ void	cd_dash(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 	if (chdir(ft_getenv(env, "OLDPWD")) != 0)
 	{
 		if (ft_getenv(env, "OLDPWD") == NULL)
-			write((*tavern)->fd->out, "Minishell: cd: OLDPWD not set\n", 31);
+		{
+			write((*tavern)->fd->out, "minishell: cd: OLDPWD not set\n", 30);
+			g_status = 1;
+		}
 		else
 		{
-			write((*tavern)->fd->out, "Minishell: cd: ", 15);
+			write((*tavern)->fd->out, "minishell: cd: ", 15);
 			write((*tavern)->fd->out, ft_getenv(env, "OLDPWD"),
 				ft_strlen(ft_getenv(env, "OLDPWD")));
-			write((*tavern)->fd->out, " : No such file or directory\n", 30);
+			write((*tavern)->fd->out, ": No such file or directory\n", 28);
+			g_status = 1;
 		}
 		return ;
 	}
@@ -64,6 +70,7 @@ void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 		write((*tavern)->fd->out, (*tavern)->cmd[1],
 			ft_strlen((*tavern)->cmd[1]));
 		write((*tavern)->fd->out, ": No such file or directory\n", 28);
+		g_status = 1;
 		return ;
 	}
 	if (!getcwd(curwd, PATH_MAX))
@@ -73,6 +80,7 @@ void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 		write((*tavern)->fd->out, 
 			"getcwd : cannot access parent directories: \
 			No such file or directory\n", 70);
+		g_status = 1;
 		redefine_pwd(pwd, (*tavern)->cmd[1], env, 1);
 		return ;
 	}
