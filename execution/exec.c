@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 15:04:03 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:24:25 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	pipes_handling(t_cmd **tavern, int pipfd[2], int *for_next)
 
 int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 {
+	g_status = 0;
 	if ((*tavern)->cmd[0] == NULL)
 		return (1);
 	if (ft_strncmp((*tavern)->cmd[0], "echo", 5) == 0)

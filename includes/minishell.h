@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 15:36:30 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:36:19 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,9 @@ void		swap_env(int v, t_env *current, t_env *front, char *temp);
 void		adding_new_env(t_env **env, char **split, int v);
 void		manage_the_export(t_cmd *tavern, t_env **env, int v, int i);
 void		exit_choice(t_cmd *tavern);
+void		erasing_node(t_env **envr, t_env *tmp, t_env *prev);
+void		unset_parce(t_cmd *tavern);
+void		unvalide_identifier(t_cmd *tavern, int i);
 
 // redirections
 
