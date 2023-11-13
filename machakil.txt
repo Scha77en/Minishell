@@ -319,4 +319,25 @@ $?    synta
 
 
 
+///////////////////////////////////////////////////////
+cat << "" | ls "" | wc -l                             /
+>                                                     /
+ls: cannot access '': No such file or directory       /
+0                                                     /  
+                                                      /
+-----------                                           /          
+                                                      /
+cat << "" | ""ls | wc -l                              /                       
+>                        
+                             / 
+///////////////////////////// / / / / / / / / / / / / /
 
+
+herdoc with expandes
+
+
+ls | < owrd
+
+Test only spaces or tabs.     | ls
+
+ ls | < Makefile cat
