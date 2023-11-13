@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 17:24:25 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:44:22 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 			pid1 = fork();
 			if (pid1 == 0)
 				execute_command(current, envr);
+			else if (pid1 < 0)
+				fork_failed();
 		}
 	}
 	else
 		multiple_cmds(&current, envr, &pwd, pid1);
-	waiting_and_signals_handling(status);
-	return (pwd);
+	return (waiting_and_signals_handling(status), pwd);
 }
 
 void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
@@ -61,6 +62,8 @@ void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
 				exit(0);
 			execute_command((*tavern), envr);
 		}
+		else if (pid1 < 0)
+			fork_failed();
 		pipes_closing(tavern, pipfd, &for_next);
 		(*tavern) = (*tavern)->next;
 	}

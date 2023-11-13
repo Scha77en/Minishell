@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 11:15:52 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 10:58:27 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:44:45 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	subshell(t_cmd **tavern, t_env **env)
 	pid = fork();
 	if (pid == 0)
 		execute_shell((*tavern), env);
+	else if (pid < 0)
+		fork_failed();
 }
 
 void	execute_shell(t_cmd *tavern, t_env **env)

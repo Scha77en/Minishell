@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 22:45:06 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 22:37:28 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:48:09 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,10 @@ void	no_such_file(t_cmd *tavern)
 	ft_putstr_fd(tavern->cmd[0], 2);
 	write(2, ": No such file or directory\n", 29);
 	exit(127);
+}
+
+void	fork_failed(void)
+{
+	write (2, "minishell: fork: failed to create a child process\n", 50);
+	g_status = 1;
 }

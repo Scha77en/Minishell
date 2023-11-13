@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 15:39:20 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:46:35 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 		writing_data(data, pipfd);
 		exit(0);
 	}
+	else if (pid < 0)
+		fork_failed();
 	waiting_herdoc_child(tmp, pipfd);
 	return (data);
 }

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 17:36:19 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 17:59:20 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,6 @@ typedef enum e_token
 	DEL ,
 }	t_token;
 
-// get_next_line() structure;
-
-typedef struct s_list
-{
-	char			*content;
-	struct s_list	*next;
-}	t_list;
-
 typedef struct s_index
 {
 	int		a;
@@ -102,35 +94,27 @@ void		clean_mem(t_mem *head);
 
 // Minishell execution functions
 
-int			ft_lstsize(t_cmd *lst);
-t_cmd		*ft_lstnew_t(char **content, int fd_in, int fd_out);
-t_cmd		*ft_lstlast_t(t_cmd *lst);
-void		ft_lstadd_back_t(t_cmd **lst, t_cmd *new);
 char		*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd);
 void		multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1);
 void		pipes_closing(t_cmd **tavern, int pipfd[2], int *for_next);
 void		pipes_handling(t_cmd **tavern, int pipfd[2], int *for_next);
 void		execute_command(t_cmd *tavern, t_env **envr);
 void		exec_with_path(t_cmd *tavern, char **u_env);
-char		*ft_strdup_m(char *s1);
-void		*ft_memcpy_m(void *dst, void *src, size_t n);
 void		handle_sigint(int sig);
 char		**update_env(t_env **envr);
 char		**env_to_char(t_env **env);
 int			path_backslash(char *path);
-void		reset_fd(t_cmd *tavern);
 void		herdoc_sigint(int sig);
-void		hang_sigint(int sig);
 
 void		command_not_found(t_cmd *tavern);
 void		no_such_file(t_cmd *tavern);
-void		handle_sigquit_child(int sig);
 
 void		subshell(t_cmd **tavern, t_env **env);
 void		execute_shell(t_cmd *tavern, t_env **env);
 void		handle_sigquit(int sig);
 void		sigint_exec(int sig);
 void		waiting_and_signals_handling(int status);
+void		fork_failed(void);
 
 // builtings
 
@@ -145,7 +129,6 @@ void		oldpwd_update(t_env **env, char *curwd, int v);
 void		old_pwd_add(t_env *current, char *cwd);
 void		oldpwd_search_update(t_env **env, char *cwd);
 t_env		*ft_envnew(char *var, char *value);
-void		ft_memdel(void *ptr);
 void		ft_env(t_cmd **tavern, t_env **env, int v);
 void		export_env(t_cmd **tavern, t_env **env, t_env *current);
 char		*ft_getenv(t_env **env, char *var);
@@ -183,10 +166,6 @@ void		unvalide_identifier(t_cmd *tavern, int i);
 
 void		check_redirections(t_cmd *tavern);
 int			writing_data(char *data, int pipfd[2]);
-void		manage_redirection(t_cmd *tavern, int *pipfd, char **env);
-void		handle_input(t_cmd *tavern, int *pipfd, char **env);
-void		handle_output(t_cmd *tavern, int *pipfd, char **env);
-void		handle_append(t_cmd *tavern, int *pipfd, char **env);
 void		here_doc_process(char **data, int pipfd[2], \
 			t_tokens *file, t_env *envr);
 void		waiting_herdoc_child(t_cmd **tmp, int pipfd[2]);
@@ -207,18 +186,12 @@ char		**ft_split_m(char *s, char c);
 char		**find_path(char **env);
 int			get_env_path(char **env);
 int			ft_strncmp_m(char *s1, char *s2, int n);
-char		*ft_strjoin_b(char *s1, char *s2, int v);
-char		*ft_strjoin_m(char *s1, char *s2);
 int			command_search(char **path);
 int			ft_strcmp(char *s1, char *s2);
 void		error_out(char *msg, int v);
 t_cmd		*ft_lstlast_p(t_cmd *lst);
 
 // parcing;
-
-//get_next_line
-
-char		*get_next_line(int fd);
 
 // linkedlist of env
 void		ft_lstaddback(t_env **hed, t_env *new);
