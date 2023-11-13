@@ -6,7 +6,7 @@
 #    By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 10:25:23 by aouhbi            #+#    #+#              #
-#    Updated: 2023/11/12 12:08:07 by aouhbi           ###   ########.fr        #
+#    Updated: 2023/11/12 21:48:24 by aouhbi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ LIBFT = ./libft/libft.a
 
 CC = gcc
 
-FLGS = -Wall -Wextra -Werror -I${READLINE}/include -g -fsanitize=address
+FLGS = -Wall -Wextra -Werror -I${READLINE}/include #-g -fsanitize=address
 
 RM = rm -rf
 

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 11:15:52 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 15:24:12 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 10:58:27 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exec_with_path(t_cmd *tavern, char **u_env)
 
 	path = find_path(u_env);
 	if (path == NULL)
-		command_not_found(tavern);
+		no_such_file(tavern);
 	ret = 0;
 	i = -1;
 	while (path && path[++i])

@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:10:54 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:28:41 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 11:25:01 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_export(t_cmd *tavern, t_env **env)
 				write(2, "minishell: export: `", 20);
 				ft_putstr_fd(tavern->cmd[i], 2);
 				write(2, "': not a valid identifier\n", 26);
+				g_status = 1;
 			}
 			i++;
 		}

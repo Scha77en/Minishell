@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 17:53:45 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 14:30:53 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,26 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 {
 	pid_t	pid1;
 	int		status;
+	t_cmd	*current;
 
 	signal(SIGQUIT, handle_sigquit);
 	signal(SIGINT, sigint_exec);
+	current = *tavern;
 	pid1 = -1;
 	status = 0;
 	if ((*tavern)->next == NULL)
 	{
-		if (if_builting(tavern, envr, &pwd))
+		if (if_builting(&current, envr, &pwd))
 			;
 		else
 		{
 			pid1 = fork();
 			if (pid1 == 0)
-				execute_command((*tavern), envr);
+				execute_command(current, envr);
 		}
 	}
 	else
-		multiple_cmds(tavern, envr, &pwd, pid1);
+		multiple_cmds(&current, envr, &pwd, pid1);
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
@@ -58,10 +60,6 @@ void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
 			error_out("pipe", 0);
 			g_status = 1;
 		}
-<<<<<<< HEAD
-		pid1 = fork();
-		if (pid1 == 0)
-=======
 		i = -1;
 		while (path[++i])
 			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
@@ -70,7 +68,6 @@ void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
 			path[++i] = NULL;
 		ret = path_backslash(tavern->cmd[0]);
 		if (ret == -1)
->>>>>>> c7745eca7d6d6e5a8fd9e6a3904f418527e9e3c1
 		{
 			pipes_handling(tavern, pipfd, &for_next);
 			if (if_builting(tavern, envr, pwd))

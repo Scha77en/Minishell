@@ -6,54 +6,38 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 14:27:01 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 14:29:31 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	writing_data(char *data, int fd, int v)
+int	writing_data(char *data, int pipfd[2])
 {
-	char	*info;
-
-	info = "....";
-	if (v == 1)
-	{
-		write (fd, data, ft_strlen(data));
-		close(fd);
-		return (0);
-	}
-	else
-	{
-		fd = open(info, O_RDONLY, 0777);
-		if (fd == -1)
-			perror("open");
-		if (unlink(info) == -1)
-			perror("Error deleting file");
-		return (fd);	
-	}
+	close(pipfd[0]);
+	write (pipfd[1], data, ft_strlen(data));
+	close(pipfd[1]);
+	return (0);
 }
 
-int	open_fd(void)
-{
-	int		fd;
-	char	*info;
-
-	info = "....";
-	fd = open(info, O_CREAT | O_RDWR | O_TRUNC, 0777);
-	if (fd == -1)
-		perror("open");
-	return (fd);
-}
-char	*get_data_(t_cmd **tmp, t_tokens **file, t_env **envr)
+char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 {
 	int		status;
 	int		i;
 	char	*line;
-	char	*file_;
+	char	*data;
+	int		pipfd[2];
+	pid_t	pid;
 
-	i = 0;
-	while (1)
+	if (pipe(pipfd) == -1)
+		return (NULL);
+	signal(SIGINT, SIG_IGN);
+	data = my_malloc(1, 1, 1);
+	data[0] = '\0';
+	if (!data)
+		return (NULL);
+	pid = fork();
+	if (pid == 0)
 	{
 		i = 0;
 		if (g_status == 130)
@@ -62,19 +46,34 @@ char	*get_data_(t_cmd **tmp, t_tokens **file, t_env **envr)
 		file_ = ft_strjoin((*file)->tokens, "\n");
 		if (!ft_strncmp(line, file_, ft_strlen(file_) - 1))
 		{
-			if (ft_strlen(file_) >= ft_strlen(line))
-				break ;
+			i = 0;
+			line = readline("> ");
+			if (!line)
+			{
+				writing_data(data, pipfd);
+				exit(0);
+			}
+			if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen((*file)->tokens)) == 0)
+			{
+				if ((ft_strlen((*file)->tokens) >= (ft_strlen(line))))
+					break ;
+			}
+			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
+				line = fill_word(line, &i, 0, envr);
+			data = ft_strjoin(data, ft_strjoin(line, "\n"));
+			if (line)
+				free(line);
 		}
-		if ((*file)->type == WORD && ft_strcmp(line, "\n") != 0)
-			line = fill_word(line, &i, 0, envr);
-		data = ft_strjoin(data, ft_strjoin(line, "\n"));
+		writing_data(data, pipfd);
+		exit(0);
 	}
 	while (wait(&status) > 0)
 	{
 		if (WIFEXITED(status))
 			g_status = WEXITSTATUS(status);
 	}
-	(*tmp)->fd->in = writing_data(data, fd, 0);
+	close(pipfd[1]);
+	(*tmp)->fd->in = pipfd[0];
 	signal(SIGINT, handle_sigint);
 	return (data);
 }
