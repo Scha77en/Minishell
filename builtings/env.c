@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 09:17:03 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 13:36:59 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 20:44:56 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,14 @@ void	ft_env(t_cmd **tavern, t_env **env, int v)
 	t_env	*current;
 
 	current = *env;
+	if ((*tavern)->cmd[1] != NULL)
+	{
+		write(2, "env: ", 5);
+		write(2, (*tavern)->cmd[1], ft_strlen((*tavern)->cmd[1]));
+		write(2, ": No such file or directory\n", 28);
+		g_status = 127;
+		return ;
+	}
 	if (v == 0)
 	{
 		while (current)
@@ -28,6 +36,7 @@ void	ft_env(t_cmd **tavern, t_env **env, int v)
 	}
 	else if (v == 1)
 		export_env(tavern, env, current);
+	g_status = 0;
 }
 
 void	env_env(t_cmd **tavern, t_env *current)

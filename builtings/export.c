@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:10:54 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 11:25:01 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 20:46:44 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	manage_the_export(t_cmd *tavern, t_env **env, int v, int i)
 		ft_join_value(env, split);
 	else
 		ft_add_env(env, split, v);
+	g_status = 0;
 }
 
 int	check_validity(char *str, int *v)

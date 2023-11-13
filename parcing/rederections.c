@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 17:46:35 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 20:09:04 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 int	print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
 {
 	printf("minishell: %s: No such file or directory\n", (*t_lst)->tokens);
+	g_status = 1;
 	if (fd == 0)
 		(*tmp)->fd->in = 0;
 	else
@@ -57,7 +58,6 @@ int	print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
 	while ((*t_lst)->next->type != PIPE && (*t_lst)->next->type != NLINE)
 		(*t_lst) = (*t_lst)->next;
 	(*tmp)->cmd[0] = NULL;
-	g_status = 1;
 	return (0);
 }
 

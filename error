@@ -1,0 +1,5 @@
+minishell$ cat <"1""2""3""4""5"
+minishell: 45: No such file or directory
+
+bash-3.2$ cat <"1""2""3""4""5"
+bash: 12345: No such file or directory

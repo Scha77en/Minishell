@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 17:44:22 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 20:50:46 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,14 @@ void	pipes_handling(t_cmd **tavern, int pipfd[2], int *for_next)
 
 int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 {
-	g_status = 0;
 	if ((*tavern)->cmd[0] == NULL)
 		return (1);
 	if (ft_strncmp((*tavern)->cmd[0], "echo", 5) == 0)
-		return (echo_builted((*tavern)), 1);
+		return (echo_builted((*tavern)), g_status = 0, 1);
 	if (ft_strncmp((*tavern)->cmd[0], "cd", 3) == 0)
 		return (cd_builted(tavern, env, pwd), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "pwd", 4) == 0)
-		return (print_working_directory(tavern, pwd), 1);
+		return (print_working_directory(tavern, pwd), g_status = 0, 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "export", 8) == 0)
 		return (ft_export((*tavern), env), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "unset", 7) == 0)

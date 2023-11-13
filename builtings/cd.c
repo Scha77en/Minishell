@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 17:24:10 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 20:38:50 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		}
 		redefine_pwd(pwd, ft_getenv(env, "HOME"), env, 0);
 		pwd_update(env);
+		g_status = 0;
 	}
 	else if (ft_strncmp((*tavern)->cmd[1], "-",
 			ft_strlen((*tavern)->cmd[1]) + 1) == 0)
@@ -59,6 +60,7 @@ void	cd_dash(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 	oldpwd_update(env, curwd, 1);
 	pwd_update(env);
 	redefine_pwd(pwd, ft_getenv(env, "OLDPWD"), env, 0);
+	g_status = 0;
 }
 
 void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
@@ -86,6 +88,7 @@ void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 	}
 	pwd_update(env);
 	redefine_pwd(pwd, (*tavern)->cmd[1], env, 0);
+	g_status = 0;
 }
 
 void	oldpwd_update(t_env **env, char *curwd, int v)

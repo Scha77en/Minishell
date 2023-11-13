@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 15:01:23 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 20:23:41 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,15 @@ void	ft_exit(t_cmd *tavern)
 	if (tavern->cmd[1] == NULL)
 	{
 		printf("exit\n");
-		exit(0);
+		exit(g_status);
 	}
 	else if (tavern->cmd[1] != NULL)
 	{
+		if (tavern->cmd[1][0] == '\0')
+			too_much_bro(tavern, 2);
 		while (tavern->cmd[1][i] != '\0')
 		{
-			if (ft_isdigit(tavern->cmd[1][i]) == 0)
+			if (ft_isdigit_exit(tavern) == 0)
 			{
 				too_much_bro(tavern, 2);
 				return ;
@@ -42,7 +44,10 @@ void	ft_exit(t_cmd *tavern)
 void	exit_choice(t_cmd *tavern)
 {
 	if (tavern->cmd[2] == NULL)
+	{
+		write(2, "exit\n", 5);
 		exit(ft_atoi(tavern->cmd[1]));
+	}
 	else
 		too_much_bro(tavern, 1);
 }
@@ -63,4 +68,22 @@ void	too_much_bro(t_cmd *tavern, int v)
 		write(2, ": numeric argument required\n", 28);
 		exit(255);
 	}
+}
+
+int	ft_isdigit_exit(t_cmd *tavern)
+{
+	int		i;
+	int		v;
+
+	i = 0;
+	v = 0;
+	while (tavern->cmd[1][i] != '\0')
+	{
+		if (v == 0 && (tavern->cmd[1][0] == '+' || tavern->cmd[1][0] == '-'))
+			v++;
+		else if (tavern->cmd[1][i] < 48 || tavern->cmd[1][i] > 57)
+			return (0);
+		i++;
+	}
+	return (1);
 }
