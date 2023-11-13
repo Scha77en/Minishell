@@ -6,26 +6,20 @@
 #    By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 10:25:23 by aouhbi            #+#    #+#              #
-#    Updated: 2023/11/12 21:48:24 by aouhbi           ###   ########.fr        #
+#    Updated: 2023/11/13 14:48:45 by aouhbi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-<<<<<<< HEAD
-<<<<<<< HEAD
-SRC = parcing/main.c parcing/tools.c parcing/rederect_herdc.c parcing/delemeter.c parcing/tokenizer.c parcing/enver.c parcing/parcer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
-=======
-SRC = parcing/main.c parcing/tools.c parcing/rederect_herdc.c parcing/delemeter.c parcing/more_rederections.c parcing/tokenizer.c parcing/enver.c parcing/parcer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
->>>>>>> c7745eca7d6d6e5a8fd9e6a3904f418527e9e3c1
-		execution/exec.c execution/get_next_line_m.c execution/get_next_line_utils.c execution/spliting.c\
-=======
-SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/list.c parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
+
+SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/list.c\
+		parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
+		parcing/parcer.c parcing/enver.c parcing/rederect_herdc.c parcing/more_rederections.c \
 		execution/exec.c execution/exec_extra.c execution/spliting.c\
->>>>>>> main
 		execution/joining.c execution/path_search.c execution/command_search.c\
 		execution/redirection_managment.c execution/error_handling.c\
 		builtings/cd.c builtings/cd_utils.c builtings/pwd.c builtings/unset.c builtings/env.c builtings/env_utils.c builtings/echo.c builtings/export_utils.c\
-		builtings/export.c builtings/exit.c builtings/export_sort_utils.c builtings/export_utils_two.c execution/signals.c\
+		builtings/export.c builtings/exit.c builtings/export_sort_utils.c builtings/export_utils_two.c execution/signals.c \
 
 SRC_LIB = libft/ft_atoi.c libft/ft_itoa.c libft/ft_putnbr_fd.c libft/ft_strlcpy.c libft/ft_tolower.c\
 			libft/ft_bzero.c libft/ft_memchr.c libft/ft_putstr_fd.c libft/ft_strlen.c libft/ft_toupper.c\
@@ -42,7 +36,7 @@ LIBFT = ./libft/libft.a
 
 CC = gcc
 
-FLGS = -Wall -Wextra -Werror -I${READLINE}/include #-g -fsanitize=address
+FLGS = -Wall -Wextra -Werror -I${READLINE}/include -g -fsanitize=address
 
 RM = rm -rf
 
@@ -68,3 +62,5 @@ ${LIBFT} : ${SRC_LIB} libft/libft.h
 	make -C libft
 
 re : fclean all
+
+.PHONY : all clean fclean re

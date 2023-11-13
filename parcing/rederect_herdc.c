@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rederect_herdc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:26:34 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 17:29:18 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/13 14:46:14 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ void	rederect_her( t_cmd **tmp, char **data, t_tokens **t_lst, t_env **envr)
 {
 	if ((*tmp)->fd->in != 0)
 		close((*tmp)->fd->in);
-	*data = get_data_r(&(*t_lst), envr);
+	*data = get_data_r(tmp, &(*t_lst), envr);
 	if (is_word((*t_lst)->type) && is_word((*t_lst)->next->type))
 		(*t_lst) = (*t_lst)->next;
-	(*tmp)->fd->in = writing_data(*data);
 }
 
 int	rederect_in_her(t_tokens **t_lst, t_cmd **tmp,

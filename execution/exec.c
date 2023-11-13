@@ -6,10 +6,9 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 14:30:53 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 14:42:33 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../includes/minishell.h"
 
@@ -60,14 +59,8 @@ void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
 			error_out("pipe", 0);
 			g_status = 1;
 		}
-		i = -1;
-		while (path[++i])
-			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
-		i = command_search(path);
-		if (i == -1)
-			path[++i] = NULL;
-		ret = path_backslash(tavern->cmd[0]);
-		if (ret == -1)
+		pid1 = fork();
+		if (pid1 == 0)
 		{
 			pipes_handling(tavern, pipfd, &for_next);
 			if (if_builting(tavern, envr, pwd))
@@ -99,22 +92,12 @@ void	pipes_handling(t_cmd **tavern, int pipfd[2], int *for_next)
 			error_out("dup2 ", 0);
 			exit(1);
 		}
-		i = -1;
-		while (path && path[++i])
-			path[i] = ft_strjoin_b(path[i], tavern->cmd[0], 1);
-		i = command_search(path);
-		if (i == -1)
-			path[++i] = NULL;
-		ret = path_backslash(tavern->cmd[0]);
-		if (ret == -1)
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(tavern->cmd[0], 2);
-			write(2, ": No such file or directory\n", 29);
-			exit(127);
-		}
-		ret = execve(path[i], tavern->cmd, u_env);
-		if (ret == -1)
+		close(pipfd[1]);
+		close(pipfd[0]);
+	}
+	if (*for_next)
+	{
+		if (dup2(*for_next, STDIN_FILENO) < 0)
 		{
 			error_out("dup2", 0);
 			exit(1);

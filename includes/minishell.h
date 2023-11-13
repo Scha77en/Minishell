@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 14:30:33 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 14:41:28 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,8 +270,7 @@ void		expand(char *b, int *s, int *a, t_env **envr);
 void		status(char *b, int *s, int *a, int c);
 int			rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current);
 int			rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr);
-char		*get_data_r(t_tokens **file, t_env **envr);
-char		*get_data_(t_cmd **tmp, t_tokens **file, t_env **envr)
+char		*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr);
 int			print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst);
 t_env		*lstnew();
 int			var_len(char *var);

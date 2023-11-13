@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 14:29:31 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 14:40:28 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,8 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 	pid = fork();
 	if (pid == 0)
 	{
-		i = 0;
-		if (g_status == 130)
-			break ;
-		line = readline("> ");
-		file_ = ft_strjoin((*file)->tokens, "\n");
-		if (!ft_strncmp(line, file_, ft_strlen(file_) - 1))
+		signal(SIGINT, herdoc_sigint);
+		while (1)
 		{
 			i = 0;
 			line = readline("> ");
@@ -76,18 +72,6 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 	(*tmp)->fd->in = pipfd[0];
 	signal(SIGINT, handle_sigint);
 	return (data);
-}
-
-char	*get_data_r(t_tokens **file, t_env **envr)
-{
-	char	*data;
-
-	data = my_malloc(1, 1, 1);
-	data[0] = '\0';
-	if (!data)
-		return (NULL);
-	signal(SIGINT, handle_sigint);
-	return (get_data_(data, file, envr));
 }
 
 int	print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst)
