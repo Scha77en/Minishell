@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 09:17:03 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 13:31:23 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 13:34:11 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	set_env(t_env **env)
 {
 	char	cwd[PATH_MAX];
 
-	printf("set_IN\n");
 	getcwd(cwd, sizeof(cwd));
 	*env = NULL;
 	ft_lstaddback(env, ft_envnew(ft_strdup("PWD"), ft_strdup(cwd)));
