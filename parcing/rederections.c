@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 09:19:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 14:40:28 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 15:39:20 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ int	writing_data(char *data, int pipfd[2])
 
 char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 {
-	int		status;
-	int		i;
-	char	*line;
 	char	*data;
 	int		pipfd[2];
 	pid_t	pid;
@@ -40,37 +37,11 @@ char	*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr)
 	if (pid == 0)
 	{
 		signal(SIGINT, herdoc_sigint);
-		while (1)
-		{
-			i = 0;
-			line = readline("> ");
-			if (!line)
-			{
-				writing_data(data, pipfd);
-				exit(0);
-			}
-			if (ft_strncmp(line, ft_strjoin((*file)->tokens, "\n"), ft_strlen((*file)->tokens)) == 0)
-			{
-				if ((ft_strlen((*file)->tokens) >= (ft_strlen(line))))
-					break ;
-			}
-			if ((*file)->type == WORD && ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
-				line = fill_word(line, &i, 0, envr);
-			data = ft_strjoin(data, ft_strjoin(line, "\n"));
-			if (line)
-				free(line);
-		}
+		here_doc_process(&data, pipfd, *file, *envr);
 		writing_data(data, pipfd);
 		exit(0);
 	}
-	while (wait(&status) > 0)
-	{
-		if (WIFEXITED(status))
-			g_status = WEXITSTATUS(status);
-	}
-	close(pipfd[1]);
-	(*tmp)->fd->in = pipfd[0];
-	signal(SIGINT, handle_sigint);
+	waiting_herdoc_child(tmp, pipfd);
 	return (data);
 }
 

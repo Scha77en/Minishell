@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 14:42:33 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 15:04:03 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,7 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 	}
 	else
 		multiple_cmds(&current, envr, &pwd, pid1);
-	while (wait(&status) > 0)
-	{
-		if (WIFEXITED(status))
-			g_status = WEXITSTATUS(status);
-	}
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	waiting_and_signals_handling(status);
 	return (pwd);
 }
 
@@ -130,97 +124,3 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (subshell(tavern, env), 1);
 	return (0);
 }
-
-// fix the single builting redirection doesnt reset when finishes; pwd > OKOK; echo | cat -e; !--DONE--! => solved but created a new problem, cat | cat | ls; --DONE--
-
-// echo -nnnnnnnn protection; --DONE--
-
-// echo - n skips the '-' in my program and it shouldn't, fix that. --DONE--
-
-// unset and export with alphabics and numbers procetction, only alphabics and _ is allowed first, after the first numerics are also allowed in the followings; --DONE--
-
-// the split in the export should be splitting with one = only and not more; --DONE--
-
-// pwd if failed, get the path from the satitc variable you saved into it ealier in the main; also if the path is changed, change the static variable; --DONE--
-// Hint : whenever u call chdir() in "cd" change the PWD value to what chdir is changing to. --DONE--
-// when you do cd, if the path is not found, dont change the PWD; --DONE--
-
-// Note: the evaluator may unset the env from the start with "./minishell env -i" command
-// check if env is NULL first, if true, add the necessary ones, PATH=, PWD=, SHELLLVL=, _=. --DONE--
-
-// add the signals and handle them; --DONE--
-
-// only the 0,1,2 should be remaining after every command, the rest should be closed; --DONE--
-
-// handle when executing minishell inside minishell, the shell level must be incremented in the env, and will only exit from the main minishell if it reaches the smallest amount; --DONE--
-
-// when exporting a variable without a value (which means without '=' sign), it should not be added in the env, but it will be available when executing export; --DONE--
-
-// handle when the PATH is unseted; the result should be fixed; --DONE--
-
-// error_out must write the msg in the fd_error. --DONE--
-
-// sort the envirement when you print it with export only; --DONE--
-
-// after sorting the export, there is a problem in unsetting it members. --DONE--
-
-// close fd, when piping; --DONE--
-
-// exit status; --DONE--
-
-// --DONE--
-// minishell$ $USER
-// Schatten: command not found "expected"
-// execve: Bad address "result"
-
-// --DONE--
-// minishell$ cat -e < a
-// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
-// $ 	dup2: Bad file descriptor
-
-// minishell$ cat < a >> aa
-// $ 	fd_in: No such file or directory  ==> minishell: a: No such file or directory
-// $ 	dup2: Bad file descriptor
-
-// set the garbage collector; --DONE--
-
-/***************************************************************************************************************************************************************************************************/
-
-
-
-// 1- fix the CTRL+C in the heredoc;
-
-
-// CHECKING OUT:
-
-// 1- change the path when going to the school;
-
-// 2- check the leaks and the norm;
-
-// 3- check the error handling;
-
-// 4- check the signals;
-
-
-
-
-
-// minishell$ cat << "$USER"
-// out > $USER, not the expanded value of $USER;
-// same thing for single quotes '$USER';
-// no quotes $USER, it should be expanded, $USER VALUE out;
-
-
-
-// minishell$ $HOME
-// minishell: /home/Schatten: Is a directory "expected"
-// execve: Bad address "result"
-
-// ./minishell + an argument should return for example :
-// ./minishell config:
-// minishell: config: No such file or directory
-// ./minishell ls
-// /bin/ls: /bin/ls: cannot execute binary file
-
-// while true; do lsof -c minishell; done
-// while true; do leaks minishell; done

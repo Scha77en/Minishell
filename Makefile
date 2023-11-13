@@ -6,7 +6,7 @@
 #    By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 10:25:23 by aouhbi            #+#    #+#              #
-#    Updated: 2023/11/13 14:48:45 by aouhbi           ###   ########.fr        #
+#    Updated: 2023/11/13 15:38:23 by aouhbi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 SRC = parcing/main.c parcing/tools.c parcing/delemeter.c parcing/tokenizer.c parcing/list.c\
 		parcing/rederections.c parcing/get_next_line.c parcing/env.c parcing/expand.c parcing/tokenizer2.c  \
-		parcing/parcer.c parcing/enver.c parcing/rederect_herdc.c parcing/more_rederections.c \
+		parcing/parcer.c parcing/enver.c parcing/rederect_herdc.c parcing/more_rederections.c parcing/rederections_extra.c\
 		execution/exec.c execution/exec_extra.c execution/spliting.c\
 		execution/joining.c execution/path_search.c execution/command_search.c\
 		execution/redirection_managment.c execution/error_handling.c\

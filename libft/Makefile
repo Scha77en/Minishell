@@ -1,3 +1,14 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/13 15:20:44 by aouhbi            #+#    #+#              #
+#    Updated: 2023/11/13 15:21:06 by aouhbi           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_memcpy.c ft_memmove.c ft_memchr.c \
 ft_memset.c ft_strlcpy.c ft_strlen.c ft_tolower.c ft_toupper.c ft_strchr.c ft_strlcat.c ft_strrchr.c ft_strncmp.c ft_memcmp.c ft_strnstr.c \
@@ -30,4 +41,4 @@ fclean : clean
 
 re: fclean all	
 
-.PHONY : clean fclean 
+.PHONY : all clean fclean re

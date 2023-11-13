@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 11:18:16 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 15:01:23 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,16 @@ void	ft_exit(t_cmd *tavern)
 			}
 			i++;
 		}
-		if (tavern->cmd[2] == NULL)
-			exit(ft_atoi(tavern->cmd[1]));
-		else
-			too_much_bro(tavern, 1);
+		exit_choice(tavern);
 	}
+	else
+		too_much_bro(tavern, 1);
+}
+
+void	exit_choice(t_cmd *tavern)
+{
+	if (tavern->cmd[2] == NULL)
+		exit(ft_atoi(tavern->cmd[1]));
 	else
 		too_much_bro(tavern, 1);
 }

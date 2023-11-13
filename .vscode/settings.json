@@ -8,7 +8,19 @@
     "msh.h": "c",
     "__node_handle": "c",
     "algorithm": "c",
+<<<<<<< HEAD
     "error": "cpp"
+=======
+    "__functional_03": "c",
+    "__hash_table": "c",
+    "__split_buffer": "c",
+    "memory_resource": "c",
+    "functional": "c",
+    "memory": "c",
+    "string": "c",
+    "unordered_map": "c",
+    "vector": "c"
+>>>>>>> d4130e22907a5f500b74ba10e13e1d2af7d415b6
   },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.msvcBatchPath": "",
