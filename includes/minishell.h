@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 14:41:28 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 15:36:30 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,33 +91,14 @@ typedef struct s_list
 
 typedef struct s_index
 {
-	int a;
-	int s;
-}t_index;
-
-
-// get_next_line() functions;
-
-char		*get_next_line_m(int fd);
-void		read_and_save(int fd, t_list **head);
-char		*get_the_line(t_list *head);
-void		modify_list(t_list **head);
-t_list		*ft_lstlast(t_list *lst);
-void		ft_lstadd_back(t_list **lst, t_list *new);
-t_list		*ft_lstnew(char *content, ssize_t readed);
-int			ft_lstchr(t_list *head, char *s, int v);
-char		*allocate_to_line(t_list *stash);
-void		ft_lstclear(t_list *lst);
-char		*get_data(char **argv);
-void		ignore_sig(int sig);
+	int		a;
+	int		s;
+}	t_index;
 
 // garbage collector
 
 void		*my_malloc(int size, int len, int status);
-// void	ft_lstadd_back_mem(t_mem **lst, t_mem *new);
 void		clean_mem(t_mem *head);
-// void	clear_garbeg(t_mem *head);
-// void	*garbage(int size, int len, int status);
 
 // Minishell execution functions
 
@@ -149,7 +130,9 @@ void		subshell(t_cmd **tavern, t_env **env);
 void		execute_shell(t_cmd *tavern, t_env **env);
 void		handle_sigquit(int sig);
 void		sigint_exec(int sig);
-// builting
+void		waiting_and_signals_handling(int status);
+
+// builtings
 
 int			if_builting(t_cmd **tavern, t_env **env, char **pwd);
 void		print_working_directory(t_cmd **tavern, char **pwd);
@@ -191,25 +174,19 @@ void		too_much_bro(t_cmd *tavern, int v);
 void		swap_env(int v, t_env *current, t_env *front, char *temp);
 void		adding_new_env(t_env **env, char **split, int v);
 void		manage_the_export(t_cmd *tavern, t_env **env, int v, int i);
+void		exit_choice(t_cmd *tavern);
 
-// here_document
-
-void		here_doc_management(t_cmd *tavern, int *pipfd, char **env);
-char		*get_data_hr(t_cmd *tavern);
-int			ft_strcmp_herdoc(char *s1, char *s2);
-void		here_doc_cmd(t_cmd *tavern, int *pipfd, char **env, char *data);
-int			writing_data(char *data, int pipfd[2]);
-int			open_fd(void);
-char		*generate_file(void);
-void		waiting_und_closing(pid_t pid1, int *pipfd);
-
-// other redirections
+// redirections
 
 void		check_redirections(t_cmd *tavern);
+int			writing_data(char *data, int pipfd[2]);
 void		manage_redirection(t_cmd *tavern, int *pipfd, char **env);
 void		handle_input(t_cmd *tavern, int *pipfd, char **env);
 void		handle_output(t_cmd *tavern, int *pipfd, char **env);
 void		handle_append(t_cmd *tavern, int *pipfd, char **env);
+void		here_doc_process(char **data, int pipfd[2], \
+			t_tokens *file, t_env *envr);
+void		waiting_herdoc_child(t_cmd **tmp, int pipfd[2]);
 
 // joining
 
@@ -224,7 +201,6 @@ char		**ft_split_m(char *s, char c);
 
 // Minishell functions;
 
-char		**ft_split_m(char *s, char c);
 char		**find_path(char **env);
 int			get_env_path(char **env);
 int			ft_strncmp_m(char *s1, char *s2, int n);
@@ -238,7 +214,9 @@ t_cmd		*ft_lstlast_p(t_cmd *lst);
 // parcing;
 
 //get_next_line
+
 char		*get_next_line(int fd);
+
 // linkedlist of env
 void		ft_lstaddback(t_env **hed, t_env *new);
 int			white_space(char c);
@@ -269,10 +247,11 @@ void		first_one(t_tokens *list, t_cmd **tmp);
 void		expand(char *b, int *s, int *a, t_env **envr);
 void		status(char *b, int *s, int *a, int c);
 int			rederect_o_a(t_tokens **t_lst, t_cmd **tmp, t_tokens *current);
-int			rederect_in_her(t_tokens **t_lst, t_cmd **tmp, t_tokens *current, t_env **envr);
+int			rederect_in_her(t_tokens **t_lst, t_cmd **tmp, \
+			t_tokens *current, t_env **envr);
 char		*get_data_r(t_cmd **tmp, t_tokens **file, t_env **envr);
 int			print_erorr(t_cmd **tmp, int fd, t_tokens **t_lst);
-t_env		*lstnew();
+t_env		*lstnew(void);
 int			var_len(char *var);
 int			valu_len(char *s, int i);
 char		*t_oken(char *str, int *i, char *b, int type);
@@ -280,6 +259,5 @@ void		ft_lstaddback(t_env **hed, t_env *new);
 int			is_rederections(int type);
 void		fill_rederections(t_tokens **node, char *b, int *i);
 int			len_of_filled(char *b, int s, int c, t_env **envr);
-#endif
 
-// it will be improved with time and what we would need;
+#endif

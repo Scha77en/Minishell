@@ -6,13 +6,13 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 20:27:02 by abouregb          #+#    #+#             */
-/*   Updated: 2023/09/22 07:02:50 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/13 15:19:01 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	tchek_nl(char *s)
+static int	tchek_nl(char *s)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ int	tchek_nl(char *s)
 	return (0);
 }
 
-char	*get_read(int fd, char *s)
+static char	*get_read(int fd, char *s)
 {
 	char	*b;
 	int		nb;
@@ -44,7 +44,7 @@ char	*get_read(int fd, char *s)
 	return (s);
 }
 
-char	*getlline(char *s)
+static char	*getlline(char *s)
 {
 	char	*l;
 	int		i;
@@ -69,7 +69,7 @@ char	*getlline(char *s)
 	return (l);
 }
 
-char	*get_next(char *s)
+static char	*get_next(char *s)
 {
 	int		i;
 	char	*c;
