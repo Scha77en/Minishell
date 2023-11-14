@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:47:38 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/14 13:55:23 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:37:25 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	valid_syntax(t_tokens *list)
 	else if (is_token(list->type) && !is_word(list->next->type)
 		&& (list->next->type == WHITESPACE))
 		return (0);
-	else if (is_token(list->type) && is_token(list->next->type))
+	else if (is_token(list->type) 
+		&& list->type != PIPE && is_token(list->next->type))
 		return (0);
 	else
 		return (1);
