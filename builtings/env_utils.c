@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 11:08:21 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:08:41 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 09:33:18 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	**env_to_char(t_env **env)
 	char	**u_env;
 	int		i;
 
+	if (ft_getenv(env, "SHLVL") == NULL)
+		ft_lstaddback(env, ft_envnew(ft_strdup("SHLVL"), NULL));
 	current = *env;
 	i = 0;
 	while (current)
@@ -38,12 +40,16 @@ char	**env_to_char(t_env **env)
 	i = 0;
 	while (current)
 	{
-		if (!ft_strncmp(current->var, "SHLVL", 5))
-			current->value = ft_itoa(ft_atoi(current->value) + 1);
+		if (!ft_strncmp(current->var, "SHLVL", 5) && current->value)
+		{
+			if ((ft_atoi(current->value) + 1) < 1000)
+				current->value = ft_itoa(ft_atoi(current->value) + 1);
+			else
+				current->value = ft_itoa(1);
+		}
 		u_env[i] = ft_strjoin_b(current->var, current->value, 2);
 		current = current->next;
 		i++;
 	}
-	u_env[i] = NULL;
-	return (u_env);
+	return (u_env[i] = NULL, u_env);
 }

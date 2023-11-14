@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:12:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 20:23:41 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 05:57:47 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,24 @@ void	ft_exit(t_cmd *tavern)
 
 void	exit_choice(t_cmd *tavern)
 {
+	char	*l_max;
+	char	*l_min;
+
+	l_max = "9223372036854775807";
+	l_min = "-9223372036854775808";
+	printf("atoi = %lld\n", ft_atoi(tavern->cmd[1]));
 	if (tavern->cmd[2] == NULL)
 	{
-		write(2, "exit\n", 5);
-		exit(ft_atoi(tavern->cmd[1]));
+		if (ft_strlen(tavern->cmd[1]) <= 20)
+		{
+			if (ft_strcmp(tavern->cmd[1], l_max) > 0 
+				|| ft_strcmp(tavern->cmd[1], l_min) > 0)
+				too_much_bro(tavern, 2);
+			write(2, "exit\n", 5);
+			exit(ft_atoi(tavern->cmd[1]));
+		}
+		else if (ft_strlen(tavern->cmd[1]) > 19)
+			too_much_bro(tavern, 2);
 	}
 	else
 		too_much_bro(tavern, 1);

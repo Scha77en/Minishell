@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 11:10:54 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:30:09 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 15:43:41 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ void	ft_join_value(t_env **env, char **split)
 		if (current == NULL)
 			break ;
 	}
-	ft_add_env(env, split, 0);
+	puts("DKHAL");
+	ft_add_env(env, split, 0, 1);
 }
 
-void	ft_add_env(t_env **env, char **split, int v)
+void	ft_add_env(t_env **env, char **split, int v, int j)
 {
 	t_env	*current;
 
@@ -80,11 +81,16 @@ void	ft_add_env(t_env **env, char **split, int v)
 		if (ft_strncmp(current->var, split[0],
 				ft_strlen(current->var) + 1) == 0)
 		{
-			if (split[1] == NULL)
+			if (split[1][0] == '\0' && j == 1)
+			{
 				current->value = ft_strdup("");
-			else
+			}
+			else if (split[1][0] != '\0' && j == 1)
+			{
 				current->value = ft_strdup(split[1]);
-			current->id = v;
+			}
+			if (j == 1)
+				current->id = v;
 			return ;
 		}
 		current = current->next;
@@ -96,6 +102,7 @@ void	adding_new_env(t_env **env, char **split, int v)
 {
 	t_env	*new;
 
+	puts("ADD");
 	new = my_malloc(sizeof(t_env), 1, 1);
 	if (plus_sign(split[0], 1))
 		new->var = ft_strndup(split[0], (plus_sign(split[0], 1)));

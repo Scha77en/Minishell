@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 20:38:50 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 15:33:27 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		oldpwd_update(env, NULL, 0);
 		if (chdir(ft_getenv(env, "HOME")) != 0)
 		{
-			error_out("chdir", 0);
+			write(2, "minishell: cd: HOME not set\n", 28);
 			g_status = 1;
 			return ;
 		}
@@ -81,7 +81,7 @@ void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 			"cd: error retrieving current directory: ", 41);
 		write((*tavern)->fd->out, 
 			"getcwd : cannot access parent directories: \
-			No such file or directory\n", 70);
+			No such file or directory\n", 72);
 		g_status = 1;
 		redefine_pwd(pwd, (*tavern)->cmd[1], env, 1);
 		return ;

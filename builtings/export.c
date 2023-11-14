@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 03:10:54 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 20:46:44 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 07:33:42 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,17 @@ void	ft_export(t_cmd *tavern, t_env **env)
 void	manage_the_export(t_cmd *tavern, t_env **env, int v, int i)
 {
 	char	**split;
+	int		j;
 
-	split = split_export(tavern->cmd[i]);
+	j = 0;
+	split = split_export(tavern->cmd[i], &j);
+	printf("j = %d\n", j);
 	if (split[1] == NULL)
-		ft_add_env(env, split, v);
+		ft_add_env(env, split, v, j);
 	else if (plus_sign(split[0], 0) > 0)
 		ft_join_value(env, split);
 	else
-		ft_add_env(env, split, v);
+		ft_add_env(env, split, v, j);
 	g_status = 0;
 }
 

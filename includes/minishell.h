@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 20:56:44 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 07:28:05 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,11 +136,11 @@ void		pwd_update(t_env **env);
 void		echo_builted(t_cmd *tavern);
 int			ft_strncmp_echo(char *s1, char *s2, int n);
 void		ft_export(t_cmd *tavern, t_env **env);
-char		**split_export(char *split);
+char		**split_export(char *split, int *j);
 char		*back_slash_parce(char *str, int flag);
 int			back_slash(char *str);
 int			slash_size(char *str);
-void		ft_add_env(t_env **env, char **split, int v);
+void		ft_add_env(t_env **env, char **split, int v, int j);
 int			check_validity(char *str, int *v);
 int			alpha_undscore(char c);
 int			plus_sign(char *str, int v);

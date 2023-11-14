@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 21:43:52 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 11:44:04 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 05:14:31 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_mem
 	struct s_mem	*next;
 }	t_mem;
 
-int		ft_atoi(const char *str);
+long long		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_isalnum(int c);
