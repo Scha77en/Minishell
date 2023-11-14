@@ -51,3 +51,53 @@ heredoc> $HOME
 /Users/aer-raou:   hadxi makhasox itla3
 heredoc> a
 aer-raou/Users/aer-raouminishell$       khasek \n
+
+
+___________________________________________________________________________
+___________________________________________________________________________
+
+
+minishell$ cat <"1""2""3""4""5"
+minishell: 45: No such file or directory
+
+bash-3.2$ cat <"1""2""3""4""5"
+bash: 12345: No such file or directory
+
+<< a cat | ls   --done--
+
+<< a cat kjsadf lka slkjsa  --done--
+
+<< a | << a | << a | << a | << a | << a  --done--
+
+exit 546878979684564897894654897       X
+
+fix ignals mini  wst mini
+
+minishell$ export PATH=/bin
+minishell$ ls
+path = PATH=/bin
+path: PATH=/bin/ls
+path: (null)
+minishell: ls: command not found
+
+export b=qqq
+export b
+should remain b=qqq
+unset a+= >>> should be error         X
+
+bash-3.2$ export a
+bash-3.2$ unset $a
+bash-3.2$ unset a
+bash-3.2$ export a
+bash-3.2$ unset $a >>> compare to bash
+
+unset SHLVL , ./minishell 
+export SHLVL=999, bash, SHLVL=""
+mkdir c ; cd c ; ../minishell < /dev/random 
+
+minishell$ cd $pWD
+chdir: Bad address
+
+minishell$ << a | << a | << a | << a | << a
+> ^C
+minishell$ 

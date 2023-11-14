@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rederect_herdc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:26:34 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 14:46:14 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 11:43:49 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_tokens *current, t_env **envr)
 	word = (*t_lst)->tokens;
 	while (is_word((*t_lst)->next->type))
 	{
-		word = ft_strjoin((*t_lst)->tokens, (*t_lst)->next->tokens);
+		word = ft_strjoin(word, (*t_lst)->next->tokens);
 		(*t_lst) = (*t_lst)->next;
 	}
 	(*t_lst)->tokens = word;

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 00:45:33 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 15:22:15 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:39:17 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,19 @@ void	fill_expan(char *b, t_index *x, t_env **envr, char **filled)
 char	*ft_filled(char *b, int *i, int c, char *filled)
 {
 	if (b[*i] == c && c != 0)
+	{
 		(*i)++;
-	if (!filled)
+	}
+	else if (!filled)
 		return (NULL);
 	return (filled);
 }
 
 int	fill_word_(char *b, t_index *x, int c, char **filled)
 {
+	int	g;
+
+	g = 0;
 	if (b[(*x).s] == '$' && b[(*x).s + 1] == '?' && c != 39 && b[(*x).s + 1])
 	{
 		fill_exit_s(filled, &(*x).s, &(*x).a, b);
@@ -74,7 +79,13 @@ int	fill_word_(char *b, t_index *x, int c, char **filled)
 	else if (b[(*x).s] == '$'
 		&& (ft_isdigit(b[(*x).s + 1]) || !ft_isalnum(b[(*x).s + 1])))
 	{
-		fill_exit_s(filled, &(*x).s, &(*x).a, b);
+		if (c == 39)
+		{
+			while (++g <= 2)
+				(*filled)[(*x).a++] = b[(*x).s++];
+		}
+		else
+			fill_exit_s(filled, &(*x).s, &(*x).a, b);
 		return (1);
 	}
 	return (0);
@@ -86,7 +97,7 @@ char	*fill_word(char *b, int *i, int c, t_env **envr)
 	t_index	x;
 
 	x.s = cheak(b, i, c);
-	if (x.s == -1)
+	if (g_status == -1)
 		return (NULL);
 	x.a = len_of_filled(b, x.s, c, envr);
 	filled = my_malloc((x.a + 1), 1, 1);

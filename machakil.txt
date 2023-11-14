@@ -341,3 +341,11 @@ ls | < owrd
 Test only spaces or tabs.     | ls
 
  ls | < Makefile cat
+
+
+ cat << l's'
+> $?$?$
+> $USER
+> ls
+00$
+abouregb

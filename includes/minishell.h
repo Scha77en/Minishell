@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 15:36:30 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 07:37:24 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,5 +259,6 @@ void		ft_lstaddback(t_env **hed, t_env *new);
 int			is_rederections(int type);
 void		fill_rederections(t_tokens **node, char *b, int *i);
 int			len_of_filled(char *b, int s, int c, t_env **envr);
+int			valid_syntax(t_tokens *list);
 
 #endif

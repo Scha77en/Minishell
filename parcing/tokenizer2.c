@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 22:12:15 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 21:51:26 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 10:53:21 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ t_tokens	*tokenizer(char *b, t_env **envr)
 	{
 		node = create_node();
 		c_node = fill_node(node, b, &i, envr);
+		if (g_status == -1)
+		{
+			while (b[i])
+				i++;
+		}
 		add_node(&list, c_node);
 	}
 	node = create_node();

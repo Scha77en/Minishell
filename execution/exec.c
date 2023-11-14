@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 15:04:03 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 15:30:25 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_env(tavern, env, 0), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "exit", 6) == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "$?", 3) == 0)
-		return (ft_putnbr_fd(g_status, 2), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "./", 2) == 0)
 		return (subshell(tavern, env), 1);
 	return (0);

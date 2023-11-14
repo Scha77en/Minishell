@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 15:22:20 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 10:50:07 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,34 @@ void	check_fd(t_cmd **f_list)
 	}
 }
 
+int	b_valid(char *b)
+{
+	int	i;
+	int	v;
+
+	i = 0;
+	v = 0;
+	while (b[i])
+	{
+		if (b[i] == 39 || b[i] == 34)
+			v++;
+		i++;
+	}
+	return (v % 2);
+}
+
 t_cmd	*tokenizer_(char *b, t_env **envr, t_tokens	**list)
 {
 	add_history(b);
 	*list = tokenizer(b, envr);
-	if (*list == NULL)
+	if (g_status == 258 && !b_valid(b))
+		g_status = 127;
+	if (*list == NULL || g_status == -1)
 		g_status = 258;
-	else if (syntax_error(*list) == 1)
+	if (g_status != 258)
+		if (syntax_error(*list) == 1)
+			*list = NULL;
+	if (g_status == 258)
 		*list = NULL;
 	return (NULL);
 }

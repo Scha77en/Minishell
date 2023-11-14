@@ -6,11 +6,28 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 15:47:38 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 21:45:23 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:55:23 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	valid_syntax(t_tokens *list)
+{
+	if (is_token(list->type) && list->next->type == NLINE)
+		return (0);
+	else if (list->type == PIPE \
+	&& ((!is_token(list->next->type) && !is_word(list->next->type))
+			|| list->next->type == PIPE))
+		return (0);
+	else if (is_token(list->type) && !is_word(list->next->type)
+		&& (list->next->type == WHITESPACE))
+		return (0);
+	else if (is_token(list->type) && is_token(list->next->type))
+		return (0);
+	else
+		return (1);
+}
 
 void	first_one(t_tokens *list, t_cmd **tmp)
 {

@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:22:41 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/13 15:48:34 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 07:36:07 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	cheak(char *b, int *i, int c)
 	if (r == 1 && (c == 34 || c == 39))
 	{
 		printf("minishell$: syntax error near unexpected token `%c'\n", b[(*i)]);
-		return (-1);
+		g_status = -1;
+		return (*i + 1);
 	}
 	else if (c == 34 || c == 39)
 		return ((*i) + 1);
@@ -84,18 +85,16 @@ int	syntax_error(t_tokens *list)
 			list->tokens = "|";
 		g_status = 258;
 		printf("minishell$: syntax error near \
-		unexpected token '%s'\n", list->tokens);
+unexpected token '%s'\n", list->tokens);
 		return (1);
 	}
 	while (list)
 	{
-		if (((is_token(list->type) && !is_word(list->next->type)
-					&& (list->next->type != WHITESPACE)) || list->type == SLH) \
-				&& (list->type != PIPE && !is_token(list->next->type)))
+		if (!valid_syntax(list))
 		{
 			g_status = 258;
 			printf("minishell$: syntax error near \
-			unexpected token '%s'\n", list->tokens);
+unexpected token '%s'\n", list->tokens);
 			return (1);
 		}
 		else

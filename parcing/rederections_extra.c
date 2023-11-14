@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rederections_extra.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 15:37:23 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 15:40:14 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 08:00:21 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	here_doc_process(char **data, int pipfd[2], t_tokens *file, t_env *envr)
 			if ((ft_strlen(file->tokens) >= (ft_strlen(line))))
 				break ;
 		}
-		if (file->type == WORD 
-			&& ft_strncmp(line, "\n", ft_strlen(line) + 1) != 0)
+		if (file->type == WORD && (ft_strncmp(line, "\n", ft_strlen(line) + 1))
+			&& ft_strlen(line))
 			line = fill_word(line, &i, 0, &envr);
 		*data = ft_strjoin(*data, ft_strjoin(line, "\n"));
 		if (line)

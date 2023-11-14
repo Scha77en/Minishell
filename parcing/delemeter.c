@@ -6,7 +6,7 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 17:47:28 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/12 13:20:52 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:38:30 by abouregb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,13 @@ int	len_of_delemeter(char *b, int s, int c, int a)
 	{
 		if (b[s] != c)
 		{
-			s++;
-			a++;
+			if (b[s] == ' ' && c == 0)
+				s++;
+			else
+			{
+				s++;
+				a++;
+			}
 		}
 		else
 			s++;
@@ -56,7 +61,9 @@ char	*fill__delemeter(char *b, int s, int a, int *i)
 		if (b[s] != 34 && b[s] != 39)
 			filled[a++] = b[s++];
 		else
-			s++; 
+			s++;
+		if (b[s] == ' ' && b[s - 1] != 34 && b[s - 1] != 39)
+			break ;
 	}
 	if (b[s] == 34 || b[s] == 39)
 		s++;
