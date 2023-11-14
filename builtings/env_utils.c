@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 11:08:21 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/14 09:33:18 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 16:23:27 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,18 @@ char	**env_to_char(t_env **env)
 	while (current)
 	{
 		if (!ft_strncmp(current->var, "SHLVL", 5) && current->value)
-		{
-			if ((ft_atoi(current->value) + 1) < 1000)
-				current->value = ft_itoa(ft_atoi(current->value) + 1);
-			else
-				current->value = ft_itoa(1);
-		}
+			shell_lvl(current);
 		u_env[i] = ft_strjoin_b(current->var, current->value, 2);
 		current = current->next;
 		i++;
 	}
 	return (u_env[i] = NULL, u_env);
+}
+
+void	shell_lvl(t_env *current)
+{
+	if ((ft_atoi(current->value) + 1) < 1000)
+		current->value = ft_itoa(ft_atoi(current->value) + 1);
+	else
+		current->value = ft_itoa(1);
 }

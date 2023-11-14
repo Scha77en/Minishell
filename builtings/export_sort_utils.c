@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 10:25:18 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:02:22 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 16:12:18 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,22 @@ void	add_env(t_env **env, char *var, char *value, int v)
 			current = current->next;
 		current->next = new;
 	}
+}
+
+char	*ft_strndup(char *s, int n)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = my_malloc((n + 1), 1, 1);
+	if (!str)
+		return (NULL);
+	while (s[i] && i < n)
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }

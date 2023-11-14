@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 11:10:54 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/14 15:43:41 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 16:14:30 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,21 +81,26 @@ void	ft_add_env(t_env **env, char **split, int v, int j)
 		if (ft_strncmp(current->var, split[0],
 				ft_strlen(current->var) + 1) == 0)
 		{
-			if (split[1][0] == '\0' && j == 1)
-			{
-				current->value = ft_strdup("");
-			}
-			else if (split[1][0] != '\0' && j == 1)
-			{
-				current->value = ft_strdup(split[1]);
-			}
-			if (j == 1)
-				current->id = v;
+			replace_or_not(current, split, j, v);
 			return ;
 		}
 		current = current->next;
 	}
 	adding_new_env(env, split, v);
+}
+
+void	replace_or_not(t_env *current, char **split, int j, int v)
+{
+	if (split[1][0] == '\0' && j == 1)
+	{
+		current->value = ft_strdup("");
+	}
+	else if (split[1][0] != '\0' && j == 1)
+	{
+		current->value = ft_strdup(split[1]);
+	}
+	if (j == 1)
+		current->id = v;
 }
 
 void	adding_new_env(t_env **env, char **split, int v)
@@ -112,22 +117,4 @@ void	adding_new_env(t_env **env, char **split, int v)
 	new->id = v;
 	new->next = NULL;
 	ft_lstaddback(env, new);
-}
-
-char	*ft_strndup(char *s, int n)
-{
-	char	*str;
-	int		i;
-
-	i = 0;
-	str = my_malloc((n + 1), 1, 1);
-	if (!str)
-		return (NULL);
-	while (s[i] && i < n)
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
 }

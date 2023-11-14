@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 08:52:26 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/14 07:28:05 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 16:51:02 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,9 @@ int			ft_isdigit_exit(t_cmd *tavern);
 void		erasing_node(t_env **envr, t_env *tmp, t_env *prev);
 int			unset_parce(t_cmd *tavern);
 int			unvalide_identifier(t_cmd *tavern, int i);
+void		shell_lvl(t_env *current);
+void		replace_or_not(t_env *current, char **split, int j, int v);
+void		check_size(t_cmd *tavern);
 
 // redirections
 
