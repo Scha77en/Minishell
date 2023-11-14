@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_search.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 21:16:37 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/09/29 16:12:30 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 06:08:29 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ char	**find_path(char **env)
 {
 	int		k;
 	char	**path;
+	char	**tmp;
 
 	k = get_env_path(env);
 	if (k == -1)
 		return (NULL);
-	path = ft_split_m(env[k], ':');
+	tmp = ft_split_m(env[k], '=');
+	path = ft_split_m(tmp[1], ':');
 	return (path);
 }
 

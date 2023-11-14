@@ -19,8 +19,31 @@
     "memory": "c",
     "string": "c",
     "unordered_map": "c",
+<<<<<<< HEAD
     "vector": "c"
 >>>>>>> d4130e22907a5f500b74ba10e13e1d2af7d415b6
+=======
+    "vector": "c",
+    "iterator": "c",
+    "__bit_reference": "c",
+    "__functional_base": "c",
+    "atomic": "c",
+    "bitset": "c",
+    "chrono": "c",
+    "__memory": "c",
+    "limits": "c",
+    "locale": "c",
+    "optional": "c",
+    "ratio": "c",
+    "system_error": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "ostream": "c",
+    "sstream": "c",
+    "__locale": "c",
+    "ios": "c",
+    "libft.h": "c"
+>>>>>>> main
   },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.msvcBatchPath": "",

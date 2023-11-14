@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 10:11:22 by abouregb          #+#    #+#             */
-/*   Updated: 2023/11/14 10:50:07 by abouregb         ###   ########.fr       */
+/*   Updated: 2023/11/14 17:12:10 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int	main(int ac, char **av, char **env)
 	char		*b;
 
 	b = NULL;
-	g_status = 0;
 	(void)ac;
 	(void)av;
 	g_status = 0;
@@ -117,5 +116,5 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	minishell(&envr, b);
-	return (0);
+	return (g_status);
 }

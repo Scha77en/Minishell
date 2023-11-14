@@ -6,7 +6,7 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 04:25:57 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/13 12:06:11 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 15:33:27 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ void	cd_builted(t_cmd **tavern, t_env **env, char **pwd)
 		oldpwd_update(env, NULL, 0);
 		if (chdir(ft_getenv(env, "HOME")) != 0)
 		{
-			error_out("chdir", 0);
+			write(2, "minishell: cd: HOME not set\n", 28);
 			g_status = 1;
 			return ;
 		}
 		redefine_pwd(pwd, ft_getenv(env, "HOME"), env, 0);
 		pwd_update(env);
+		g_status = 0;
 	}
 	else if (ft_strncmp((*tavern)->cmd[1], "-",
 			ft_strlen((*tavern)->cmd[1]) + 1) == 0)
@@ -59,6 +60,7 @@ void	cd_dash(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 	oldpwd_update(env, curwd, 1);
 	pwd_update(env);
 	redefine_pwd(pwd, ft_getenv(env, "OLDPWD"), env, 0);
+	g_status = 0;
 }
 
 void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
@@ -79,13 +81,14 @@ void	cd_path(t_cmd **tavern, t_env **env, char **pwd, char *curwd)
 			"cd: error retrieving current directory: ", 41);
 		write((*tavern)->fd->out, 
 			"getcwd : cannot access parent directories: \
-			No such file or directory\n", 70);
+			No such file or directory\n", 72);
 		g_status = 1;
 		redefine_pwd(pwd, (*tavern)->cmd[1], env, 1);
 		return ;
 	}
 	pwd_update(env);
 	redefine_pwd(pwd, (*tavern)->cmd[1], env, 0);
+	g_status = 0;
 }
 
 void	oldpwd_update(t_env **env, char *curwd, int v)

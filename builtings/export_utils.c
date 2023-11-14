@@ -6,13 +6,13 @@
 /*   By: aouhbi <aouhbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 19:11:47 by aouhbi            #+#    #+#             */
-/*   Updated: 2023/11/12 11:02:53 by aouhbi           ###   ########.fr       */
+/*   Updated: 2023/11/14 07:22:40 by aouhbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**split_export(char *split)
+char	**split_export(char *split, int *j)
 {
 	char	**str;
 	char	*s0;
@@ -23,6 +23,8 @@ char	**split_export(char *split)
 	str = my_malloc(3, sizeof(char *), 1);
 	while (split[i] != '\0' && split[i] != '=')
 		i++;
+	if (split[i] == '=')
+		*j = 1;
 	s0 = ft_substr(split, 0, i);
 	s1 = ft_substr(split, i + 1, ft_strlen(split));
 	str[0] = back_slash_parce(s0, 0);

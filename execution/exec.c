@@ -6,7 +6,11 @@
 /*   By: abouregb <abouregb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 14:10:14 by aouhbi            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/14 15:30:25 by abouregb         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/14 15:51:05 by aouhbi           ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +36,13 @@ char	*execute_cmds(t_cmd **tavern, t_env **envr, char *pwd)
 			pid1 = fork();
 			if (pid1 == 0)
 				execute_command(current, envr);
+			else if (pid1 < 0)
+				fork_failed();
 		}
 	}
 	else
 		multiple_cmds(&current, envr, &pwd, pid1);
-	waiting_and_signals_handling(status);
-	return (pwd);
+	return (waiting_and_signals_handling(status), pwd);
 }
 
 void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
@@ -61,6 +66,8 @@ void	multiple_cmds(t_cmd **tavern, t_env **envr, char **pwd, pid_t pid1)
 				exit(0);
 			execute_command((*tavern), envr);
 		}
+		else if (pid1 < 0)
+			fork_failed();
 		pipes_closing(tavern, pipfd, &for_next);
 		(*tavern) = (*tavern)->next;
 	}
@@ -105,11 +112,11 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 	if ((*tavern)->cmd[0] == NULL)
 		return (1);
 	if (ft_strncmp((*tavern)->cmd[0], "echo", 5) == 0)
-		return (echo_builted((*tavern)), 1);
+		return (echo_builted((*tavern)), g_status = 0, 1);
 	if (ft_strncmp((*tavern)->cmd[0], "cd", 3) == 0)
 		return (cd_builted(tavern, env, pwd), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "pwd", 4) == 0)
-		return (print_working_directory(tavern, pwd), 1);
+		return (print_working_directory(tavern, pwd), g_status = 0, 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "export", 8) == 0)
 		return (ft_export((*tavern), env), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "unset", 7) == 0)
@@ -118,7 +125,8 @@ int	if_builting(t_cmd **tavern, t_env **env, char **pwd)
 		return (ft_env(tavern, env, 0), 1);
 	else if (ft_strncmp((*tavern)->cmd[0], "exit", 6) == 0)
 		return (ft_exit((*tavern)), 1);
-	else if (ft_strncmp((*tavern)->cmd[0], "./", 2) == 0)
+	else if (ft_strncmp((*tavern)->cmd[0], "./", 2) == 0
+		|| ft_strncmp((*tavern)->cmd[0], "../", 1) == 0)
 		return (subshell(tavern, env), 1);
 	return (0);
 }
